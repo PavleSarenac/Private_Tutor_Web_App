@@ -10,6 +10,8 @@ import { isStudentGuard } from './guards/is-student/is-student.guard';
 import { isTeacherGuard } from './guards/is-teacher/is-teacher.guard';
 import { isAdminGuard } from './guards/is-admin/is-admin.guard';
 import { isGuestGuard } from './guards/is-guest/is-guest.guard';
+import { TeacherRegistrationComponent } from './components/pages/teacher-registration/teacher-registration.component';
+import { StudentRegistrationComponent } from './components/pages/student-registration/student-registration.component';
 
 const routes: Routes = [
   { path: "", component: IndexComponent, canActivate: [isGuestGuard] },
@@ -18,7 +20,9 @@ const routes: Routes = [
   { path: "student", component: StudentComponent, canActivate: [isStudentGuard] },
   { path: "teacher", component: TeacherComponent, canActivate: [isTeacherGuard] },
   { path: "admin", component: AdminComponent, canActivate: [isAdminGuard] },
-  { path: "**", component: IndexComponent, canActivate: [isGuestGuard] }
+  { path: "teacher-registration", component: TeacherRegistrationComponent, canActivate: [isGuestGuard] },
+  { path: "student-registration", component: StudentRegistrationComponent, canActivate: [isGuestGuard] },
+  { path: "**", redirectTo: "" }
 ];
 
 @NgModule({

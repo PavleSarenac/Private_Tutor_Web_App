@@ -1,0 +1,121 @@
+<div class="row bg-dark rounded my-registration-shared-form">
+  <div class="col-sm-12 mt-3 mb-3">
+    <label for="input-username" class="form-label text-white">Username</label>
+    <input type="text" class="form-control" [class.is-invalid]="newUser.username == ''"
+      [class.is-valid]="newUser.username != ''" id="input-username" [(ngModel)]="newUser.username">
+    <div class="invalid-feedback">
+      {{usernameError}}
+    </div>
+    <div class="valid-feedback">
+      {{successMessage}}
+    </div>
+  </div>
+  <div class="col-sm-12 mb-3">
+    <label for="input-password" class="form-label text-white">Password</label>
+    <input type="password" class="form-control" [class.is-invalid]="newUser.password == ''"
+      [class.is-valid]="newUser.password != ''" id="input-password" [(ngModel)]="newUser.password">
+    <div class="invalid-feedback">
+      {{passwordError}}
+    </div>
+    <div class="valid-feedback">
+      {{successMessage}}
+    </div>
+  </div>
+  <div class="col-sm-12 mb-3">
+    <label for="input-security-question" class="form-label text-white">Security question</label>
+    <input type="text" class="form-control" [class.is-invalid]="newUser.securityQuestion == ''"
+      [class.is-valid]="newUser.securityQuestion != ''" id="input-security-question"
+      [(ngModel)]="newUser.securityQuestion">
+    <div class="invalid-feedback">
+      {{securityQuestionError}}
+    </div>
+    <div class="valid-feedback">
+      {{successMessage}}
+    </div>
+  </div>
+  <div class="col-sm-12 mb-3">
+    <label for="input-security-answer" class="form-label text-white">Security answer</label>
+    <input type="text" class="form-control" [class.is-invalid]="newUser.securityAnswer == ''"
+      [class.is-valid]="newUser.securityAnswer != ''" id="input-security-answer" [(ngModel)]="newUser.securityAnswer">
+    <div class="invalid-feedback">
+      {{securityAnswerError}}
+    </div>
+    <div class="valid-feedback">
+      {{successMessage}}
+    </div>
+  </div>
+  <div class="col-sm-12 mb-3">
+    <label for="input-name" class="form-label text-white">Name</label>
+    <input type="text" class="form-control" [class.is-invalid]="newUser.name == ''"
+      [class.is-valid]="newUser.name != ''" id="input-name" [(ngModel)]="newUser.name">
+    <div class="invalid-feedback">
+      {{nameError}}
+    </div>
+    <div class="valid-feedback">
+      {{successMessage}}
+    </div>
+  </div>
+  <div class="col-sm-12 mb-3">
+    <label for="input-surname" class="form-label text-white">Surname</label>
+    <input type="text" class="form-control" [class.is-invalid]="newUser.surname == ''"
+      [class.is-valid]="newUser.surname != ''" id="input-surname" [(ngModel)]="newUser.surname">
+    <div class="invalid-feedback">
+      {{surnameError}}
+    </div>
+    <div class="valid-feedback">
+      {{successMessage}}
+    </div>
+  </div>
+  <div class="col-sm-12 mb-3">
+    <label for="input-surname" class="form-label text-white">Gender:</label> &nbsp;
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="M"
+        [(ngModel)]="newUser.gender">
+      <label class="form-check-label text-white" for="inlineRadio1">M</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="F"
+        [(ngModel)]="newUser.gender">
+      <label class="form-check-label text-white" for="inlineRadio2">F</label>
+    </div>
+    <br>
+    <span *ngIf="newUser.gender == ''" class="text-danger small">{{genderError}}</span>
+    <span *ngIf="newUser.gender != ''" class="text-success small">{{successMessage}}</span>
+  </div>
+  <div class="col-sm-12 mb-3">
+    <label for="input-address" class="form-label text-white">Address</label>
+    <input type="text" class="form-control" [class.is-invalid]="newUser.address == ''"
+      [class.is-valid]="newUser.address != ''" id="input-address" [(ngModel)]="newUser.address">
+    <div class="invalid-feedback">
+      {{addressError}}
+    </div>
+    <div class="valid-feedback">
+      {{successMessage}}
+    </div>
+  </div>
+  <div class="col-sm-12 mb-3">
+    <label for="input-phone" class="form-label text-white">Phone</label>
+    <input type="text" class="form-control" [class.is-invalid]="newUser.phone == ''"
+      [class.is-valid]="newUser.phone != ''" id="input-phone" [(ngModel)]="newUser.phone">
+    <div class="invalid-feedback">
+      {{phoneError}}
+    </div>
+    <div class="valid-feedback">
+      {{successMessage}}
+    </div>
+  </div>
+  <div class="col-sm-12 mb-3">
+    <label for="input-email" class="form-label text-white">Email</label>
+    <input type="text" class="form-control" [class.is-invalid]="newUser.email == ''"
+      [class.is-valid]="newUser.email != ''" id="input-email" [(ngModel)]="newUser.email">
+    <div class="invalid-feedback">
+      {{emailError}}
+    </div>
+    <div class="valid-feedback">
+      {{successMessage}}
+    </div>
+  </div>
+  <div class="col-sm-12 text-center mb-3">
+    <button class="btn btn-md btn-light" type="submit" (click)="register()">Register</button>
+  </div>
+</div>

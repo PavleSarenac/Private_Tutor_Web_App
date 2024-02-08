@@ -13,26 +13,34 @@ import { GuestHeaderComponent } from './components/parts/guest-header/guest-head
 import { StudentComponent } from './components/pages/student/student.component';
 import { TeacherComponent } from './components/pages/teacher/teacher.component';
 import { AdminComponent } from './components/pages/admin/admin.component';
+import { LoginFormComponent } from './components/parts/login-form/login-form.component';
+import { TeacherRegistrationComponent } from './components/pages/teacher-registration/teacher-registration.component';
+import { StudentRegistrationComponent } from './components/pages/student-registration/student-registration.component';
+import { RegistrationSharedFormComponent } from './components/parts/registration-shared-form/registration-shared-form.component';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        IndexComponent,
-        PublicLoginComponent,
-        PrivateLoginComponent,
-        FooterComponent,
-        GuestHeaderComponent,
-        StudentComponent,
-        TeacherComponent,
-        AdminComponent
-    ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        FormsModule,
-        HttpClientModule
-    ],
-    providers: [],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    IndexComponent,
+    PublicLoginComponent,
+    PrivateLoginComponent,
+    FooterComponent,
+    GuestHeaderComponent,
+    StudentComponent,
+    TeacherComponent,
+    AdminComponent,
+    LoginFormComponent,
+    TeacherRegistrationComponent,
+    StudentRegistrationComponent,
+    RegistrationSharedFormComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
