@@ -7,4 +7,8 @@ defaultRouter.route("/login").post(
     (request, response) => new DefaultController().login(request, response)
 )
 
+defaultRouter.route("/register").post(
+    (request, response) => new DefaultController().register(request, response)
+)
+
 export default defaultRouter;

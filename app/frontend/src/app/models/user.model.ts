@@ -10,7 +10,7 @@ export class User {
   address: string = ""
   phone: string = ""
   email: string = ""
-  profilePicture: string = ""
+  profilePicturePath: string = ""
   schoolType: string = ""
   currentGrade: string = ""
 }

@@ -115,6 +115,10 @@
       {{successMessage}}
     </div>
   </div>
+  <div class="col-sm-12 mb-3">
+    <label for="input-photo" class="form-label text-white">Profile picture</label>
+    <input type="file" class="form-control" accept=".jpg, .png" (change)="onImageSelected($event)">
+  </div>
   <div class="col-sm-12 text-center mb-3">
     <button class="btn btn-md btn-light" type="submit" (click)="register()">Register</button>
   </div>

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Message } from 'src/app/models/message.model';
 import { User } from 'src/app/models/user.model';
 
 @Injectable({
@@ -16,5 +17,9 @@ export class DefaultService {
       password: password
     }
     return this.httpClient.post<User>(`${this.backendUrl}/login`, body)
+  }
+
+  register(formData: FormData) {
+    return this.httpClient.post<Message>(`${this.backendUrl}/register`, formData)
   }
 }

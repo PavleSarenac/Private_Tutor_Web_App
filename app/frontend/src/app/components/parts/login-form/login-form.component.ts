@@ -28,7 +28,11 @@ export class LoginFormComponent implements OnInit {
   }
 
   login() {
-    if (this.username == "" || this.password == "") return
+    if (this.username == "" || this.password == "") {
+      this.usernameError = "Please enter your username."
+      this.passwordError = "Please enter your password."
+      return
+    }
     this.deafultService.login(this.username, this.password).subscribe(
       (user: User) => {
         let validUserTypes = this.router.routerState.snapshot.url == "/public-login" ? ["student", "teacher"] : ["admin"]

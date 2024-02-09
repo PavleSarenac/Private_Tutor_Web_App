@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema(
         address: String,
         phone: String,
         email: String,
-        profilePicture: String,
+        profilePicturePath: String,
         schoolType: String,
         currentGrade: String
     },

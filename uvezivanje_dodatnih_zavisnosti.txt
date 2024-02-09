@@ -17,3 +17,11 @@ Uputstvo za preuzimanje:
               "node_modules/bootstrap/dist/js/bootstrap.min.js"
             ]
 ==========================================================================================================================
+2) multer (objekat na backend-u koji omogucava cuvanje fajlova na serveru):
+==========================================================================================================================
+Uputstvo za instalaciju:
+	1) otvoriti u VS-Code terminal (command prompt)
+	2) pozicionirati se u backend folder
+	3) izvrsiti komandu: npm install multer
+	4) izvrsiti komandu: npm install @types/multer
+==========================================================================================================================
