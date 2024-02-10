@@ -32,3 +32,11 @@ Uputstvo za instalaciju:
 	2) pozicionirati se u backend folder
 	3) izvrsiti komandu: npm install image-size
 ==========================================================================================================================
+4) bcrypt (za sifrovanje lozinke)
+==========================================================================================================================
+Uputstvo za instalaciju:
+	1) otvoriti u VS-Code terminal (command prompt)
+	2) pozicionirati se u backend folder
+	3) izvrsiti komandu: npm install bcrypt
+	4) izvrsiti komandu: npm install @types/bcrypt
+==========================================================================================================================

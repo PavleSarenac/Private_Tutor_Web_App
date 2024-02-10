@@ -3,20 +3,28 @@ import UserModel from "../models/user.model"
 import multer from "multer"
 import sizeOf from "image-size"
 import * as fileSystem from "fs"
+import * as bcrypt from "bcrypt"
 
 const NUMBER_OF_MILLISECONDS_IN_ONE_SECOND = 1000
 const NUMBER_OF_SECONDS_IN_ONE_MINUTE = 60
 const NUMBER_OF_MINUTES_IN_ONE_HOUR = 60
 
 export class DefaultController {
+    saltRounds: number = 10
+
     login = (request: express.Request, response: express.Response) => {
         UserModel.findOne(
             {
-                username: request.body.username,
-                password: request.body.password
+                username: request.body.username
             }
         ).then(
-            (user) => response.json(user)
+            (user) => {
+                if (user != null && bcrypt.compareSync(request.body.password, user.password!)) {
+                    response.json(user)
+                } else {
+                    response.json(null)
+                }
+            }
         ).catch(
             (error) => console.log(error)
         )
@@ -52,9 +60,7 @@ export class DefaultController {
                     || imageDimensions.width! > maxImageWidth
                     || imageDimensions.height! > maxImageHeight
                 ) {
-                    fileSystem.unlink(`./files/images/${filename}`, (error) => {
-                        if (error) console.log(error)
-                    })
+                    fileSystem.unlinkSync(`./files/images/${filename}`)
                     response.json({
                         content: `ERROR|Image size is invalid (${imageDimensions.width}x${imageDimensions.height} px).`
                     })
@@ -70,19 +76,17 @@ export class DefaultController {
         UserModel.findOne({ username: newUser.username }).then(
             (user) => {
                 if (user != null) {
-                    fileSystem.unlink(newUser.profilePicturePath, (error) => {
-                        if (error) console.log(error)
-                    })
+                    fileSystem.unlinkSync(newUser.profilePicturePath)
                     response.json({ content: "This username is already taken." })
                 } else {
                     UserModel.findOne({ email: newUser.email }).then(
                         (user) => {
                             if (user != null) {
-                                fileSystem.unlink(newUser.profilePicturePath, (error) => {
-                                    if (error) console.log(error)
-                                })
+                                fileSystem.unlinkSync(newUser.profilePicturePath)
                                 response.json({ content: "This email is already taken." })
                             } else {
+                                const hashedPassword = bcrypt.hashSync(newUser.password, this.saltRounds)
+                                newUser.password = hashedPassword
                                 new UserModel(newUser).save().then(
                                     () => response.json({ content: "ok" })
                                 ).catch((error) => console.log(error))
