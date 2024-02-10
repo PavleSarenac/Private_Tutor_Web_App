@@ -19,7 +19,11 @@ export class DefaultService {
     return this.httpClient.post<User>(`${this.backendUrl}/login`, body)
   }
 
-  register(formData: FormData) {
-    return this.httpClient.post<Message>(`${this.backendUrl}/register`, formData)
+  uploadProfilePicture(formData: FormData) {
+    return this.httpClient.post<Message>(`${this.backendUrl}/uploadProfilePicture`, formData)
+  }
+
+  register(user: User) {
+    return this.httpClient.post<Message>(`${this.backendUrl}/register`, user)
   }
 }

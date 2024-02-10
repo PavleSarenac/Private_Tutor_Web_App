@@ -94,7 +94,7 @@
     </div>
   </div>
   <div class="col-sm-12 mb-3">
-    <label for="input-phone" class="form-label text-white">Phone</label>
+    <label for="input-phone" class="form-label text-white">Phone (format: 06[0-6]/xxx-xxx[x])</label>
     <input type="text" class="form-control" [class.is-invalid]="newUser.phone == ''"
       [class.is-valid]="newUser.phone != ''" id="input-phone" [(ngModel)]="newUser.phone">
     <div class="invalid-feedback">
@@ -116,8 +116,58 @@
     </div>
   </div>
   <div class="col-sm-12 mb-3">
-    <label for="input-photo" class="form-label text-white">Profile picture</label>
-    <input type="file" class="form-control" accept=".jpg, .png" (change)="onImageSelected($event)">
+    <label for="input-photo" class="form-label text-white">Profile picture (optional)</label>
+    <input type="file" class="form-control" accept=".jpg, .png" (change)="onImageSelected($event)" id="input-photo">
+    <span *ngIf="isInvalidImage" class="text-danger small">{{profilePictureError}}</span>
+    <span *ngIf="!isInvalidImage" class="text-success small">{{successMessage}}</span>
+  </div>
+  <div class="col-sm-12 mb-3">
+    <div class="dropup">
+      <span class="text-white">School type:</span>&nbsp;
+      <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <span *ngIf="newUser.schoolType == ''">Pick one</span>
+        <span *ngIf="newUser.schoolType != ''">{{newUser.schoolType}}</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li *ngFor="let schoolType of schoolTypes">
+          <button class="btn dropdown-item" (click)="updateSchoolType(schoolType)">{{schoolType}}</button>
+          <hr *ngIf="schoolType != 'Art school'" class="dropdown-divider">
+        </li>
+      </ul>
+    </div>
+    <span *ngIf="newUser.schoolType == ''" class="text-danger small">{{schoolTypeError}}</span>
+    <span *ngIf="newUser.schoolType != ''" class="text-success small">{{successMessage}}</span>
+  </div>
+  <div class="col-sm-12 mb-3">
+    <div class="dropup">
+      <span class="text-white">Current grade:</span>&nbsp;
+      <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <span *ngIf="newUser.currentGrade == ''">Pick one</span>
+        <span *ngIf="newUser.currentGrade != ''">{{newUser.currentGrade}}</span>
+      </button>
+      <ul class="dropdown-menu">
+        <ng-container *ngIf="newUser.schoolType == schoolTypes[0] || newUser.schoolType == ''">
+          <li *ngFor="let primarySchoolGrade of primarySchoolGrades">
+            <button class="dropdown-item" (click)="updateCurrentGrade(primarySchoolGrade)">
+              {{primarySchoolGrade}}
+            </button>
+            <hr *ngIf="primarySchoolGrade !== '8'" class="dropdown-divider">
+          </li>
+        </ng-container>
+
+        <ng-container *ngIf="newUser.schoolType !== schoolTypes[0] && newUser.schoolType !== ''">
+          <li *ngFor="let secondarySchoolGrade of secondarySchoolGrades">
+            <button class="dropdown-item" (click)="updateCurrentGrade(secondarySchoolGrade)">
+              {{secondarySchoolGrade}}
+            </button>
+            <hr *ngIf="secondarySchoolGrade !== '4'" class="dropdown-divider">
+          </li>
+        </ng-container>
+      </ul>
+
+    </div>
+    <span *ngIf="newUser.currentGrade == ''" class="text-danger small">{{currentGradeError}}</span>
+    <span *ngIf="newUser.currentGrade != ''" class="text-success small">{{successMessage}}</span>
   </div>
   <div class="col-sm-12 text-center mb-3">
     <button class="btn btn-md btn-light" type="submit" (click)="register()">Register</button>

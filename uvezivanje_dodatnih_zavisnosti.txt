@@ -14,7 +14,7 @@ Uputstvo za preuzimanje:
             ]
 		* "projects" -> "frontend" -> "architect" -> "build" -> "options" -> "scripts" treba da izgleda ovako:
 			"scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.js"
             ]
 ==========================================================================================================================
 2) multer (objekat na backend-u koji omogucava cuvanje fajlova na serveru):
@@ -24,4 +24,11 @@ Uputstvo za instalaciju:
 	2) pozicionirati se u backend folder
 	3) izvrsiti komandu: npm install multer
 	4) izvrsiti komandu: npm install @types/multer
+==========================================================================================================================
+3) image-size (zahvaljujuci ovome je moguca laka provera dimenzija slike na backend-u):
+==========================================================================================================================
+Uputstvo za instalaciju:
+	1) otvoriti u VS-Code terminal (command prompt)
+	2) pozicionirati se u backend folder
+	3) izvrsiti komandu: npm install image-size
 ==========================================================================================================================

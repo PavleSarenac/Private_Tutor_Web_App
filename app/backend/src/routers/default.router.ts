@@ -7,6 +7,10 @@ defaultRouter.route("/login").post(
     (request, response) => new DefaultController().login(request, response)
 )
 
+defaultRouter.route("/uploadProfilePicture").post(
+    (request, response) => new DefaultController().uploadProfilePicture(request, response)
+)
+
 defaultRouter.route("/register").post(
     (request, response) => new DefaultController().register(request, response)
 )
