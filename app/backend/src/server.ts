@@ -3,6 +3,7 @@ import cors from "cors"
 import mongoose from "mongoose"
 import defaultRouter from "./routers/default.router"
 import path from "path"
+import teacherRouter from "./routers/teacher.router"
 
 const app = express()
 
@@ -16,6 +17,8 @@ conn.once("open", () => {
 })
 
 app.use("/files", express.static(path.join(__dirname, "files")))
+
+defaultRouter.use("/teacher", teacherRouter)
 
 app.use("/", defaultRouter)
 app.listen(4000, () => console.log("Express server running on port 4000."))

@@ -13,4 +13,8 @@ export class User {
   profilePicturePath: string = ""
   schoolType: string = ""
   currentGrade: string = ""
+  teacherSubjects: string[] = []
+  teacherPreferredStudentsAge: string[] = []
+  teacherWhereDidYouHearAboutUs: string = ""
+  cvPath: string = ""
 }

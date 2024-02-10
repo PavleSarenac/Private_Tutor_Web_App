@@ -121,54 +121,120 @@
     <span *ngIf="isInvalidImage" class="text-danger small">{{profilePictureError}}</span>
     <span *ngIf="!isInvalidImage" class="text-success small">{{successMessage}}</span>
   </div>
-  <div class="col-sm-12 mb-3">
-    <div class="dropup">
-      <span class="text-white">School type:</span>&nbsp;
-      <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <span *ngIf="newUser.schoolType == ''">Pick one</span>
-        <span *ngIf="newUser.schoolType != ''">{{newUser.schoolType}}</span>
-      </button>
-      <ul class="dropdown-menu">
-        <li *ngFor="let schoolType of schoolTypes">
-          <button class="btn dropdown-item" (click)="updateSchoolType(schoolType)">{{schoolType}}</button>
-          <hr *ngIf="schoolType != 'Art school'" class="dropdown-divider">
-        </li>
-      </ul>
-    </div>
-    <span *ngIf="newUser.schoolType == ''" class="text-danger small">{{schoolTypeError}}</span>
-    <span *ngIf="newUser.schoolType != ''" class="text-success small">{{successMessage}}</span>
-  </div>
-  <div class="col-sm-12 mb-3">
-    <div class="dropup">
-      <span class="text-white">Current grade:</span>&nbsp;
-      <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <span *ngIf="newUser.currentGrade == ''">Pick one</span>
-        <span *ngIf="newUser.currentGrade != ''">{{newUser.currentGrade}}</span>
-      </button>
-      <ul class="dropdown-menu">
-        <ng-container *ngIf="newUser.schoolType == schoolTypes[0] || newUser.schoolType == ''">
-          <li *ngFor="let primarySchoolGrade of primarySchoolGrades">
-            <button class="dropdown-item" (click)="updateCurrentGrade(primarySchoolGrade)">
-              {{primarySchoolGrade}}
-            </button>
-            <hr *ngIf="primarySchoolGrade !== '8'" class="dropdown-divider">
+  <ng-container *ngIf="newUser.userType == 'student'">
+    <div class="col-sm-12 mb-3">
+      <div class="dropup">
+        <span class="text-white">School type:</span>&nbsp;
+        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <span *ngIf="newUser.schoolType == ''">Pick one</span>
+          <span *ngIf="newUser.schoolType != ''">{{newUser.schoolType}}</span>
+        </button>
+        <ul class="dropdown-menu">
+          <li *ngFor="let schoolType of schoolTypes">
+            <button class="btn dropdown-item" (click)="updateSchoolType(schoolType)">{{schoolType}}</button>
+            <hr *ngIf="schoolType != 'Art school'" class="dropdown-divider">
           </li>
-        </ng-container>
-
-        <ng-container *ngIf="newUser.schoolType !== schoolTypes[0] && newUser.schoolType !== ''">
-          <li *ngFor="let secondarySchoolGrade of secondarySchoolGrades">
-            <button class="dropdown-item" (click)="updateCurrentGrade(secondarySchoolGrade)">
-              {{secondarySchoolGrade}}
-            </button>
-            <hr *ngIf="secondarySchoolGrade !== '4'" class="dropdown-divider">
-          </li>
-        </ng-container>
-      </ul>
-
+        </ul>
+      </div>
+      <span *ngIf="newUser.schoolType == ''" class="text-danger small">{{schoolTypeError}}</span>
+      <span *ngIf="newUser.schoolType != ''" class="text-success small">{{successMessage}}</span>
     </div>
-    <span *ngIf="newUser.currentGrade == ''" class="text-danger small">{{currentGradeError}}</span>
-    <span *ngIf="newUser.currentGrade != ''" class="text-success small">{{successMessage}}</span>
-  </div>
+    <div class="col-sm-12 mb-3">
+      <div class="dropup">
+        <span class="text-white">Current grade:</span>&nbsp;
+        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <span *ngIf="newUser.currentGrade == ''">Pick one</span>
+          <span *ngIf="newUser.currentGrade != ''">{{newUser.currentGrade}}</span>
+        </button>
+        <ul class="dropdown-menu">
+          <ng-container *ngIf="newUser.schoolType == schoolTypes[0] || newUser.schoolType == ''">
+            <li *ngFor="let primarySchoolGrade of primarySchoolGrades">
+              <button class="dropdown-item" (click)="updateCurrentGrade(primarySchoolGrade)">
+                {{primarySchoolGrade}}
+              </button>
+              <hr *ngIf="primarySchoolGrade !== '8'" class="dropdown-divider">
+            </li>
+          </ng-container>
+
+          <ng-container *ngIf="newUser.schoolType !== schoolTypes[0] && newUser.schoolType !== ''">
+            <li *ngFor="let secondarySchoolGrade of secondarySchoolGrades">
+              <button class="dropdown-item" (click)="updateCurrentGrade(secondarySchoolGrade)">
+                {{secondarySchoolGrade}}
+              </button>
+              <hr *ngIf="secondarySchoolGrade !== '4'" class="dropdown-divider">
+            </li>
+          </ng-container>
+        </ul>
+
+      </div>
+      <span *ngIf="newUser.currentGrade == ''" class="text-danger small">{{currentGradeError}}</span>
+      <span *ngIf="newUser.currentGrade != ''" class="text-success small">{{successMessage}}</span>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="newUser.userType == 'teacher'">
+    <div class="col-sm-12 mb-3">
+      <label for="input-subjects" class="form-label text-white">Choose subjects that you want to teach</label>
+      <select class="form-control choices-multiple" multiple id="input-subjects" [(ngModel)]="newUser.teacherSubjects">
+        <option *ngFor="let subject of subjects">{{subject}}</option>
+      </select>
+      <button class="btn btn-light mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Click to add a custom subject
+      </button>
+      <br>
+      <span *ngIf="newUser.teacherSubjects.length == 0 && teacherCustomSubjects.length == 0"
+        class="text-danger small">{{teacherSubjectsError}}</span>
+      <span *ngIf="newUser.teacherSubjects.length != 0 || teacherCustomSubjects.length != 0"
+        class="text-success small">{{successMessage}}</span>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Custom subject</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <input type="text" class="form-control" [(ngModel)]="teacherCustomSubject">
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-dark" (click)="addCustomSubject()">Add subject</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12 mb-3">
+      <label for="input-age" class="form-label text-white">Choose your preferred student age</label>
+      <select class="form-control choices-multiple" multiple id="input-age"
+        [(ngModel)]="newUser.teacherPreferredStudentsAge">
+        <option *ngFor="let studentAge of studentAges">{{studentAge}}</option>
+      </select>
+      <span *ngIf="newUser.teacherPreferredStudentsAge.length == 0"
+        class="text-danger small">{{teacherPreferredStudentsAgeError}}</span>
+      <span *ngIf="newUser.teacherPreferredStudentsAge.length" class="text-success small">{{successMessage}}</span>
+    </div>
+
+    <div class="col-sm-12 mb-3">
+      <label for="input-wdyhay" class="form-label text-white">Where did you hear about us?</label>
+      <input type="text" class="form-control" [class.is-invalid]="newUser.teacherWhereDidYouHearAboutUs == ''"
+        [class.is-valid]="newUser.teacherWhereDidYouHearAboutUs != ''" id="input-wdyhay"
+        [(ngModel)]="newUser.teacherWhereDidYouHearAboutUs">
+      <div class="invalid-feedback">
+        {{teacherWhereDidYouHearAboutUsError}}
+      </div>
+      <div class="valid-feedback">
+        {{successMessage}}
+      </div>
+    </div>
+
+    <div class="col-sm-12 mb-3">
+      <label for="input-cv" class="form-label text-white">CV</label>
+      <input type="file" class="form-control" accept=".pdf" (change)="onCvSelected($event)" id="input-cv">
+      <span *ngIf="isInvalidCv" class="text-danger small">{{cvError}}</span>
+      <span *ngIf="!isInvalidCv" class="text-success small">{{successMessage}}</span>
+    </div>
+  </ng-container>
   <div class="col-sm-12 text-center mb-3">
     <button class="btn btn-md btn-light" type="submit" (click)="register()">Register</button>
   </div>

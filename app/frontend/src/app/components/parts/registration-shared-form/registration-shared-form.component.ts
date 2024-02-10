@@ -28,13 +28,24 @@ export class RegistrationSharedFormComponent implements OnInit {
   isInvalidImage: boolean = false
   schoolTypeError: string = "Please pick a school type."
   currentGradeError: string = "Please pick a grade."
+  teacherSubjectsError: string = "Please choose at least one subject."
+  teacherPreferredStudentsAgeError: string = "Please choose at least one student age."
+  teacherWhereDidYouHearAboutUsError: string = "Please tell us where you heard about us."
+  cvError: string = "Please upload your CV in pdf format with maximum size of 3 MB."
+  isInvalidCv: boolean = true
 
   profilePictureFormData: FormData = new FormData()
+  cvFormData: FormData = new FormData()
 
   schoolTypes: string[] = ["Primary school", "Gymnasium", "Trade school", "Art school"]
-  primarySchoolGrades: string[] = ["1", "2", "3", "4", "5", "6", "7", "8"];
-  secondarySchoolGrades: string[] = ["1", "2", "3", "4"];
+  primarySchoolGrades: string[] = ["1", "2", "3", "4", "5", "6", "7", "8"]
+  secondarySchoolGrades: string[] = ["1", "2", "3", "4"]
 
+  subjects = ["Mathematics", "Physics", "Chemistry", "Informatics", "Programming", "Serbian Language and Literature", "English Language", "German Language", "Italian Language", "French Language", "Spanish Language", "Latin Language", "Biology", "History", "Geography", "World Around Us"]
+  studentAges = ["Primary School (Grades: 1-4)", "Primary School (Grades: 5-8)", "Secondary School"]
+
+  teacherCustomSubject: string = ""
+  teacherCustomSubjects: string[] = []
 
   constructor(private defaultService: DefaultService, private router: Router) { }
 
@@ -60,12 +71,15 @@ export class RegistrationSharedFormComponent implements OnInit {
   }
 
   setUserType() {
-    this.newUser.userType = "student"
+    if (this.router.routerState.snapshot.url == "/student-registration")
+      this.newUser.userType = "student"
+    else
+      this.newUser.userType = "teacher"
   }
 
   onImageSelected(event: any) {
     let profilePictureFile = event.target.files[0] as File
-    if (!this.isValidImageFormat(profilePictureFile)) {
+    if (!this.isValidFileFormat(profilePictureFile, ["jpg", "png"])) {
       this.isInvalidImage = true
       this.profilePictureError = "Please upload an image in jpg/png format with size ranging from 100x100 px to 300x300 px."
       return
@@ -79,11 +93,26 @@ export class RegistrationSharedFormComponent implements OnInit {
     )
   }
 
-  isValidImageFormat(image: File): boolean {
-    const allowedImageExtensions = ["jpg", "png"]
-    const imageExtension = image.name.split(".").pop()?.toLocaleLowerCase()
-    if (imageExtension == null) return false
-    return allowedImageExtensions.includes(imageExtension)
+  onCvSelected(event: any) {
+    let cvFile = event.target.files[0] as File
+    if (!this.isValidFileFormat(cvFile, ["pdf"])) {
+      this.isInvalidCv = true
+      this.cvError = "Please upload your CV in pdf format with maximum size of 3 MB."
+      return
+    }
+    this.isInvalidCv = false
+    this.cvFormData = new FormData()
+    this.cvFormData.append(
+      "cv",
+      cvFile as Blob,
+      cvFile.name
+    )
+  }
+
+  isValidFileFormat(file: File, allowedFileExtensions: string[]): boolean {
+    const fileExtension = file.name.split(".").pop()?.toLocaleLowerCase()
+    if (fileExtension == null) return false
+    return allowedFileExtensions.includes(fileExtension)
   }
 
   updateSchoolType(schoolType: string) {
@@ -95,53 +124,103 @@ export class RegistrationSharedFormComponent implements OnInit {
     this.newUser.currentGrade = currentGrade
   }
 
+  addCustomSubject() {
+    this.teacherCustomSubjects.push(this.teacherCustomSubject)
+    this.teacherCustomSubject = ""
+  }
+
   register() {
     if (!this.isRegistrationInputValid()) return
+    if (this.newUser.userType == "teacher") this.mergeCustomWithDefaultSubjects()
     this.defaultService.uploadProfilePicture(this.profilePictureFormData).subscribe(
-      (message: Message) => {
-        let responseType = message.content.split("|")[0]
-        let response = message.content.split("|")[1]
-        if (responseType == "ERROR") {
-          this.profilePictureError = response
-          this.isInvalidImage = true
-        } else if (responseType == "FILEPATH") {
-          this.newUser.profilePicturePath = response
-          this.defaultService.register(this.newUser).subscribe(
-            (message: Message) => {
-              if (message.content.includes("username")) {
-                this.usernameError = message.content
-                this.newUser.username = ""
-                return
-              }
-              if (message.content.includes("email")) {
-                this.emailError = message.content
-                this.newUser.email = ""
-                return
-              }
-              this.router.navigate(["public-login"])
+      (imageMessage: Message) => {
+        if (this.didProfilePictureUploadFail(imageMessage)) return
+        if (this.newUser.userType == "teacher") {
+          this.defaultService.uploadCv(this.cvFormData).subscribe(
+            (cvMessage: Message) => {
+              if (this.didCvUploadFail(cvMessage)) return
+              this.tryToRegister()
             }
           )
+        } else {
+          this.tryToRegister()
         }
       }
     )
   }
 
+  mergeCustomWithDefaultSubjects() {
+    this.teacherCustomSubjects.forEach((subject) => this.newUser.teacherSubjects.push(subject))
+  }
+
+  didProfilePictureUploadFail(imageMessage: Message): boolean {
+    let responseType = imageMessage.content.split("|")[0]
+    let response = imageMessage.content.split("|")[1]
+    if (responseType == "ERROR") {
+      this.profilePictureError = response
+      this.isInvalidImage = true
+      return true
+    }
+    this.newUser.profilePicturePath = response
+    return false
+  }
+
+  didCvUploadFail(cvMessage: Message): boolean {
+    let responseType = cvMessage.content.split("|")[0]
+    let response = cvMessage.content.split("|")[1]
+    if (responseType == "ERROR") {
+      this.cvError = response
+      this.isInvalidCv = true
+      return true
+    }
+    this.newUser.cvPath = response
+    return false
+  }
+
+  tryToRegister() {
+    this.defaultService.register(this.newUser).subscribe(
+      (message: Message) => {
+        if (message.content.includes("username")) {
+          this.usernameError = message.content
+          this.newUser.username = ""
+          return
+        }
+        if (message.content.includes("email")) {
+          this.emailError = message.content
+          this.newUser.email = ""
+          return
+        }
+        this.router.navigate(["public-login"])
+      }
+    )
+  }
+
   isRegistrationInputValid(): boolean {
-    if (this.isSomeInputDataMissing()) return false
+    if (this.newUser.userType == "student" && this.isSomeInputDataMissingStudent()) return false
+    if (this.newUser.userType == "teacher" && this.isSomeInputDataMissingTeacher()) return false
     const isPasswordValid = this.isPasswordValid()
     const isPhoneValid = this.isPhoneValid()
     const isEmailValid = this.isEmailValid()
-    return isPasswordValid && isPhoneValid && isEmailValid && !this.isInvalidImage
+    return isPasswordValid && isPhoneValid && isEmailValid && !this.isInvalidImage &&
+      (this.newUser.userType == "teacher" ? !this.isInvalidCv : true)
   }
 
-  isSomeInputDataMissing(): boolean {
+  isSomeInputDataMissingShared(): boolean {
     return this.newUser.username == "" || this.newUser.password == ""
       || this.newUser.userType == "" || this.newUser.securityQuestion == ""
       || this.newUser.securityAnswer == "" || this.newUser.name == ""
       || this.newUser.surname == "" || this.newUser.gender == ""
       || this.newUser.address == "" || this.newUser.phone == ""
-      || this.newUser.email == "" || this.newUser.schoolType == ""
-      || this.newUser.currentGrade == ""
+      || this.newUser.email == ""
+  }
+
+  isSomeInputDataMissingStudent(): boolean {
+    return this.isSomeInputDataMissingShared() || this.newUser.schoolType == "" || this.newUser.currentGrade == ""
+  }
+
+  isSomeInputDataMissingTeacher(): boolean {
+    return this.isSomeInputDataMissingShared() || this.newUser.teacherSubjects.length == 0
+      || this.newUser.teacherPreferredStudentsAge.length == 0 || this.newUser.teacherWhereDidYouHearAboutUs == ""
   }
 
   isEmailValid(): boolean {

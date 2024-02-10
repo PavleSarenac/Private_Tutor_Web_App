@@ -15,11 +15,16 @@ const userSchema = new mongoose.Schema(
         email: String,
         profilePicturePath: String,
         schoolType: String,
-        currentGrade: String
+        currentGrade: String,
+        teacherSubjects: Array,
+        teacherPreferredStudentsAge: Array,
+        teacherWhereDidYouHearAboutUs: String,
+        cvPath: String
     },
     {
         versionKey: false
     }
 );
 
-export default mongoose.model("UserModel", userSchema, "users");
+const UserModel = mongoose.model("UserModel", userSchema, "users")
+export { userSchema, UserModel }

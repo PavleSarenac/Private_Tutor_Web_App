@@ -26,4 +26,8 @@ export class DefaultService {
   register(user: User) {
     return this.httpClient.post<Message>(`${this.backendUrl}/register`, user)
   }
+
+  uploadCv(formData: FormData) {
+    return this.httpClient.post<Message>(`${this.backendUrl}/teacher/uploadCv`, formData)
+  }
 }
