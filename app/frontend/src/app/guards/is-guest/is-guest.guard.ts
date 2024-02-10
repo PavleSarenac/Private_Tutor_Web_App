@@ -6,7 +6,7 @@ export const isGuestGuard: CanActivateFn = (route, state) => {
   let user: any = localStorage.getItem("loggedInUser")
   if (user != null) {
     user = JSON.parse(user)
-    router.navigate([user.userType])
+    router.navigate([user.userType + "-index"])
     return false
   }
   return true

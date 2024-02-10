@@ -15,4 +15,8 @@ defaultRouter.route("/register").post(
     (request, response) => new DefaultController().register(request, response)
 )
 
+defaultRouter.route("/getNumberOfStudents").get(
+    (request, response) => new DefaultController().getNumberOfStudents(request, response)
+)
+
 export default defaultRouter;

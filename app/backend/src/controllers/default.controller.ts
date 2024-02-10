@@ -133,6 +133,14 @@ export class DefaultController {
         ).catch((error) => console.log(error))
     }
 
+    getNumberOfStudents = (request: express.Request, response: express.Response) => {
+        UserModel.find({ userType: "student" }).then(
+            (students: any[]) => {
+                response.json({ content: students.length.toString() })
+            }
+        ).catch((error) => console.log(error))
+    }
+
     getDateTimeString(): string {
         let currentDateTimeInMillis = Date.now()
         currentDateTimeInMillis +=

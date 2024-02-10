@@ -9,7 +9,7 @@ export const isTeacherGuard: CanActivateFn = (route, state) => {
     if (user.userType == "teacher") {
       return true
     }
-    router.navigate([user.userType])
+    router.navigate([user.userType + "-index"])
     return false
   }
   router.navigate([""])

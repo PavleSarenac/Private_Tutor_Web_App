@@ -9,7 +9,7 @@ export const isAdminGuard: CanActivateFn = (route, state) => {
     if (user.userType == "admin") {
       return true
     }
-    router.navigate([user.userType])
+    router.navigate([user.userType + "-index"])
     return false
   }
   router.navigate([""])

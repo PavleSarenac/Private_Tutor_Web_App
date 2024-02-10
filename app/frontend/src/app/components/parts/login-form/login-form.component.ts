@@ -43,13 +43,18 @@ export class LoginFormComponent implements OnInit {
           this.password = ""
           return
         }
-        localStorage.setItem("loggedInUser", JSON.stringify(user))
+        localStorage.setItem("loggedInUser", JSON.stringify(
+          {
+            username: user.username,
+            userType: user.userType
+          }
+        ))
         if (user.userType == "student") {
-          this.router.navigate(["student"])
+          this.router.navigate(["student-index"])
         } else if (user.userType == "teacher") {
-          this.router.navigate(["teacher"])
+          this.router.navigate(["teacher-index"])
         } else {
-          this.router.navigate(["admin"])
+          this.router.navigate(["admin-index"])
         }
       }
     )

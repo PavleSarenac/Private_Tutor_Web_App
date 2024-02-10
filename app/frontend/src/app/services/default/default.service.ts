@@ -26,4 +26,8 @@ export class DefaultService {
   register(user: User) {
     return this.httpClient.post<Message>(`${this.backendUrl}/register`, user)
   }
+
+  getNumberOfStudents() {
+    return this.httpClient.get<Message>(`${this.backendUrl}/getNumberOfStudents`)
+  }
 }
