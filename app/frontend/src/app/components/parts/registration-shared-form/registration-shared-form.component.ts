@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Message } from 'src/app/models/message.model';
 import { User } from 'src/app/models/user.model';
 import { DefaultService } from 'src/app/services/default/default.service';
@@ -35,7 +36,7 @@ export class RegistrationSharedFormComponent implements OnInit {
   secondarySchoolGrades: string[] = ["1", "2", "3", "4"];
 
 
-  constructor(private defaultService: DefaultService) { }
+  constructor(private defaultService: DefaultService, private router: Router) { }
 
   ngOnInit(): void {
     this.setDefaultProfilePicture()
@@ -117,6 +118,7 @@ export class RegistrationSharedFormComponent implements OnInit {
                 this.newUser.email = ""
                 return
               }
+              this.router.navigate(["public-login"])
             }
           )
         }
