@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Message } from 'src/app/models/message.model';
 import { User } from 'src/app/models/user.model';
 import { DefaultService } from 'src/app/services/default/default.service';
+import { TeacherService } from 'src/app/services/teacher/teacher.service';
 
 @Component({
   selector: 'app-registration-shared-form',
@@ -47,7 +48,11 @@ export class RegistrationSharedFormComponent implements OnInit {
   teacherCustomSubject: string = ""
   teacherCustomSubjects: string[] = []
 
-  constructor(private defaultService: DefaultService, private router: Router) { }
+  constructor(
+    private defaultService: DefaultService,
+    private teacherService: TeacherService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.setDefaultProfilePicture()
@@ -136,7 +141,7 @@ export class RegistrationSharedFormComponent implements OnInit {
       (imageMessage: Message) => {
         if (this.didProfilePictureUploadFail(imageMessage)) return
         if (this.newUser.userType == "teacher") {
-          this.defaultService.uploadCv(this.cvFormData).subscribe(
+          this.teacherService.uploadCv(this.cvFormData).subscribe(
             (cvMessage: Message) => {
               if (this.didCvUploadFail(cvMessage)) return
               this.tryToRegister()
