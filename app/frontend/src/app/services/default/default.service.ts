@@ -30,4 +30,24 @@ export class DefaultService {
   getNumberOfStudents() {
     return this.httpClient.get<Message>(`${this.backendUrl}/getNumberOfStudents`)
   }
+
+  checkOldPassword(username: string, oldPassword: string) {
+    const body = {
+      username: username,
+      oldPassword: oldPassword
+    }
+    return this.httpClient.post<User>(`${this.backendUrl}/checkOldPassword`, body)
+  }
+
+  changePassword(username: string, newPassword: string) {
+    const body = {
+      username: username,
+      newPassword: newPassword
+    }
+    return this.httpClient.post<User>(`${this.backendUrl}/changePassword`, body)
+  }
+
+  getUser(username: string) {
+    return this.httpClient.get<User>(`${this.backendUrl}/getUser?username=${username}`)
+  }
 }

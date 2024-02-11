@@ -12,6 +12,7 @@ import { StudentRegistrationComponent } from './components/pages/guest/student-r
 import { StudentIndexComponent } from './components/pages/user/student/student-index/student-index.component';
 import { TeacherIndexComponent } from './components/pages/user/teacher/teacher-index/teacher-index.component';
 import { AdminIndexComponent } from './components/pages/user/admin/admin-index/admin-index.component';
+import { ChangePasswordComponent } from './components/pages/guest/change-password/change-password.component';
 
 const routes: Routes = [
   { path: "", component: IndexComponent, canActivate: [isGuestGuard] },
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: "admin-index", component: AdminIndexComponent, canActivate: [isAdminGuard] },
   { path: "teacher-registration", component: TeacherRegistrationComponent, canActivate: [isGuestGuard] },
   { path: "student-registration", component: StudentRegistrationComponent, canActivate: [isGuestGuard] },
+  { path: "change-password", component: ChangePasswordComponent, canActivate: [isGuestGuard] },
   { path: "**", redirectTo: "" }
 ];
 

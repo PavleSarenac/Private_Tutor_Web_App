@@ -17,6 +17,7 @@ import { RegistrationSharedFormComponent } from './components/parts/registration
 import { AdminIndexComponent } from './components/pages/user/admin/admin-index/admin-index.component';
 import { StudentIndexComponent } from './components/pages/user/student/student-index/student-index.component';
 import { TeacherIndexComponent } from './components/pages/user/teacher/teacher-index/teacher-index.component';
+import { ChangePasswordComponent } from './components/pages/guest/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { TeacherIndexComponent } from './components/pages/user/teacher/teacher-i
     RegistrationSharedFormComponent,
     AdminIndexComponent,
     StudentIndexComponent,
-    TeacherIndexComponent
+    TeacherIndexComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,

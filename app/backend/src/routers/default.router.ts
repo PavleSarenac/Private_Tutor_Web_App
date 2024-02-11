@@ -19,4 +19,16 @@ defaultRouter.route("/getNumberOfStudents").get(
     (request, response) => new DefaultController().getNumberOfStudents(request, response)
 )
 
+defaultRouter.route("/checkOldPassword").post(
+    (request, response) => new DefaultController().checkOldPassword(request, response)
+)
+
+defaultRouter.route("/changePassword").post(
+    (request, response) => new DefaultController().changePassword(request, response)
+)
+
+defaultRouter.route("/getUser").get(
+    (request, response) => new DefaultController().getUser(request, response)
+)
+
 export default defaultRouter;

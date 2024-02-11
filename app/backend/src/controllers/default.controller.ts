@@ -141,6 +141,42 @@ export class DefaultController {
         ).catch((error) => console.log(error))
     }
 
+    checkOldPassword = (request: express.Request, response: express.Response) => {
+        UserModel.findOne(
+            {
+                username: request.body.username
+            }
+        ).then(
+            (user) => {
+                if (user != null && bcrypt.compareSync(request.body.oldPassword, user.password!)) {
+                    response.json(user)
+                } else {
+                    response.json(null)
+                }
+            }
+        ).catch((error) => console.log(error))
+    }
+
+    changePassword = (request: express.Request, response: express.Response) => {
+        const hashedPassword = bcrypt.hashSync(request.body.newPassword, this.saltRounds)
+        UserModel.updateOne(
+            {
+                username: request.body.username
+            },
+            {
+                password: hashedPassword
+            }
+        ).then(
+            () => response.json({ content: "ok" })
+        ).catch((error) => console.log(error))
+    }
+
+    getUser = (request: express.Request, response: express.Response) => {
+        UserModel.findOne({ username: request.query.username }).then(
+            (user) => response.json(user)
+        ).catch((error) => console.log(error))
+    }
+
     getDateTimeString(): string {
         let currentDateTimeInMillis = Date.now()
         currentDateTimeInMillis +=
