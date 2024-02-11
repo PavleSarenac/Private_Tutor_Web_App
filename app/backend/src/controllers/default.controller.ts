@@ -177,6 +177,20 @@ export class DefaultController {
         ).catch((error) => console.log(error))
     }
 
+    deleteProfilePicture = (request: express.Request, response: express.Response) => {
+        fileSystem.unlinkSync(request.body.profilePicturePath)
+        response.json({ content: "ok" })
+    }
+
+    getProfilePicture = (request: express.Request, response: express.Response) => {
+        let filepath = request.body.filepath
+        const profilePictureFile = fileSystem.readFileSync(filepath)
+        const fileExtension = filepath.split(".").pop().toLocaleLowerCase()
+        const contentType = "image/" + fileExtension
+        response.contentType(contentType)
+        response.send(profilePictureFile)
+    }
+
     getDateTimeString(): string {
         let currentDateTimeInMillis = Date.now()
         currentDateTimeInMillis +=

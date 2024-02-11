@@ -23,6 +23,13 @@ export class DefaultService {
     return this.httpClient.post<Message>(`${this.backendUrl}/uploadProfilePicture`, formData)
   }
 
+  deleteProfilePicture(profilePicturePath: string) {
+    const body = {
+      profilePicturePath: profilePicturePath
+    }
+    return this.httpClient.post<Message>(`${this.backendUrl}/deleteProfilePicture`, body)
+  }
+
   register(user: User) {
     return this.httpClient.post<Message>(`${this.backendUrl}/register`, user)
   }
@@ -49,5 +56,12 @@ export class DefaultService {
 
   getUser(username: string) {
     return this.httpClient.get<User>(`${this.backendUrl}/getUser?username=${username}`)
+  }
+
+  getProfilePicture(filepath: string) {
+    const body = {
+      filepath: filepath
+    }
+    return this.httpClient.post(`${this.backendUrl}/getProfilePicture`, body, { responseType: "blob" })
   }
 }

@@ -31,4 +31,12 @@ defaultRouter.route("/getUser").get(
     (request, response) => new DefaultController().getUser(request, response)
 )
 
+defaultRouter.route("/deleteProfilePicture").post(
+    (request, response) => new DefaultController().deleteProfilePicture(request, response)
+)
+
+defaultRouter.route("/getProfilePicture").post(
+    (request, response) => new DefaultController().getProfilePicture(request, response)
+)
+
 export default defaultRouter;

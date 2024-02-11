@@ -13,7 +13,8 @@ export class StudentController {
                 email: student.email,
                 phone: student.phone,
                 schoolType: student.schoolType,
-                currentGrade: student.currentGrade
+                currentGrade: student.currentGrade,
+                profilePicturePath: student.profilePicturePath
             }
         ).then(
             () => response.json({ content: "ok" })

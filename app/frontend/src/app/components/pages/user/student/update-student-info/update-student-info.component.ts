@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Message } from 'src/app/models/message.model';
 import { User } from 'src/app/models/user.model';
 import { DefaultService } from 'src/app/services/default/default.service';
 import { StudentService } from 'src/app/services/student/student.service';
@@ -53,7 +54,35 @@ export class UpdateStudentInfoComponent {
           this.router.navigate(["student-index"])
         }
       )
+    } else {
+      let oldProfilePicturePath = this.user.profilePicturePath
+      this.defaultService.uploadProfilePicture(this.profilePictureFormData!).subscribe(
+        (imageMessage: Message) => {
+          if (this.didProfilePictureUploadFail(imageMessage)) return
+          this.defaultService.deleteProfilePicture(oldProfilePicturePath).subscribe(
+            () => {
+              this.studentService.updateStudentInfo(this.user).subscribe(
+                () => {
+                  this.router.navigate(["student-index"])
+                }
+              )
+            }
+          )
+        }
+      )
     }
+  }
+
+  didProfilePictureUploadFail(imageMessage: Message): boolean {
+    let responseType = imageMessage.content.split("|")[0]
+    let response = imageMessage.content.split("|")[1]
+    if (responseType == "ERROR") {
+      this.profilePictureError = response
+      this.isInvalidImage = true
+      return true
+    }
+    this.user.profilePicturePath = response
+    return false
   }
 
   isEverythingEmpty(): boolean {
