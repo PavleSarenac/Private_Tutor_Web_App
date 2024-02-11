@@ -18,6 +18,8 @@ import { AdminIndexComponent } from './components/pages/user/admin/admin-index/a
 import { StudentIndexComponent } from './components/pages/user/student/student-index/student-index.component';
 import { TeacherIndexComponent } from './components/pages/user/teacher/teacher-index/teacher-index.component';
 import { ChangePasswordComponent } from './components/pages/guest/change-password/change-password.component';
+import { StudentHeaderComponent } from './components/parts/student-header/student-header.component';
+import { UpdateStudentInfoComponent } from './components/pages/user/student/update-student-info/update-student-info.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { ChangePasswordComponent } from './components/pages/guest/change-passwor
     AdminIndexComponent,
     StudentIndexComponent,
     TeacherIndexComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    StudentHeaderComponent,
+    UpdateStudentInfoComponent
   ],
   imports: [
     BrowserModule,

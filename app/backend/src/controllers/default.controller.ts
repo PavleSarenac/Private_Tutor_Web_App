@@ -4,7 +4,7 @@ import multer from "multer"
 import sizeOf from "image-size"
 import * as fileSystem from "fs"
 import * as bcrypt from "bcrypt"
-import PendingModel from "../models/pending.model"
+import PendingTeachersModel from "../models/pending-teachers.model"
 
 const NUMBER_OF_MILLISECONDS_IN_ONE_SECOND = 1000
 const NUMBER_OF_SECONDS_IN_ONE_MINUTE = 60
@@ -101,21 +101,21 @@ export class DefaultController {
                                         () => response.json({ content: "ok" })
                                     ).catch((error) => console.log(error))
                                 } else {
-                                    PendingModel.findOne({ username: newUser.username }).then(
+                                    PendingTeachersModel.findOne({ username: newUser.username }).then(
                                         (user) => {
                                             if (user != null) {
                                                 fileSystem.unlinkSync(newUser.profilePicturePath)
                                                 fileSystem.unlinkSync(newUser.cvPath)
                                                 response.json({ content: "This username is already taken." })
                                             } else {
-                                                PendingModel.findOne({ email: newUser.email }).then(
+                                                PendingTeachersModel.findOne({ email: newUser.email }).then(
                                                     (user) => {
                                                         if (user != null) {
                                                             fileSystem.unlinkSync(newUser.profilePicturePath)
                                                             fileSystem.unlinkSync(newUser.cvPath)
                                                             response.json({ content: "This email is already taken." })
                                                         } else {
-                                                            new PendingModel(newUser).save().then(
+                                                            new PendingTeachersModel(newUser).save().then(
                                                                 () => response.json({ content: "ok" })
                                                             ).catch((error) => console.log(error))
                                                         }
