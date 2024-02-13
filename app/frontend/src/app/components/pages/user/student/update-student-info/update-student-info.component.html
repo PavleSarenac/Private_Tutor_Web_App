@@ -36,7 +36,7 @@
           <span *ngIf="newSchoolType != ''">{{newSchoolType}}</span>
         </button>
         <ul class="dropdown-menu">
-          <li *ngFor="let schoolType of schoolTypes">
+          <li *ngFor="let schoolType of data.schoolTypes">
             <button class="btn dropdown-item" (click)="updateSchoolType(schoolType)">{{schoolType}}</button>
             <hr *ngIf="schoolType != 'Art school'" class="dropdown-divider">
           </li>
@@ -51,8 +51,8 @@
           <span *ngIf="newCurrentGrade != ''">{{newCurrentGrade}}</span>
         </button>
         <ul class="dropdown-menu">
-          <ng-container *ngIf="newSchoolType == schoolTypes[0] || newSchoolType == ''">
-            <li *ngFor="let primarySchoolGrade of primarySchoolGrades">
+          <ng-container *ngIf="newSchoolType == data.schoolTypes[0] || newSchoolType == ''">
+            <li *ngFor="let primarySchoolGrade of data.primarySchoolGrades">
               <button class="dropdown-item" (click)="updateCurrentGrade(primarySchoolGrade)">
                 {{primarySchoolGrade}}
               </button>
@@ -60,8 +60,8 @@
             </li>
           </ng-container>
 
-          <ng-container *ngIf="newSchoolType !== schoolTypes[0] && newSchoolType !== ''">
-            <li *ngFor="let secondarySchoolGrade of secondarySchoolGrades">
+          <ng-container *ngIf="newSchoolType !== data.schoolTypes[0] && newSchoolType !== ''">
+            <li *ngFor="let secondarySchoolGrade of data.secondarySchoolGrades">
               <button class="dropdown-item" (click)="updateCurrentGrade(secondarySchoolGrade)">
                 {{secondarySchoolGrade}}
               </button>

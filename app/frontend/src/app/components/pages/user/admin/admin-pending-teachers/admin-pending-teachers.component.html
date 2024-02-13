@@ -2,7 +2,7 @@
   <app-admin-header></app-admin-header>
   <div class="row main" *ngIf="shouldLoadContent && !doActiveTeachersExist">
     <div class="alert alert-dark" role="alert">
-      <b>There are no active teachers.</b>
+      <b>There are no pending teachers.</b>
     </div>
   </div>
   <div class="row row-cols-1 row-cols-md-3 g-4 main" *ngIf="shouldLoadContent && doActiveTeachersExist">
@@ -32,12 +32,13 @@
               (click)="downloadPdf(data.teacher)">Download PDF</button></li>
         </ul>
         <div class="card-footer">
-          <b class="fst-italic">Update info: &nbsp;</b>
-          <button class="btn btn-dark" (click)="updateTeacherInfo(data.teacher.username)">Update</button>
-        </div>
-        <div class="card-footer">
-          <b class="fst-italic">Deactivate account: &nbsp;</b>
-          <button class="btn btn-dark" (click)="banTeacherAccount(data.teacher.username)">Deactivate</button>
+          <b class="fst-italic">Decision: &nbsp;</b>
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-dark"
+              (click)="approveTeacherRegistration(data.teacher.username)">Accept</button>
+            <button type="button" class="btn btn-outline-dark"
+              (click)="banTeacherAccount(data.teacher.username)">Reject</button>
+          </div>
         </div>
       </div>
       <div class="modal fade" [id]="data.teacher.username + '-subjects'" tabindex="-1"
@@ -45,9 +46,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5" [id]="data.teacher.username + '-subjects'">
-                {{data.teacher.name}} {{data.teacher.surname}}'s subjects
-              </h1>
+              <h1 class="modal-title fs-5" [id]="data.teacher.username + '-subjects'">Subjects</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -61,9 +60,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5" [id]="data.teacher.username + '-studentAges'">
-                {{data.teacher.name}} {{data.teacher.surname}}'s student ages
-              </h1>
+              <h1 class="modal-title fs-5" [id]="data.teacher.username + '-studentAges'">Student ages</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

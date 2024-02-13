@@ -1,6 +1,11 @@
 <div class="container-fluid vh-100 overflow-auto">
   <app-admin-header></app-admin-header>
-  <div class="row row-cols-1 row-cols-md-3 g-4 main">
+  <div class="row main" *ngIf="shouldLoadContent && !doActiveStudentsExist">
+    <div class="alert alert-dark" role="alert">
+      <b>There are no active students.</b>
+    </div>
+  </div>
+  <div class="row row-cols-1 row-cols-md-3 g-4 main" *ngIf="shouldLoadContent && doActiveStudentsExist">
     <div class="col" *ngFor="let data of allStudentsData">
       <div class="card h-100">
         <img [src]="data.profilePictureUrl" class="card-img-top img-fluid" alt="Profile Picture">

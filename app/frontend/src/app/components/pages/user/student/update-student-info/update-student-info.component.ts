@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Data } from 'src/app/models/data.model';
 import { Message } from 'src/app/models/message.model';
 import { User } from 'src/app/models/user.model';
 import { DefaultService } from 'src/app/services/default/default.service';
@@ -21,10 +22,6 @@ export class UpdateStudentInfoComponent {
   newSchoolType: string = ""
   newCurrentGrade: string = ""
 
-  schoolTypes: string[] = ["Primary school", "Gymnasium", "Trade school", "Art school"]
-  primarySchoolGrades: string[] = ["1", "2", "3", "4", "5", "6", "7", "8"]
-  secondarySchoolGrades: string[] = ["1", "2", "3", "4"]
-
   isInvalidImage: boolean = false
   profilePictureFormData: FormData | null = null
 
@@ -33,6 +30,8 @@ export class UpdateStudentInfoComponent {
   newPhoneError: string = ""
   newCurrentGradeError: string = ""
 
+  data: Data = new Data()
+
   constructor(
     private defaultService: DefaultService,
     private studentService: StudentService,
@@ -40,6 +39,11 @@ export class UpdateStudentInfoComponent {
   ) { }
 
   ngOnInit(): void {
+    this.defaultService.getData().subscribe(
+      (data: Data[]) => {
+        this.data = data[0]
+      }
+    )
     this.defaultService.getUser(JSON.parse(localStorage.getItem("loggedInUser")!).username).subscribe(
       (user) => {
         this.user = user
@@ -163,22 +167,22 @@ export class UpdateStudentInfoComponent {
     if (this.newSchoolType == "" && this.newCurrentGrade == "") return true
     let areValid = true
     // Student can't go back to primary school from secondary school.
-    if (this.newSchoolType != "" && this.newSchoolType == this.schoolTypes[0] && this.newSchoolType != this.user.schoolType)
+    if (this.newSchoolType != "" && this.newSchoolType == this.data.schoolTypes[0] && this.newSchoolType != this.user.schoolType)
       areValid = false
     if (this.newCurrentGrade != "") {
       // Student that is in secondary school can't be in grades 5-8.
-      if (this.newSchoolType == "" && this.user.schoolType != this.schoolTypes[0] && this.newCurrentGrade >= "4")
+      if (this.newSchoolType == "" && this.user.schoolType != this.data.schoolTypes[0] && this.newCurrentGrade >= "4")
         areValid = false
       // Student that doesn't want to change his school, just his current grade, can't go backwards regarding his current grade.
       if (this.newSchoolType == "" && this.newCurrentGrade < this.user.currentGrade)
         areValid = false
       // Student that wants to still be in primary school can't go backwards regarding his current grade.
-      if (this.newSchoolType != "" && this.newSchoolType == this.schoolTypes[0]
-        && this.user.schoolType == this.schoolTypes[0] && this.newCurrentGrade <= this.user.currentGrade)
+      if (this.newSchoolType != "" && this.newSchoolType == this.data.schoolTypes[0]
+        && this.user.schoolType == this.data.schoolTypes[0] && this.newCurrentGrade <= this.user.currentGrade)
         areValid = false
       // Student that wants to still be in secondary school can't go backwards regarding his current grade.
-      if (this.newSchoolType != "" && this.newSchoolType != this.schoolTypes[0]
-        && this.user.schoolType != this.schoolTypes[0] && this.newCurrentGrade <= this.user.currentGrade)
+      if (this.newSchoolType != "" && this.newSchoolType != this.data.schoolTypes[0]
+        && this.user.schoolType != this.data.schoolTypes[0] && this.newCurrentGrade <= this.user.currentGrade)
         areValid = false
     }
     if (areValid) {

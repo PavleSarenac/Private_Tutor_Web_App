@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Data } from 'src/app/models/data.model';
 import { Message } from 'src/app/models/message.model';
 import { User } from 'src/app/models/user.model';
 
@@ -38,12 +39,20 @@ export class DefaultService {
     return this.httpClient.get<Message>(`${this.backendUrl}/getNumberOfStudents`)
   }
 
+  getNumberOfTeachers() {
+    return this.httpClient.get<Message>(`${this.backendUrl}/getNumberOfTeachers`)
+  }
+
   checkOldPassword(username: string, oldPassword: string) {
     const body = {
       username: username,
       oldPassword: oldPassword
     }
     return this.httpClient.post<User>(`${this.backendUrl}/checkOldPassword`, body)
+  }
+
+  getData() {
+    return this.httpClient.get<Data[]>(`${this.backendUrl}/getData`)
   }
 
   changePassword(username: string, newPassword: string) {

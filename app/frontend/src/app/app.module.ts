@@ -23,6 +23,8 @@ import { UpdateStudentInfoComponent } from './components/pages/user/student/upda
 import { AdminHeaderComponent } from './components/parts/admin-header/admin-header.component';
 import { AdminAllStudentsComponent } from './components/pages/user/admin/admin-all-students/admin-all-students.component';
 import { AdminAllTeachersComponent } from './components/pages/user/admin/admin-all-teachers/admin-all-teachers.component';
+import { AdminPendingTeachersComponent } from './components/pages/user/admin/admin-pending-teachers/admin-pending-teachers.component';
+import { AdminUpdateTeacherInfoComponent } from './components/pages/user/admin/admin-update-teacher-info/admin-update-teacher-info.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,9 @@ import { AdminAllTeachersComponent } from './components/pages/user/admin/admin-a
     UpdateStudentInfoComponent,
     AdminHeaderComponent,
     AdminAllStudentsComponent,
-    AdminAllTeachersComponent
+    AdminAllTeachersComponent,
+    AdminPendingTeachersComponent,
+    AdminUpdateTeacherInfoComponent
   ],
   imports: [
     BrowserModule,

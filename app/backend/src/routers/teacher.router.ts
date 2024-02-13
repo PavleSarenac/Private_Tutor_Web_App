@@ -7,4 +7,16 @@ teacherRouter.route("/uploadCv").post(
     (request, response) => new TeacherController().uploadCv(request, response)
 )
 
-export default teacherRouter;
+teacherRouter.route("/getAllActiveTeachers").get(
+    (request, response) => new TeacherController().getAllActiveTeachers(request, response)
+)
+
+teacherRouter.route("/getAllPendingTeachers").get(
+    (request, response) => new TeacherController().getAllPendingTeachers(request, response)
+)
+
+teacherRouter.route("/updateTeacherInfo").post(
+    (request, response) => new TeacherController().updateTeacherInfo(request, response)
+)
+
+export default teacherRouter

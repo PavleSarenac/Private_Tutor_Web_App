@@ -2,6 +2,7 @@ import express from "express"
 import { DefaultController } from "./default.controller"
 import multer from "multer"
 import * as fileSystem from "fs"
+import { UserModel } from "../models/user.model"
 
 const NUMBER_OF_BYTES_IN_ONE_KILOBYTE = 1024
 const NUMBER_OF_KILOBYTES_IN_ONE_MEGABYTE = 1024
@@ -43,5 +44,38 @@ export class TeacherController {
                 }
             }
         })
+    }
+
+    getAllActiveTeachers = (request: express.Request, response: express.Response) => {
+        UserModel.find({ userType: "teacher", isAccountActive: true, isAccountPending: false, isAccountBanned: false })
+            .then((teachers) => response.json(teachers))
+            .catch((error) => console.log(error))
+    }
+
+    getAllPendingTeachers = (request: express.Request, response: express.Response) => {
+        UserModel.find({ userType: "teacher", isAccountActive: false, isAccountPending: true, isAccountBanned: false })
+            .then((teachers) => response.json(teachers))
+            .catch((error) => console.log(error))
+    }
+
+    updateTeacherInfo = (request: express.Request, response: express.Response) => {
+        let teacher = request.body
+        UserModel.updateOne(
+            {
+                username: teacher.username
+            },
+            {
+                name: teacher.name,
+                surname: teacher.surname,
+                address: teacher.address,
+                phone: teacher.phone,
+                email: teacher.email,
+                profilePicturePath: teacher.profilePicturePath,
+                teacherSubjects: teacher.teacherSubjects,
+                teacherPreferredStudentsAge: teacher.teacherPreferredStudentsAge
+            }
+        ).then(
+            () => response.json({ content: "ok" })
+        ).catch((error) => console.log(error))
     }
 }

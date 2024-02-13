@@ -12,16 +12,28 @@ import { catchError, takeUntil } from 'rxjs/operators';
 })
 export class AdminAllStudentsComponent implements OnInit {
   allStudentsData: any[] = []
+  shouldLoadContent: boolean = false
+  doActiveStudentsExist: boolean = false
 
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private studentService: StudentService, private defaultService: DefaultService) { }
 
   ngOnInit(): void {
+    this.fetchTeachersData()
+  }
+
+  fetchTeachersData() {
     this.studentService.getAllStudents()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         (students: User[]) => {
+          if (students.length > 0) {
+            this.doActiveStudentsExist = true
+          } else {
+            this.doActiveStudentsExist = false
+          }
+          this.shouldLoadContent = true
           const requests = students.map((student: User) =>
             this.defaultService.getProfilePicture(student.profilePicturePath)
               .pipe(

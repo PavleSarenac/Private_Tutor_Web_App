@@ -4,6 +4,7 @@ import multer from "multer"
 import sizeOf from "image-size"
 import * as fileSystem from "fs"
 import * as bcrypt from "bcrypt"
+import DataModel from "../models/data.model"
 
 const NUMBER_OF_MILLISECONDS_IN_ONE_SECOND = 1000
 const NUMBER_OF_SECONDS_IN_ONE_MINUTE = 60
@@ -121,6 +122,14 @@ export class DefaultController {
         ).catch((error) => console.log(error))
     }
 
+    getNumberOfTeachers = (request: express.Request, response: express.Response) => {
+        UserModel.find({ userType: "teacher", isAccountActive: true, isAccountPending: false, isAccountBanned: false }).then(
+            (teachers: any[]) => {
+                response.json({ content: teachers.length.toString() })
+            }
+        ).catch((error) => console.log(error))
+    }
+
     checkOldPassword = (request: express.Request, response: express.Response) => {
         UserModel.findOne(
             {
@@ -176,6 +185,10 @@ export class DefaultController {
         UserModel.findOne({ email: email })
             .then((user) => response.json(user))
             .catch((error) => console.log(error))
+    }
+
+    getData = (request: express.Request, response: express.Response) => {
+        DataModel.find({}).then((data: any[]) => response.json(data)).catch((error) => console.log(error))
     }
 
     getDateTimeString(): string {

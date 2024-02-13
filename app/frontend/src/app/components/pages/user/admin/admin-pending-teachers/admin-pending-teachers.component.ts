@@ -5,14 +5,13 @@ import { forkJoin, of, Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 import { TeacherService } from 'src/app/services/teacher/teacher.service';
 import { AdminService } from 'src/app/services/admin/admin.service';
-import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-admin-all-teachers',
-  templateUrl: './admin-all-teachers.component.html',
-  styleUrls: ['./admin-all-teachers.component.css', '../../../../../../styles.css']
+  selector: 'app-admin-pending-teachers',
+  templateUrl: './admin-pending-teachers.component.html',
+  styleUrls: ['./admin-pending-teachers.component.css', '../../../../../../styles.css']
 })
-export class AdminAllTeachersComponent implements OnInit {
+export class AdminPendingTeachersComponent implements OnInit {
   allTeachersData: any[] = []
   shouldLoadContent: boolean = false
   doActiveTeachersExist: boolean = false
@@ -22,8 +21,7 @@ export class AdminAllTeachersComponent implements OnInit {
   constructor(
     private teacherService: TeacherService,
     private defaultService: DefaultService,
-    private adminService: AdminService,
-    private router: Router
+    private adminService: AdminService
   ) { }
 
   ngOnInit(): void {
@@ -31,7 +29,7 @@ export class AdminAllTeachersComponent implements OnInit {
   }
 
   fetchTeachersData() {
-    this.teacherService.getAllActiveTeachers()
+    this.teacherService.getAllPendingTeachers()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         (teachers: User[]) => {
@@ -102,11 +100,6 @@ export class AdminAllTeachersComponent implements OnInit {
         this.fetchTeachersData()
       }
     )
-  }
-
-  updateTeacherInfo(username: string) {
-    localStorage.setItem("teacherToBeUpdatedUsername", username)
-    this.router.navigate(["admin-update-teacher-info"])
   }
 
   banTeacherAccount(username: string) {

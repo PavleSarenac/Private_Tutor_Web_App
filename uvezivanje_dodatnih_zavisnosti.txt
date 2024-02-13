@@ -5,7 +5,8 @@ Uputstvo za preuzimanje:
 	1) otvoriti u VS-Code terminal (command prompt)
 	2) pozicionirati se u frontend folder
 	3) izvrsiti komandu: npm install bootstrap bootstrap-icons
-	4) u frontend/angular.json fajlu izmeniti:
+	4) izvrsiti komandu: npm install @types/bootstrap
+	5) u frontend/angular.json fajlu izmeniti:
 		* "projects" -> "frontend" -> "architect" -> "build" -> "options" -> "styles" treba da izgleda ovako:
 			"styles": [
               "src/styles.css",
@@ -14,7 +15,7 @@ Uputstvo za preuzimanje:
             ]
 		* "projects" -> "frontend" -> "architect" -> "build" -> "options" -> "scripts" treba da izgleda ovako:
 			"scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.js"
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ]
 ==========================================================================================================================
 2) multer (objekat na backend-u koji omogucava cuvanje fajlova na serveru):

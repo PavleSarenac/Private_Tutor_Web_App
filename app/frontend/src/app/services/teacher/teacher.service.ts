@@ -15,7 +15,15 @@ export class TeacherService {
     return this.httpClient.post<Message>(`${this.backendUrl}/uploadCv`, formData)
   }
 
-  getAllTeachers() {
-    return this.httpClient.get<User[]>(`${this.backendUrl}/getAllTeachers`)
+  getAllActiveTeachers() {
+    return this.httpClient.get<User[]>(`${this.backendUrl}/getAllActiveTeachers`)
+  }
+
+  getAllPendingTeachers() {
+    return this.httpClient.get<User[]>(`${this.backendUrl}/getAllPendingTeachers`)
+  }
+
+  updateTeacherInfo(teacher: User) {
+    return this.httpClient.post<Message>(`${this.backendUrl}/updateTeacherInfo`, teacher)
   }
 }

@@ -15,6 +15,10 @@ defaultRouter.route("/register").post(
     (request, response) => new DefaultController().register(request, response)
 )
 
+defaultRouter.route("/getNumberOfTeachers").get(
+    (request, response) => new DefaultController().getNumberOfTeachers(request, response)
+)
+
 defaultRouter.route("/getNumberOfStudents").get(
     (request, response) => new DefaultController().getNumberOfStudents(request, response)
 )
@@ -29,6 +33,10 @@ defaultRouter.route("/changePassword").post(
 
 defaultRouter.route("/getUser").get(
     (request, response) => new DefaultController().getUser(request, response)
+)
+
+defaultRouter.route("/getData").get(
+    (request, response) => new DefaultController().getData(request, response)
 )
 
 defaultRouter.route("/deleteProfilePicture").post(

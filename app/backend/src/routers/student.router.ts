@@ -11,4 +11,4 @@ studentRouter.route("/getAllStudents").get(
     (request, response) => new StudentController().getAllStudents(request, response)
 )
 
-export default studentRouter;
+export default studentRouter

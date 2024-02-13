@@ -8,7 +8,8 @@ import { DefaultService } from 'src/app/services/default/default.service';
   styleUrls: ['./index.component.css', '../../../../../styles.css']
 })
 export class IndexComponent implements OnInit {
-  numberOfStudents: string = "";
+  numberOfStudents: string = ""
+  numberOfTeachers: string = ""
 
   constructor(private defaultService: DefaultService) { }
 
@@ -16,6 +17,11 @@ export class IndexComponent implements OnInit {
     this.defaultService.getNumberOfStudents().subscribe(
       (message: Message) => {
         this.numberOfStudents = message.content
+      }
+    )
+    this.defaultService.getNumberOfTeachers().subscribe(
+      (message: Message) => {
+        this.numberOfTeachers = message.content
       }
     )
   }
