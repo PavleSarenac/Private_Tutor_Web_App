@@ -1,6 +1,7 @@
 import express from "express"
 import * as fileSystem from "fs"
 import { UserModel } from "../models/user.model"
+import DataModel from "../models/data.model"
 
 export class AdminController {
     downloadPdf = (request: express.Request, response: express.Response) => {
@@ -12,16 +13,35 @@ export class AdminController {
     }
 
     approveTeacherRegistration = (request: express.Request, response: express.Response) => {
-        let teacherUsername = request.query.teacherUsername
+        let teacher = request.body
         UserModel.updateOne(
-            { username: teacherUsername },
+            { username: teacher.username },
             {
                 isAccountActive: true,
                 isAccountPending: false,
                 isAccountBanned: false
             }
         ).then(
-            () => response.json({ content: "ok" })
+            () => {
+                DataModel.find({}).then(
+                    (data: any[]) => {
+                        teacher.teacherSubjects.forEach(
+                            (subject: any) => {
+                                if (!data[0].subjects.includes(subject)) {
+                                    data[0].subjects.push(subject)
+                                }
+                            }
+                        )
+                        DataModel.deleteMany({}).then(
+                            () => {
+                                DataModel.insertMany(data).then(
+                                    () => response.json({ content: "ok" })
+                                ).catch((error) => console.log(error))
+                            }
+                        ).catch((error) => console.log(error))
+                    }
+                ).catch((error) => console.log(error))
+            }
         ).catch((error) => console.log(error))
     }
 
@@ -33,6 +53,18 @@ export class AdminController {
                 isAccountActive: false,
                 isAccountPending: false,
                 isAccountBanned: true
+            }
+        ).then(
+            () => response.json({ content: "ok" })
+        ).catch((error) => console.log(error))
+    }
+
+    updateSubjects = (request: express.Request, response: express.Response) => {
+        let newSubjectsArray = request.body
+        DataModel.updateOne(
+            {},
+            {
+                subjects: newSubjectsArray
             }
         ).then(
             () => response.json({ content: "ok" })

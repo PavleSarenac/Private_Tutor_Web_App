@@ -15,11 +15,15 @@ export class AdminService {
     return this.httpClient.post(`${this.backendUrl}/downloadPdf`, teacher, { responseType: "blob" })
   }
 
-  approveTeacherRegistration(teacherUsername: string) {
-    return this.httpClient.get<Message>(`${this.backendUrl}/approveTeacherRegistration?teacherUsername=${teacherUsername}`)
+  approveTeacherRegistration(teacher: User) {
+    return this.httpClient.post<Message>(`${this.backendUrl}/approveTeacherRegistration`, teacher)
   }
 
   banTeacherAccount(teacherUsername: string) {
     return this.httpClient.get<Message>(`${this.backendUrl}/banTeacherAccount?teacherUsername=${teacherUsername}`)
+  }
+
+  updateSubjects(subjects: string[]) {
+    return this.httpClient.post<Message>(`${this.backendUrl}/updateSubjects`, subjects)
   }
 }

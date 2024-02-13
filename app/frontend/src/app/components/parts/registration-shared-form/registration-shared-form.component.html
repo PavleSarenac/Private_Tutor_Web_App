@@ -48,7 +48,7 @@
   </div>
   <div class="col-sm-12 mb-3" [class.mt-3]="!url.includes('registration')">
     <label for="input-name" class="form-label text-white">Name</label>
-    <input type="text" class="form-control" [class.is-invalid]="newUser.name == ''"
+    <input type="text" class="form-control" [class.is-invalid]="newUser.name == '' && nameError !=''"
       [class.is-valid]="newUser.name != ''" id="input-name" [(ngModel)]="newUser.name">
     <div class="invalid-feedback">
       {{nameError}}
@@ -59,7 +59,7 @@
   </div>
   <div class="col-sm-12 mb-3">
     <label for="input-surname" class="form-label text-white">Surname</label>
-    <input type="text" class="form-control" [class.is-invalid]="newUser.surname == ''"
+    <input type="text" class="form-control" [class.is-invalid]="newUser.surname == '' && surnameError !=''"
       [class.is-valid]="newUser.surname != ''" id="input-surname" [(ngModel)]="newUser.surname">
     <div class="invalid-feedback">
       {{surnameError}}
@@ -86,7 +86,7 @@
   </div>
   <div class="col-sm-12 mb-3">
     <label for="input-address" class="form-label text-white">Address</label>
-    <input type="text" class="form-control" [class.is-invalid]="newUser.address == ''"
+    <input type="text" class="form-control" [class.is-invalid]="newUser.address == '' && addressError != ''"
       [class.is-valid]="newUser.address != ''" id="input-address" [(ngModel)]="newUser.address">
     <div class="invalid-feedback">
       {{addressError}}
@@ -97,7 +97,7 @@
   </div>
   <div class="col-sm-12 mb-3">
     <label for="input-phone" class="form-label text-white">Phone (format: 06[0-6]/xxx-xxx[x])</label>
-    <input type="text" class="form-control" [class.is-invalid]="newUser.phone == ''"
+    <input type="text" class="form-control" [class.is-invalid]="newUser.phone == '' && phoneError != ''"
       [class.is-valid]="newUser.phone != ''" id="input-phone" [(ngModel)]="newUser.phone">
     <div class="invalid-feedback">
       {{phoneError}}
@@ -108,7 +108,7 @@
   </div>
   <div class="col-sm-12 mb-3">
     <label for="input-email" class="form-label text-white">Email</label>
-    <input type="text" class="form-control" [class.is-invalid]="newUser.email == ''"
+    <input type="text" class="form-control" [class.is-invalid]="newUser.email == '' && emailError != ''"
       [class.is-valid]="newUser.email != ''" id="input-email" [(ngModel)]="newUser.email">
     <div class="invalid-feedback">
       {{emailError}}

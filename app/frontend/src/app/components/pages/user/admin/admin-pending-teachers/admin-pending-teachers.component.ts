@@ -92,8 +92,8 @@ export class AdminPendingTeachersComponent implements OnInit {
     )
   }
 
-  approveTeacherRegistration(username: string) {
-    this.adminService.approveTeacherRegistration(username).subscribe(
+  approveTeacherRegistration(teacher: User) {
+    this.adminService.approveTeacherRegistration(teacher).subscribe(
       () => {
         this.shouldLoadContent = false
         this.allTeachersData = []

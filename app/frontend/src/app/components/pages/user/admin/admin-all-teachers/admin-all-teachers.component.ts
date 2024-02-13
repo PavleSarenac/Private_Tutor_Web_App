@@ -94,16 +94,6 @@ export class AdminAllTeachersComponent implements OnInit {
     )
   }
 
-  approveTeacherRegistration(username: string) {
-    this.adminService.approveTeacherRegistration(username).subscribe(
-      () => {
-        this.shouldLoadContent = false
-        this.allTeachersData = []
-        this.fetchTeachersData()
-      }
-    )
-  }
-
   updateTeacherInfo(username: string) {
     localStorage.setItem("teacherToBeUpdatedUsername", username)
     this.router.navigate(["admin-update-teacher-info"])

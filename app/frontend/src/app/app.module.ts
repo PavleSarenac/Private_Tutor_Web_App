@@ -25,6 +25,7 @@ import { AdminAllStudentsComponent } from './components/pages/user/admin/admin-a
 import { AdminAllTeachersComponent } from './components/pages/user/admin/admin-all-teachers/admin-all-teachers.component';
 import { AdminPendingTeachersComponent } from './components/pages/user/admin/admin-pending-teachers/admin-pending-teachers.component';
 import { AdminUpdateTeacherInfoComponent } from './components/pages/user/admin/admin-update-teacher-info/admin-update-teacher-info.component';
+import { AdminAddSubjectsComponent } from './components/pages/user/admin/admin-add-subjects/admin-add-subjects.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { AdminUpdateTeacherInfoComponent } from './components/pages/user/admin/a
     AdminAllStudentsComponent,
     AdminAllTeachersComponent,
     AdminPendingTeachersComponent,
-    AdminUpdateTeacherInfoComponent
+    AdminUpdateTeacherInfoComponent,
+    AdminAddSubjectsComponent
   ],
   imports: [
     BrowserModule,
