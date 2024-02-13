@@ -41,6 +41,7 @@ export class AdminAddSubjectsComponent implements OnInit {
     } else {
       this.showError = true
     }
+    this.newSubject = ""
   }
 
   confirm() {

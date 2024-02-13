@@ -3,6 +3,7 @@ import { DefaultController } from "./default.controller"
 import multer from "multer"
 import * as fileSystem from "fs"
 import { UserModel } from "../models/user.model"
+import DataModel from "../models/data.model"
 
 const NUMBER_OF_BYTES_IN_ONE_KILOBYTE = 1024
 const NUMBER_OF_KILOBYTES_IN_ONE_MEGABYTE = 1024
@@ -75,7 +76,25 @@ export class TeacherController {
                 teacherPreferredStudentsAge: teacher.teacherPreferredStudentsAge
             }
         ).then(
-            () => response.json({ content: "ok" })
+            () => {
+                DataModel.findOne({}).then(
+                    (data: any) => {
+                        teacher.teacherSubjects.forEach(
+                            (subject: any) => {
+                                if (!data.subjects.includes(subject)) {
+                                    data.subjects.push(subject)
+                                }
+                            }
+                        )
+                        DataModel.updateOne(
+                            {},
+                            {
+                                subjects: data.subjects
+                            }
+                        ).then(() => response.json({ content: "ok" }))
+                    }
+                ).catch((error) => console.log(error))
+            }
         ).catch((error) => console.log(error))
     }
 }

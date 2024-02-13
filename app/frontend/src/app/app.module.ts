@@ -26,6 +26,8 @@ import { AdminAllTeachersComponent } from './components/pages/user/admin/admin-a
 import { AdminPendingTeachersComponent } from './components/pages/user/admin/admin-pending-teachers/admin-pending-teachers.component';
 import { AdminUpdateTeacherInfoComponent } from './components/pages/user/admin/admin-update-teacher-info/admin-update-teacher-info.component';
 import { AdminAddSubjectsComponent } from './components/pages/user/admin/admin-add-subjects/admin-add-subjects.component';
+import { TeacherHeaderComponent } from './components/parts/teacher-header/teacher-header.component';
+import { TeacherUpdateTeacherInfoComponent } from './components/pages/user/teacher/teacher-update-teacher-info/teacher-update-teacher-info.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { AdminAddSubjectsComponent } from './components/pages/user/admin/admin-a
     AdminAllTeachersComponent,
     AdminPendingTeachersComponent,
     AdminUpdateTeacherInfoComponent,
-    AdminAddSubjectsComponent
+    AdminAddSubjectsComponent,
+    TeacherHeaderComponent,
+    TeacherUpdateTeacherInfoComponent
   ],
   imports: [
     BrowserModule,

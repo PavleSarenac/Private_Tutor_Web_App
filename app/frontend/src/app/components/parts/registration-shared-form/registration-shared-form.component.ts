@@ -175,8 +175,8 @@ export class RegistrationSharedFormComponent implements OnInit {
   }
 
   register() {
-    if (!this.isRegistrationInputValid()) return
     if (this.newUser.userType == "teacher") this.mergeCustomWithDefaultSubjects()
+    if (!this.isRegistrationInputValid()) return
     this.defaultService.uploadProfilePicture(this.profilePictureFormData!).subscribe(
       (imageMessage: Message) => {
         if (this.didProfilePictureUploadFail(imageMessage)) return
@@ -195,8 +195,8 @@ export class RegistrationSharedFormComponent implements OnInit {
   }
 
   updateTeacherInfo() {
-    if (this.isEverythingEmptyTeacher() || !this.isRegistrationInputValid()) return
     this.mergeCustomWithDefaultSubjects()
+    if (this.isEverythingEmptyTeacher() || !this.isRegistrationInputValid()) return
     this.setNewData()
     this.defaultService.checkIfUserWithEmailExists(this.teacherToBeUpdated.email).subscribe(
       (user: User) => {

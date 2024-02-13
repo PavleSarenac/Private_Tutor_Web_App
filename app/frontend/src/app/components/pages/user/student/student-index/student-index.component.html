@@ -2,7 +2,7 @@
   <app-student-header></app-student-header>
   <div class="row my-profile" *ngIf="profilePictureUrl != null">
     <div class="col-sm-12 text-center">
-      <div class="card mx-auto" style="width: 18rem;">
+      <div class="card mx-auto" style="width: 26rem;">
         <img [src]="profilePictureUrl" class="card-img-top img-fluid" alt="Profile Picture">
         <div class="card-body">
           <h5 class="card-title text-center fst-italic"><b>{{user.name}} {{user.surname}}</b></h5>
@@ -14,10 +14,10 @@
           <li class="list-group-item"><b>School type:</b> &nbsp;{{user.schoolType}}</li>
           <li class="list-group-item"><b>Current grade:</b> &nbsp;{{user.currentGrade}}</li>
         </ul>
+        <div class="card-footer">
+          <button class="btn btn-dark" routerLink="/update-student-info">Update info</button>
+        </div>
       </div>
-    </div>
-    <div class="col-sm-12 text-center mt-2">
-      <button class="btn btn-dark" routerLink="/update-student-info">Update info</button>
     </div>
   </div>
   <app-footer></app-footer>
