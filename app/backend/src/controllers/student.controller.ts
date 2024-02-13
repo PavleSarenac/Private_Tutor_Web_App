@@ -9,6 +9,8 @@ export class StudentController {
                 username: student.username
             },
             {
+                name: student.name,
+                surname: student.surname,
                 address: student.address,
                 email: student.email,
                 phone: student.phone,
@@ -19,5 +21,11 @@ export class StudentController {
         ).then(
             () => response.json({ content: "ok" })
         ).catch((error) => console.log(error))
+    }
+
+    getAllStudents = (request: express.Request, response: express.Response) => {
+        UserModel.find({ userType: "student" })
+            .then((students) => response.json(students))
+            .catch((error) => console.log(error))
     }
 }

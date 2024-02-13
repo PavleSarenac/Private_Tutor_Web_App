@@ -64,4 +64,8 @@ export class DefaultService {
     }
     return this.httpClient.post(`${this.backendUrl}/getProfilePicture`, body, { responseType: "blob" })
   }
+
+  checkIfUserWithEmailExists(email: string) {
+    return this.httpClient.get<User>(`${this.backendUrl}/checkIfUserWithEmailExists?email=${email}`)
+  }
 }

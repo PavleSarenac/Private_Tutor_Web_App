@@ -39,4 +39,8 @@ defaultRouter.route("/getProfilePicture").post(
     (request, response) => new DefaultController().getProfilePicture(request, response)
 )
 
+defaultRouter.route("/checkIfUserWithEmailExists").get(
+    (request, response) => new DefaultController().checkIfUserWithEmailExists(request, response)
+)
+
 export default defaultRouter;

@@ -13,6 +13,8 @@ import { StudentService } from 'src/app/services/student/student.service';
 export class UpdateStudentInfoComponent {
   user: User = new User()
 
+  newName: string = ""
+  newSurname: string = ""
   newAddress: string = ""
   newEmail: string = ""
   newPhone: string = ""
@@ -47,30 +49,41 @@ export class UpdateStudentInfoComponent {
 
   updateStudentInfo() {
     if (this.isEverythingEmpty() || !this.isEmailValid() || !this.isPhoneValid() || !this.areSchoolAndGradeValid()) return
-    if (this.newAddress != "") this.user.address = this.newAddress
-    if (this.profilePictureFormData == null) {
-      this.studentService.updateStudentInfo(this.user).subscribe(
-        () => {
-          this.router.navigate(["student-index"])
+    this.defaultService.checkIfUserWithEmailExists(this.newEmail).subscribe(
+      (user: User) => {
+        if (user != null) {
+          this.newEmailError = "This email is not available."
+          this.newEmail = ""
+        } else {
+          if (this.newAddress != "") this.user.address = this.newAddress
+          if (this.newName != "") this.user.name = this.newName
+          if (this.newSurname != "") this.user.surname = this.newSurname
+          if (this.profilePictureFormData == null) {
+            this.studentService.updateStudentInfo(this.user).subscribe(
+              () => {
+                this.router.navigate(["student-index"])
+              }
+            )
+          } else {
+            let oldProfilePicturePath = this.user.profilePicturePath
+            this.defaultService.uploadProfilePicture(this.profilePictureFormData!).subscribe(
+              (imageMessage: Message) => {
+                if (this.didProfilePictureUploadFail(imageMessage)) return
+                this.defaultService.deleteProfilePicture(oldProfilePicturePath).subscribe(
+                  () => {
+                    this.studentService.updateStudentInfo(this.user).subscribe(
+                      () => {
+                        this.router.navigate(["student-index"])
+                      }
+                    )
+                  }
+                )
+              }
+            )
+          }
         }
-      )
-    } else {
-      let oldProfilePicturePath = this.user.profilePicturePath
-      this.defaultService.uploadProfilePicture(this.profilePictureFormData!).subscribe(
-        (imageMessage: Message) => {
-          if (this.didProfilePictureUploadFail(imageMessage)) return
-          this.defaultService.deleteProfilePicture(oldProfilePicturePath).subscribe(
-            () => {
-              this.studentService.updateStudentInfo(this.user).subscribe(
-                () => {
-                  this.router.navigate(["student-index"])
-                }
-              )
-            }
-          )
-        }
-      )
-    }
+      }
+    )
   }
 
   didProfilePictureUploadFail(imageMessage: Message): boolean {
@@ -86,7 +99,7 @@ export class UpdateStudentInfoComponent {
   }
 
   isEverythingEmpty(): boolean {
-    return this.profilePictureFormData == null && this.newAddress == "" && this.newEmail == "" && this.newPhone == "" && this.newCurrentGrade == "" && this.newSchoolType == ""
+    return this.profilePictureFormData == null && this.newAddress == "" && this.newEmail == "" && this.newPhone == "" && this.newCurrentGrade == "" && this.newSchoolType == "" && this.newName == "" && this.newSurname == ""
   }
 
   onImageSelected(event: any) {

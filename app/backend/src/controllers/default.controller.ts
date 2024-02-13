@@ -4,7 +4,6 @@ import multer from "multer"
 import sizeOf from "image-size"
 import * as fileSystem from "fs"
 import * as bcrypt from "bcrypt"
-import PendingTeachersModel from "../models/pending-teachers.model"
 
 const NUMBER_OF_MILLISECONDS_IN_ONE_SECOND = 1000
 const NUMBER_OF_SECONDS_IN_ONE_MINUTE = 60
@@ -18,7 +17,10 @@ export class DefaultController {
     login = (request: express.Request, response: express.Response) => {
         UserModel.findOne(
             {
-                username: request.body.username
+                username: request.body.username,
+                isAccountActive: true,
+                isAccountPending: false,
+                isAccountBanned: false
             }
         ).then(
             (user) => {
@@ -82,49 +84,27 @@ export class DefaultController {
         let newUser: any = request.body
         const hashedPassword = bcrypt.hashSync(newUser.password, this.saltRounds)
         newUser.password = hashedPassword
-        UserModel.findOne({ username: newUser.username }).then(
+        UserModel.findOne({ username: newUser.username, $or: [{ isAccountActive: true }, { isAccountBanned: true }] }).then(
             (user) => {
                 if (user != null) {
                     fileSystem.unlinkSync(newUser.profilePicturePath)
                     if (newUser.userType == "teacher") fileSystem.unlinkSync(newUser.cvPath)
-                    response.json({ content: "This username is already taken." })
+                    response.json({ content: "This username is not available." })
                 } else {
-                    UserModel.findOne({ email: newUser.email }).then(
+                    UserModel.findOne({ email: newUser.email, $or: [{ isAccountActive: true }, { isAccountBanned: true }] }).then(
                         (user) => {
                             if (user != null) {
                                 fileSystem.unlinkSync(newUser.profilePicturePath)
                                 if (newUser.userType == "teacher") fileSystem.unlinkSync(newUser.cvPath)
-                                response.json({ content: "This email is already taken." })
+                                response.json({ content: "This email is not available." })
                             } else {
-                                if (newUser.userType == "student") {
-                                    new UserModel(newUser).save().then(
-                                        () => response.json({ content: "ok" })
-                                    ).catch((error) => console.log(error))
-                                } else {
-                                    PendingTeachersModel.findOne({ username: newUser.username }).then(
-                                        (user) => {
-                                            if (user != null) {
-                                                fileSystem.unlinkSync(newUser.profilePicturePath)
-                                                fileSystem.unlinkSync(newUser.cvPath)
-                                                response.json({ content: "This username is already taken." })
-                                            } else {
-                                                PendingTeachersModel.findOne({ email: newUser.email }).then(
-                                                    (user) => {
-                                                        if (user != null) {
-                                                            fileSystem.unlinkSync(newUser.profilePicturePath)
-                                                            fileSystem.unlinkSync(newUser.cvPath)
-                                                            response.json({ content: "This email is already taken." })
-                                                        } else {
-                                                            new PendingTeachersModel(newUser).save().then(
-                                                                () => response.json({ content: "ok" })
-                                                            ).catch((error) => console.log(error))
-                                                        }
-                                                    }
-                                                ).catch((error) => console.log(error))
-                                            }
-                                        }
-                                    ).catch((error) => console.log(error))
+                                if (newUser.userType == "teacher") {
+                                    newUser.isAccountActive = false
+                                    newUser.isAccountPending = true
                                 }
+                                new UserModel(newUser).save().then(
+                                    () => response.json({ content: "ok" })
+                                ).catch((error) => console.log(error))
                             }
                         }
                     ).catch((error) => console.log(error))
@@ -189,6 +169,13 @@ export class DefaultController {
         const contentType = "image/" + fileExtension
         response.contentType(contentType)
         response.send(profilePictureFile)
+    }
+
+    checkIfUserWithEmailExists = (request: express.Request, response: express.Response) => {
+        let email = request.query.email
+        UserModel.findOne({ email: email })
+            .then((user) => response.json(user))
+            .catch((error) => console.log(error))
     }
 
     getDateTimeString(): string {

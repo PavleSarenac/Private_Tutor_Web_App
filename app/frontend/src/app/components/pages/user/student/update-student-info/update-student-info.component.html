@@ -2,7 +2,15 @@
   <app-student-header></app-student-header>
   <div class="row update-student-info-main bg-dark rounded">
     <div class="col-sm-12 mb-3">
-      <label for="input-photo" class="form-label text-white mt-1">Profile picture (optional)</label>
+      <label for="input-name" class="form-label text-white mt-1">New name</label>
+      <input type="text" class="form-control" id="input-name" [(ngModel)]="newName">
+    </div>
+    <div class="col-sm-12 mb-3">
+      <label for="input-surname" class="form-label text-white">New surname</label>
+      <input type="text" class="form-control" id="input-surname" [(ngModel)]="newSurname">
+    </div>
+    <div class="col-sm-12 mb-3">
+      <label for="input-photo" class="form-label text-white mt-1">New Profile picture</label>
       <input type="file" class="form-control" accept=".jpg, .png" (change)="onImageSelected($event)" id="input-photo">
       <span *ngIf="isInvalidImage" class="text-danger small">{{profilePictureError}}</span>
     </div>

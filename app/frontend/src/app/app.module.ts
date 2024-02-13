@@ -20,6 +20,9 @@ import { TeacherIndexComponent } from './components/pages/user/teacher/teacher-i
 import { ChangePasswordComponent } from './components/pages/guest/change-password/change-password.component';
 import { StudentHeaderComponent } from './components/parts/student-header/student-header.component';
 import { UpdateStudentInfoComponent } from './components/pages/user/student/update-student-info/update-student-info.component';
+import { AdminHeaderComponent } from './components/parts/admin-header/admin-header.component';
+import { AdminAllStudentsComponent } from './components/pages/user/admin/admin-all-students/admin-all-students.component';
+import { AdminAllTeachersComponent } from './components/pages/user/admin/admin-all-teachers/admin-all-teachers.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,10 @@ import { UpdateStudentInfoComponent } from './components/pages/user/student/upda
     TeacherIndexComponent,
     ChangePasswordComponent,
     StudentHeaderComponent,
-    UpdateStudentInfoComponent
+    UpdateStudentInfoComponent,
+    AdminHeaderComponent,
+    AdminAllStudentsComponent,
+    AdminAllTeachersComponent
   ],
   imports: [
     BrowserModule,

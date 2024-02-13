@@ -2,3 +2,10 @@ body {
   font-family: Georgia, 'Times New Roman', Times, serif;
   height: 100vh;
 }
+
+.main {
+  margin-top: 8rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-bottom: 5rem;
+}

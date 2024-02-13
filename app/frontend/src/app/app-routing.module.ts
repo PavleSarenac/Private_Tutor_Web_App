@@ -14,6 +14,8 @@ import { TeacherIndexComponent } from './components/pages/user/teacher/teacher-i
 import { AdminIndexComponent } from './components/pages/user/admin/admin-index/admin-index.component';
 import { ChangePasswordComponent } from './components/pages/guest/change-password/change-password.component';
 import { UpdateStudentInfoComponent } from './components/pages/user/student/update-student-info/update-student-info.component';
+import { AdminAllStudentsComponent } from './components/pages/user/admin/admin-all-students/admin-all-students.component';
+import { AdminAllTeachersComponent } from './components/pages/user/admin/admin-all-teachers/admin-all-teachers.component';
 
 const routes: Routes = [
   { path: "", component: IndexComponent, canActivate: [isGuestGuard] },
@@ -26,6 +28,8 @@ const routes: Routes = [
   { path: "student-registration", component: StudentRegistrationComponent, canActivate: [isGuestGuard] },
   { path: "change-password", component: ChangePasswordComponent, canActivate: [isGuestGuard] },
   { path: "update-student-info", component: UpdateStudentInfoComponent, canActivate: [isStudentGuard] },
+  { path: "admin-all-students", component: AdminAllStudentsComponent, canActivate: [isAdminGuard] },
+  { path: "admin-all-teachers", component: AdminAllTeachersComponent, canActivate: [isAdminGuard] },
   { path: "**", redirectTo: "" }
 ];
 

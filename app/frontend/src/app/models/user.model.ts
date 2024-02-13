@@ -17,4 +17,7 @@ export class User {
   teacherPreferredStudentsAge: string[] = []
   teacherWhereDidYouHearAboutUs: string = ""
   cvPath: string = ""
+  isAccountActive: boolean = true
+  isAccountPending: boolean = false
+  isAccountBanned: boolean = false
 }

@@ -14,4 +14,8 @@ export class StudentService {
   updateStudentInfo(user: User) {
     return this.httpClient.post<Message>(`${this.backendUrl}/updateStudentInfo`, user)
   }
+
+  getAllStudents() {
+    return this.httpClient.get<User[]>(`${this.backendUrl}/getAllStudents`)
+  }
 }

@@ -19,7 +19,10 @@ const userSchema = new mongoose.Schema(
         teacherSubjects: Array,
         teacherPreferredStudentsAge: Array,
         teacherWhereDidYouHearAboutUs: String,
-        cvPath: String
+        cvPath: String,
+        isAccountActive: Boolean,
+        isAccountPending: Boolean,
+        isAccountBanned: Boolean
     },
     {
         versionKey: false
