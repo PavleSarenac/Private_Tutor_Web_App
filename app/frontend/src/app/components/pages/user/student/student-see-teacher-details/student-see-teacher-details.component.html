@@ -8,7 +8,6 @@
           <h5 class="card-title text-center"><b>{{teacher.name}} {{teacher.surname}}</b></h5>
         </div>
         <ul class=" list-group list-group-flush">
-          <li class="list-group-item"><b>Address:</b> &nbsp;{{teacher.address}}</li>
           <li class="list-group-item"><b>Email:</b> &nbsp;{{teacher.email}}</li>
           <li class="list-group-item"><b>Phone:</b> &nbsp;{{teacher.phone}}</li>
           <li class="list-group-item"><b>Subjects:</b> &nbsp;
@@ -16,6 +15,12 @@
               [attr.data-bs-target]="'#' + teacher.username + '-subjects'">
               Click to see
             </button>
+          </li>
+          <li class="list-group-item"><b>Reviews:</b> &nbsp;
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-outline-dark">Show</button>
+              <button type="button" class="btn btn-outline-dark">Hide</button>
+            </div>
           </li>
         </ul>
       </div>
