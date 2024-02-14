@@ -38,7 +38,7 @@
         <ul class="dropdown-menu">
           <li *ngFor="let schoolType of data.schoolTypes">
             <button class="btn dropdown-item" (click)="updateSchoolType(schoolType)">{{schoolType}}</button>
-            <hr *ngIf="schoolType != 'Art school'" class="dropdown-divider">
+            <hr *ngIf="schoolType !== 'Art school'" class="dropdown-divider">
           </li>
         </ul>
       </div>

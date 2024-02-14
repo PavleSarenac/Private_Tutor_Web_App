@@ -30,6 +30,7 @@ import { TeacherHeaderComponent } from './components/parts/teacher-header/teache
 import { TeacherUpdateTeacherInfoComponent } from './components/pages/user/teacher/teacher-update-teacher-info/teacher-update-teacher-info.component';
 import { StudentTeachersPreviewComponent } from './components/pages/user/student/student-teachers-preview/student-teachers-preview.component';
 import { StudentSeeTeacherDetailsComponent } from './components/pages/user/student/student-see-teacher-details/student-see-teacher-details.component';
+import { BarChartTeachersPerSubjectComponent } from './components/parts/bar-chart-teachers-per-subject/bar-chart-teachers-per-subject.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { StudentSeeTeacherDetailsComponent } from './components/pages/user/stude
     TeacherHeaderComponent,
     TeacherUpdateTeacherInfoComponent,
     StudentTeachersPreviewComponent,
-    StudentSeeTeacherDetailsComponent
+    StudentSeeTeacherDetailsComponent,
+    BarChartTeachersPerSubjectComponent
   ],
   imports: [
     BrowserModule,
