@@ -20,6 +20,8 @@ import { AdminPendingTeachersComponent } from './components/pages/user/admin/adm
 import { AdminUpdateTeacherInfoComponent } from './components/pages/user/admin/admin-update-teacher-info/admin-update-teacher-info.component';
 import { AdminAddSubjectsComponent } from './components/pages/user/admin/admin-add-subjects/admin-add-subjects.component';
 import { TeacherUpdateTeacherInfoComponent } from './components/pages/user/teacher/teacher-update-teacher-info/teacher-update-teacher-info.component';
+import { StudentTeachersPreviewComponent } from './components/pages/user/student/student-teachers-preview/student-teachers-preview.component';
+import { StudentSeeTeacherDetailsComponent } from './components/pages/user/student/student-see-teacher-details/student-see-teacher-details.component';
 
 const routes: Routes = [
   { path: "", component: IndexComponent, canActivate: [isGuestGuard] },
@@ -38,6 +40,8 @@ const routes: Routes = [
   { path: "admin-update-teacher-info", component: AdminUpdateTeacherInfoComponent, canActivate: [isAdminGuard] },
   { path: "admin-add-subjects", component: AdminAddSubjectsComponent, canActivate: [isAdminGuard] },
   { path: "teacher-update-teacher-info", component: TeacherUpdateTeacherInfoComponent, canActivate: [isTeacherGuard] },
+  { path: "student-teachers-preview", component: StudentTeachersPreviewComponent, canActivate: [isStudentGuard] },
+  { path: "student-see-teacher-details", component: StudentSeeTeacherDetailsComponent, canActivate: [isStudentGuard] },
   { path: "**", redirectTo: "" }
 ];
 

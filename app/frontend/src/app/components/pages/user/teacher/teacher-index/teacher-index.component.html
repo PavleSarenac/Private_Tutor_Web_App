@@ -1,13 +1,13 @@
 <div class="container-fluid vh-100 overflow-auto">
-  <app-student-header></app-student-header>
+  <app-teacher-header></app-teacher-header>
   <div class="row main" *ngIf="profilePictureUrl != null">
     <div class="col-sm-12 text-center">
       <div class="card mx-auto" style="width: 26rem;">
         <img [src]="profilePictureUrl" class="card-img-top img-fluid" alt="Profile Picture">
         <div class="card-body">
-          <h5 class="card-title text-center fst-italic"><b>{{user.name}} {{user.surname}}</b></h5>
+          <h5 class="card-title text-center"><b>{{user.name}} {{user.surname}}</b></h5>
         </div>
-        <ul class=" list-group list-group-flush fst-italic">
+        <ul class=" list-group list-group-flush">
           <li class="list-group-item"><b>Address:</b> &nbsp;{{user.address}}</li>
           <li class="list-group-item"><b>Email:</b> &nbsp;{{user.email}}</li>
           <li class="list-group-item"><b>Phone:</b> &nbsp;{{user.phone}}</li>

@@ -26,4 +26,8 @@ export class TeacherService {
   updateTeacherInfo(teacher: User) {
     return this.httpClient.post<Message>(`${this.backendUrl}/updateTeacherInfo`, teacher)
   }
+
+  getTeachersTeachingSpecificStudentAge(studentAge: string) {
+    return this.httpClient.get<User[]>(`${this.backendUrl}/getTeachersTeachingSpecificStudentAge?studentAge=${studentAge}`)
+  }
 }

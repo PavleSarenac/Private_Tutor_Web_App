@@ -1,0 +1,41 @@
+<div class="container-fluid vh-100 overflow-auto">
+  <app-student-header></app-student-header>
+  <div class="row main" *ngIf="profilePictureUrl != null">
+    <div class="col-sm-12 text-center">
+      <div class="card mx-auto" style="width: 26rem;">
+        <img [src]="profilePictureUrl" class="card-img-top img-fluid" alt="Profile Picture">
+        <div class="card-body">
+          <h5 class="card-title text-center"><b>{{teacher.name}} {{teacher.surname}}</b></h5>
+        </div>
+        <ul class=" list-group list-group-flush">
+          <li class="list-group-item"><b>Address:</b> &nbsp;{{teacher.address}}</li>
+          <li class="list-group-item"><b>Email:</b> &nbsp;{{teacher.email}}</li>
+          <li class="list-group-item"><b>Phone:</b> &nbsp;{{teacher.phone}}</li>
+          <li class="list-group-item"><b>Subjects:</b> &nbsp;
+            <button class="btn btn-dark" data-bs-toggle="modal"
+              [attr.data-bs-target]="'#' + teacher.username + '-subjects'">
+              Click to see
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal fade" [id]="teacher.username + '-subjects'" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" [id]="teacher.username + '-subjects'">
+              {{teacher.name}} {{teacher.surname}}'s subjects
+            </h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <span class="text-break" *ngFor="let subject of teacher.teacherSubjects">{{subject}} <br></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

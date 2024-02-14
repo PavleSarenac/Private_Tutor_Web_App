@@ -97,4 +97,18 @@ export class TeacherController {
             }
         ).catch((error) => console.log(error))
     }
+
+    getTeachersTeachingSpecificStudentAge = (request: express.Request, response: express.Response) => {
+        UserModel.find(
+            {
+                userType: "teacher",
+                isAccountActive: true,
+                isAccountPending: false,
+                isAccountBanned: false,
+                teacherPreferredStudentsAge: { $elemMatch: { $eq: request.query.studentAge } }
+            }
+        ).then(
+            (teachers) => response.json(teachers)
+        ).catch((error) => console.log(error))
+    }
 }

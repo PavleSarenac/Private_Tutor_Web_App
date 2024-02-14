@@ -1,10 +1,6 @@
 <div class="container-fluid vh-100 overflow-auto">
-  <app-guest-header></app-guest-header>
+  <app-student-header></app-student-header>
   <div class="row main">
-    <div class="col-sm-12 alert fw-bold text-center text-white black-background" role="alert">
-      {{numberOfStudents}} students and {{numberOfTeachers}} teachers are using our website! <br>
-      5 classes held in the last week and a total of 29 classes held in the last month!
-    </div>
     <div class="col-sm-12 alert fw-bold mt-5 text-center black-background text-white" role=" alert">
       Subjects that we are teaching:
       <br>
@@ -68,7 +64,9 @@
                 <span class="text-break"
                   *ngFor="let teacher of shouldShowSortedSubjects ? allTeachersSorted : allTeachers">
                   <ng-container *ngIf="teacher.teacherSubjects.includes(subject)">
-                    {{teacher.name}} {{teacher.surname}} <br>
+                    <button class="btn btn-dark mb-2" data-bs-dismiss="modal" aria-label="Close"
+                      (click)="seeTeacherDetails(teacher.username)">{{teacher.name}}
+                      {{teacher.surname}}</button> <br>
                   </ng-container>
                 </span>
               </div>
@@ -124,7 +122,10 @@
           <tbody>
             <tr *ngFor="let teacher of shouldShowSortedTeachers ? allTeachersSearchedSorted : allTeachersSearched"
               class="text-center">
-              <td class="align-middle">{{teacher.name}} {{teacher.surname}}</td>
+              <td class="align-middle">
+                <button class="btn btn-light" (click)="seeTeacherDetails(teacher.username)">{{teacher.name}}
+                  {{teacher.surname}}</button>
+              </td>
               <td>
                 <button class="btn btn-light mt-2 mb-2" data-bs-toggle="modal"
                   [attr.data-bs-target]="'#' + teacher.username">
@@ -134,7 +135,7 @@
             </tr>
           </tbody>
         </table>
-        <div class=" modal fade"
+        <div class="modal fade"
           *ngFor="let teacher of shouldShowSortedTeachers ? allTeachersSearchedSorted : allTeachersSearched"
           [id]="teacher.username" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog">

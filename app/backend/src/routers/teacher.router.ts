@@ -19,4 +19,8 @@ teacherRouter.route("/updateTeacherInfo").post(
     (request, response) => new TeacherController().updateTeacherInfo(request, response)
 )
 
+teacherRouter.route("/getTeachersTeachingSpecificStudentAge").get(
+    (request, response) => new TeacherController().getTeachersTeachingSpecificStudentAge(request, response)
+)
+
 export default teacherRouter
