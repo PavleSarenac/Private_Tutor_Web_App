@@ -1,7 +1,17 @@
 <div class="container-fluid vh-100 overflow-auto">
   <app-admin-header></app-admin-header>
   <div class="row main">
-    <app-bar-chart-teachers-per-subject></app-bar-chart-teachers-per-subject>
+    <div class="col-sm-12">
+      <app-bar-chart-teachers-per-subject></app-bar-chart-teachers-per-subject>
+    </div>
+    <hr class="border border-5 border-dark mt-3 mb-3">
+    <div class="col-sm-6">
+      <app-pie-chart-students-gender></app-pie-chart-students-gender>
+    </div>
+    <div class="col-sm-6">
+      <app-pie-chart-teachers-gender></app-pie-chart-teachers-gender>
+    </div>
+    <hr class="border border-5 border-dark mt-3 mb-3">
   </div>
   <app-footer></app-footer>
 </div>

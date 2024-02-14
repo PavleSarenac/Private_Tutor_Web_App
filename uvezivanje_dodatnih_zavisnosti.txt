@@ -41,3 +41,10 @@ Uputstvo za instalaciju:
 	3) izvrsiti komandu: npm install bcrypt
 	4) izvrsiti komandu: npm install @types/bcrypt
 ==========================================================================================================================
+5) chart.js (za prikaz statistickih dijagrama adminu)
+==========================================================================================================================
+Uputstvo za instalaciju:
+	1) otvoriti u VS-Code terminal (command prompt)
+	2) pozicionirati se u frontend folder
+	3) izvrsiti komandu: npm install chart.js
+==========================================================================================================================

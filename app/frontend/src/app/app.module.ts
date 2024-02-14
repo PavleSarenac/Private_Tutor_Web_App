@@ -9,28 +9,30 @@ import { HttpClientModule } from '@angular/common/http';
 import { PublicLoginComponent } from './components/pages/guest/public-login/public-login.component';
 import { PrivateLoginComponent } from './components/pages/guest/private-login/private-login.component';
 import { FooterComponent } from './components/parts/footer/footer.component';
-import { GuestHeaderComponent } from './components/parts/guest-header/guest-header.component';
-import { LoginFormComponent } from './components/parts/login-form/login-form.component';
+import { GuestHeaderComponent } from './components/parts/headers/guest-header/guest-header.component';
+import { LoginFormComponent } from './components/parts/forms/login-form/login-form.component';
 import { TeacherRegistrationComponent } from './components/pages/guest/teacher-registration/teacher-registration.component';
 import { StudentRegistrationComponent } from './components/pages/guest/student-registration/student-registration.component';
-import { RegistrationSharedFormComponent } from './components/parts/registration-shared-form/registration-shared-form.component';
+import { RegistrationSharedFormComponent } from './components/parts/forms/registration-shared-form/registration-shared-form.component';
 import { AdminIndexComponent } from './components/pages/user/admin/admin-index/admin-index.component';
 import { StudentIndexComponent } from './components/pages/user/student/student-index/student-index.component';
 import { TeacherIndexComponent } from './components/pages/user/teacher/teacher-index/teacher-index.component';
 import { ChangePasswordComponent } from './components/pages/guest/change-password/change-password.component';
-import { StudentHeaderComponent } from './components/parts/student-header/student-header.component';
+import { StudentHeaderComponent } from './components/parts/headers/student-header/student-header.component';
 import { UpdateStudentInfoComponent } from './components/pages/user/student/update-student-info/update-student-info.component';
-import { AdminHeaderComponent } from './components/parts/admin-header/admin-header.component';
+import { AdminHeaderComponent } from './components/parts/headers/admin-header/admin-header.component';
 import { AdminAllStudentsComponent } from './components/pages/user/admin/admin-all-students/admin-all-students.component';
 import { AdminAllTeachersComponent } from './components/pages/user/admin/admin-all-teachers/admin-all-teachers.component';
 import { AdminPendingTeachersComponent } from './components/pages/user/admin/admin-pending-teachers/admin-pending-teachers.component';
 import { AdminUpdateTeacherInfoComponent } from './components/pages/user/admin/admin-update-teacher-info/admin-update-teacher-info.component';
 import { AdminAddSubjectsComponent } from './components/pages/user/admin/admin-add-subjects/admin-add-subjects.component';
-import { TeacherHeaderComponent } from './components/parts/teacher-header/teacher-header.component';
+import { TeacherHeaderComponent } from './components/parts/headers/teacher-header/teacher-header.component';
 import { TeacherUpdateTeacherInfoComponent } from './components/pages/user/teacher/teacher-update-teacher-info/teacher-update-teacher-info.component';
 import { StudentTeachersPreviewComponent } from './components/pages/user/student/student-teachers-preview/student-teachers-preview.component';
 import { StudentSeeTeacherDetailsComponent } from './components/pages/user/student/student-see-teacher-details/student-see-teacher-details.component';
-import { BarChartTeachersPerSubjectComponent } from './components/parts/bar-chart-teachers-per-subject/bar-chart-teachers-per-subject.component';
+import { BarChartTeachersPerSubjectComponent } from './components/parts/charts/bar-chart-teachers-per-subject/bar-chart-teachers-per-subject.component';
+import { PieChartTeachersGenderComponent } from './components/parts/charts/pie-chart-teachers-gender/pie-chart-teachers-gender.component';
+import { PieChartStudentsGenderComponent } from './components/parts/charts/pie-chart-students-gender/pie-chart-students-gender.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,9 @@ import { BarChartTeachersPerSubjectComponent } from './components/parts/bar-char
     TeacherUpdateTeacherInfoComponent,
     StudentTeachersPreviewComponent,
     StudentSeeTeacherDetailsComponent,
-    BarChartTeachersPerSubjectComponent
+    BarChartTeachersPerSubjectComponent,
+    PieChartTeachersGenderComponent,
+    PieChartStudentsGenderComponent
   ],
   imports: [
     BrowserModule,
