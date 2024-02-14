@@ -1,8 +1,52 @@
 <div class="container-fluid vh-100 overflow-auto">
   <app-guest-header></app-guest-header>
-  <div class="index-main">
-    <div class="row alert alert-dark fw-bold" role="alert">
+  <div class="row main">
+    <div class="col-sm-12 alert fw-bold text-center mb-5 text-white black-background" role="alert">
       {{numberOfStudents}} students and {{numberOfTeachers}} teachers are using our website!
+    </div>
+    <div class="col-sm-12 alert fw-bold text-center black-background text-white" role=" alert">
+      Subjects that we are teaching:
+    </div>
+    <div class="col-sm-12">
+      <table class="table table-dark table-bordered table-striped table-hover">
+        <thead>
+          <tr class="text-center">
+            <th scope="col" class="w-50">Subject</th>
+            <th scope="col" class="w-50">Teachers</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let subject of data.subjects" class="text-center">
+            <td class="align-middle">{{subject}}</td>
+            <td>
+              <button class="btn btn-light mt-2 mb-2" data-bs-toggle="modal"
+                [attr.data-bs-target]="'#' + subject.replaceAll(' ', '')">
+                Click to see teachers for this subject
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class=" modal fade" *ngFor="let subject of data.subjects" [id]="subject.replaceAll(' ', '')" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" [id]="subject">
+                {{subject}} teachers
+              </h1>
+              <button type=" button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <span class="text-break" *ngFor="let teacher of allTeachers">
+                <ng-container *ngIf="teacher.teacherSubjects.includes(subject)">
+                  {{teacher.name}} {{teacher.surname}} <br>
+                </ng-container>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <app-footer></app-footer>

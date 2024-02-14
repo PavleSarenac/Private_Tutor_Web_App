@@ -10,9 +10,9 @@
       <div class="card h-100">
         <img [src]="data.profilePictureUrl" class="card-img-top img-fluid" alt="Profile Picture">
         <div class="card-body">
-          <h5 class="card-title text-center fst-italic"><b>{{data.teacher.name}} {{data.teacher.surname}}</b></h5>
+          <h5 class="card-title text-center"><b>{{data.teacher.name}} {{data.teacher.surname}}</b></h5>
         </div>
-        <ul class=" list-group list-group-flush fst-italic">
+        <ul class=" list-group list-group-flush">
           <li class="list-group-item"><b>Address:</b> &nbsp;{{data.teacher.address}}</li>
           <li class="list-group-item"><b>Email:</b> &nbsp;{{data.teacher.email}}</li>
           <li class="list-group-item"><b>Phone:</b> &nbsp;{{data.teacher.phone}}</li>
@@ -32,11 +32,11 @@
               (click)="downloadPdf(data.teacher)">Download PDF</button></li>
         </ul>
         <div class="card-footer">
-          <b class="fst-italic">Update info: &nbsp;</b>
+          <b>Update info: &nbsp;</b>
           <button class="btn btn-dark" (click)="updateTeacherInfo(data.teacher.username)">Update</button>
         </div>
         <div class="card-footer">
-          <b class="fst-italic">Deactivate account: &nbsp;</b>
+          <b>Deactivate account: &nbsp;</b>
           <button class="btn btn-dark" (click)="banTeacherAccount(data.teacher.username)">Deactivate</button>
         </div>
       </div>
