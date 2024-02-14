@@ -164,6 +164,7 @@ export class IndexComponent implements OnInit {
         return foundSubject
       })
     }
+    this.sortTeachers()
   }
 
   showSubjects() {
