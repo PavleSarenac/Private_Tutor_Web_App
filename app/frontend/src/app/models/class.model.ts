@@ -12,4 +12,9 @@ export class Class {
   isClassRejected: boolean = false
   isClassCancelled: boolean = false
   isClassDone: boolean = false
+  didClassRequestExpire: boolean = false
+  rejectionReason: string = ""
+
+  studentName: string = ""
+  studentSurname: string = ""
 }

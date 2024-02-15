@@ -1,20 +1,27 @@
 <div class="container-fluid vh-100 overflow-auto">
   <app-guest-header></app-guest-header>
-  <div class="row main">
-    <div class="col-sm-12 alert fw-bold text-center text-white black-background" role="alert">
-      {{numberOfStudents}} students and {{numberOfTeachers}} teachers are using our website! <br>
-      5 classes held in the last week and a total of 29 classes held in the last month!
+  <div class="row main bg-dark rounded text-center text-white">
+    <div class="col-sm-12 text-center fs-3 mt-3">
+      <b>{{numberOfStudents}}</b> students and <b>{{numberOfTeachers}}</b> teachers are using our website!
     </div>
-    <div class="col-sm-12 alert fw-bold mt-5 text-center black-background text-white" role=" alert">
-      Subjects that we are teaching:
-      <br>
-      <div class="btn-group mt-3" role="group">
+    <div class="col-sm-12 text-center fs-3 mb-3">
+      <b>5</b> classes held in the last week and a total of <b>29</b> classes held in the last month!
+    </div>
+  </div>
+  <div class="row additional-row bg-dark rounded text-center">
+    <div class="col-sm-12 mt-4">
+      <span class="text-white"><b>Subjects that we are teaching:</b></span>
+    </div>
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6 mt-4 mb-4">
+      <div class="btn-group" role="group">
         <button type="button" class="btn btn-outline-light" (click)="showSubjects()">Show subjects</button>
         <button type="button" class="btn btn-outline-light" (click)="hideSubjects()">Hide subjects</button>
       </div>
     </div>
+    <div class="col-sm-3"></div>
     <ng-container *ngIf="shouldShowSubjects">
-      <div class="col-sm-12 alert fw-bold text-center mt-5 text-white black-background" role="alert">
+      <div class="col-sm-12 text-white mt-5 mb-4 fw-bold">
         Sort by: &nbsp;
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3"
@@ -77,23 +84,28 @@
         </div>
       </div>
     </ng-container>
-    <div class="col-sm-12 alert fw-bold text-center black-background text-white mt-5" role=" alert">
-      Find the teacher you want:
-      <br>
-      <div class="input-group mt-2">
+  </div>
+  <div class="row additional-row bg-dark rounded">
+    <div class="col-sm-12 text-white text-center mt-4">
+      <b>Find the teacher you want:</b>
+    </div>
+    <div class="col-sm-12">
+      <div class="input-group mt-4 mb-4">
         <input type="text" class="form-control border border-dark" placeholder="Teacher name..."
           [(ngModel)]="searchTeacherName">
         <input type="text" class="form-control border border-dark" placeholder="Teacher surname..."
           [(ngModel)]="searchTeacherSurname">
         <input type="text" class="form-control border border-dark" placeholder="Subject..." [(ngModel)]="searchSubject">
       </div>
-      <div class="btn-group mt-3" role="group">
+    </div>
+    <div class="col-sm-12 text-center mb-4">
+      <div class="btn-group" role="group">
         <button type="button" class="btn btn-outline-light" (click)="showSearchResults()">Show teachers</button>
         <button type="button" class="btn btn-outline-light" (click)="hideSearchResults()">Hide teachers</button>
       </div>
     </div>
     <ng-container *ngIf="shouldShowSearchResults && allTeachersSearched.length > 0">
-      <div class="col-sm-12 alert fw-bold text-center mt-5 text-white black-background" role="alert">
+      <div class="col-sm-12 text-center text-white fw-bold mt-5 mb-4">
         Sort by: &nbsp;
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"
@@ -159,7 +171,7 @@
       </div>
     </ng-container>
     <ng-container *ngIf="shouldShowSearchResults && allTeachersSearched.length == 0">
-      <div class="col-sm-12 alert fw-bold text-center text-white black-background" role="alert">
+      <div class="col-sm-12 fw-bold text-center text-white mb-4">
         There are no teachers for this search criteria.
       </div>
     </ng-container>

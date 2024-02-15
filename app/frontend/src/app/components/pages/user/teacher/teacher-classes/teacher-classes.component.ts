@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Class } from 'src/app/models/class.model';
 import { User } from 'src/app/models/user.model';
 import { DefaultService } from 'src/app/services/default/default.service';
 import { TeacherService } from 'src/app/services/teacher/teacher.service';
@@ -25,6 +26,13 @@ export class TeacherClassesComponent implements OnInit {
   worktimeStartError: string = "Please choose a time at which your working day starts."
   worktimeEndError: string = "Please choose a time at which your working day ends."
 
+  pendingClassRequests: Class[] = []
+  shouldShowPendingClassRequests: boolean = false
+
+  rejectionExplanationError: string = "Please explain why you are rejecting this class request."
+
+  @ViewChild("closeRejectionExplanationModalButton") closeModal: ElementRef | undefined
+
   constructor(
     private defaultService: DefaultService,
     private teacherService: TeacherService
@@ -34,8 +42,52 @@ export class TeacherClassesComponent implements OnInit {
     this.defaultService.getUser(JSON.parse(localStorage.getItem("loggedInUser")!).username).subscribe(
       (teacher: User) => {
         this.teacher = teacher
+        this.fetchPendingClassRequests()
       }
     )
+  }
+
+  hideRejectionExplanationModal() {
+    this.closeModal!.nativeElement.click()
+  }
+
+  fetchPendingClassRequests() {
+    this.teacherService.deleteExpiredClassRequests().subscribe(
+      () => {
+        this.teacherService.getAllPendingClassRequests(this.teacher.username).subscribe(
+          (pendingClasses: Class[]) => {
+            this.pendingClassRequests = pendingClasses
+          }
+        )
+      }
+    )
+  }
+
+  accept(classRequest: Class) {
+    this.teacherService.acceptClassRequest(classRequest).subscribe(
+      () => {
+        this.fetchPendingClassRequests()
+      }
+    )
+  }
+
+  reject(classRequest: Class) {
+    if (classRequest.rejectionReason == "") return
+    this.teacherService.rejectClassRequest(classRequest).subscribe(
+      () => {
+        this.fetchPendingClassRequests()
+        this.hideRejectionExplanationModal()
+      }
+    )
+  }
+
+  showPendingClassRequests() {
+    this.fetchPendingClassRequests()
+    this.shouldShowPendingClassRequests = true
+  }
+
+  hidePendingClassRequests() {
+    this.shouldShowPendingClassRequests = false
   }
 
   showWorktimeForm() {
@@ -44,6 +96,10 @@ export class TeacherClassesComponent implements OnInit {
 
   hideWorktimeForm() {
     this.shouldShowWorktimeForm = false
+    this.workingDays = []
+    this.workingDaysError = "Please choose your working days."
+    this.worktimeStartError = "Please choose a time at which your working day starts."
+    this.worktimeEndError = "Please choose a time at which your working day ends."
   }
 
   updateWorktime() {

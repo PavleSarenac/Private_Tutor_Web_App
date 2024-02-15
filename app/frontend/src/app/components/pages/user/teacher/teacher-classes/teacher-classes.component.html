@@ -55,5 +55,93 @@
       <div class="col-sm-3"></div>
     </ng-container>
   </div>
+  <div class="row additional-row bg-dark rounded">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6 text-center">
+      <div class="btn-group mt-3 mb-3" role="group">
+        <button type="button" class="btn btn-outline-light" (click)="showPendingClassRequests()">
+          Show pending class requests
+        </button>
+        <button type="button" class="btn btn-outline-light" (click)="hidePendingClassRequests()">
+          Hide pending class requests
+        </button>
+      </div>
+    </div>
+    <div class="col-sm-3"></div>
+    <ng-container *ngIf="shouldShowPendingClassRequests && pendingClassRequests.length != 0">
+      <div class="col-sm-12">
+        <table class="table table-dark table-bordered table-striped table-hover">
+          <thead>
+            <tr class="text-center">
+              <th scope="col" class="w-20">Student</th>
+              <th scope="col" class="w-20">Subject</th>
+              <th scope="col" class="w-20">Student's class description</th>
+              <th scope="col" class="w-20">Student's average rating</th>
+              <th scope="col" class="w-20">Decision</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let classRequest of pendingClassRequests" class="text-center">
+              <td class="align-middle">{{classRequest.studentName}} {{classRequest.studentSurname}}</td>
+              <td class="align-middle">{{classRequest.subject}}</td>
+              <td class="align-middle">{{classRequest.description}}</td>
+              <td class="align-middle">/*TODO*/</td>
+              <td class="align-middle">
+                <div class="btn-group mt-3 mb-3" role="group">
+                  <button type="button" class="btn btn-outline-light" (click)="accept(classRequest)">
+                    Accept
+                  </button>
+                  <button type="button" class="btn btn-outline-light" data-bs-toggle="modal"
+                    [attr.data-bs-target]="'#classRequest' + classRequest.id">
+                    Reject
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="modal fade" *ngFor="let classRequest of pendingClassRequests"
+          [id]="'classRequest' + classRequest.id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" [id]="'classRequest' + classRequest.id">
+                  Why are you rejecting {{classRequest.studentName}} {{classRequest.studentSurname}}'s class
+                  request?
+                </h1>
+                <button type=" button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <textarea class="form-control" cols="15" rows="5"
+                      [(ngModel)]="classRequest.rejectionReason"></textarea>
+                  </div>
+                  <div class="col-sm-12 text-danger" *ngIf="classRequest.rejectionReason == ''">
+                    {{rejectionExplanationError}}
+                  </div>
+                  <div class="col-sm-12 text-success" *ngIf="classRequest.rejectionReason != ''">
+                    {{successMessage}}
+                  </div>
+                  <div class="col-sm-12 text-center mt-4 mb-3">
+                    <button class="btn btn-dark" (click)="reject(classRequest)">Confirm</button>
+                  </div>
+                  <div class="col-sm-12" hidden>
+                    <button #closeRejectionExplanationModalButton data-bs-dismiss="modal"
+                      (click)="hideRejectionExplanationModal()"></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="shouldShowPendingClassRequests && pendingClassRequests.length == 0">
+      <div class="col-sm-12 text-center text-white fw-bold mb-3">
+        There are no pending class requests.
+      </div>
+    </ng-container>
+  </div>
   <app-footer></app-footer>
 </div>

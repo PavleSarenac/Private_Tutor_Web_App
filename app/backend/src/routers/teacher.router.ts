@@ -27,4 +27,20 @@ teacherRouter.route("/updateWorktime").post(
     (request, response) => new TeacherController().updateWorktime(request, response)
 )
 
+teacherRouter.route("/getAllPendingClassRequests").get(
+    (request, response) => new TeacherController().getAllPendingClassRequests(request, response)
+)
+
+teacherRouter.route("/deleteExpiredClassRequests").get(
+    (request, response) => new TeacherController().deleteExpiredClassRequests(request, response)
+)
+
+teacherRouter.route("/acceptClassRequest").post(
+    (request, response) => new TeacherController().acceptClassRequest(request, response)
+)
+
+teacherRouter.route("/rejectClassRequest").post(
+    (request, response) => new TeacherController().rejectClassRequest(request, response)
+)
+
 export default teacherRouter
