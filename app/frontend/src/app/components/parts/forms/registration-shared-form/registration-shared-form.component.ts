@@ -177,6 +177,10 @@ export class RegistrationSharedFormComponent implements OnInit {
   register() {
     if (this.newUser.userType == "teacher") this.mergeCustomWithDefaultSubjects()
     if (!this.isRegistrationInputValid()) return
+    if (this.newUser.userType == "teacher") {
+      this.newUser.workingDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+      this.newUser.workingHours = "10:00-18:00"
+    }
     this.defaultService.uploadProfilePicture(this.profilePictureFormData!).subscribe(
       (imageMessage: Message) => {
         if (this.didProfilePictureUploadFail(imageMessage)) return

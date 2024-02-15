@@ -33,6 +33,7 @@ import { StudentSeeTeacherDetailsComponent } from './components/pages/user/stude
 import { BarChartTeachersPerSubjectComponent } from './components/parts/charts/bar-chart-teachers-per-subject/bar-chart-teachers-per-subject.component';
 import { PieChartTeachersGenderComponent } from './components/parts/charts/pie-chart-teachers-gender/pie-chart-teachers-gender.component';
 import { PieChartStudentsGenderComponent } from './components/parts/charts/pie-chart-students-gender/pie-chart-students-gender.component';
+import { TeacherClassesComponent } from './components/pages/user/teacher/teacher-classes/teacher-classes.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { PieChartStudentsGenderComponent } from './components/parts/charts/pie-c
     StudentSeeTeacherDetailsComponent,
     BarChartTeachersPerSubjectComponent,
     PieChartTeachersGenderComponent,
-    PieChartStudentsGenderComponent
+    PieChartStudentsGenderComponent,
+    TeacherClassesComponent
   ],
   imports: [
     BrowserModule,

@@ -20,4 +20,6 @@ export class User {
   isAccountActive: boolean = true
   isAccountPending: boolean = false
   isAccountBanned: boolean = false
+  workingDays: string[] = []
+  workingHours: string = ""
 }

@@ -22,7 +22,9 @@ const userSchema = new mongoose.Schema(
         cvPath: String,
         isAccountActive: Boolean,
         isAccountPending: Boolean,
-        isAccountBanned: Boolean
+        isAccountBanned: Boolean,
+        workingDays: Array,
+        workingHours: String
     },
     {
         versionKey: false
