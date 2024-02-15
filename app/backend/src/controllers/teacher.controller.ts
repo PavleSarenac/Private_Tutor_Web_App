@@ -111,4 +111,19 @@ export class TeacherController {
             (teachers) => response.json(teachers)
         ).catch((error) => console.log(error))
     }
+
+    updateWorktime = (request: express.Request, response: express.Response) => {
+        let teacher = request.body
+        UserModel.updateOne(
+            {
+                username: teacher.username
+            },
+            {
+                workingDays: teacher.workingDays,
+                workingHours: teacher.workingHours
+            }
+        ).then(
+            () => response.json({ content: "ok" })
+        ).catch((error) => console.log(error))
+    }
 }

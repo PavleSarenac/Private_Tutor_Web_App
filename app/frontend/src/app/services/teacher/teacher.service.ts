@@ -30,4 +30,8 @@ export class TeacherService {
   getTeachersTeachingSpecificStudentAge(studentAge: string) {
     return this.httpClient.get<User[]>(`${this.backendUrl}/getTeachersTeachingSpecificStudentAge?studentAge=${studentAge}`)
   }
+
+  updateWorktime(teacher: User) {
+    return this.httpClient.post<Message>(`${this.backendUrl}/updateWorktime`, teacher)
+  }
 }

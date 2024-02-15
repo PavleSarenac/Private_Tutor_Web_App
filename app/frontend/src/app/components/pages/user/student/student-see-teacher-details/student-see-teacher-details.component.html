@@ -18,11 +18,17 @@
           </li>
         </ul>
         <div class="card-footer">
+          <b>Working hours:</b> &nbsp;
+          <button class="btn btn-dark" data-bs-toggle="modal"
+            [attr.data-bs-target]="'#' + teacher.username + '-working-hours'">
+            Click to see
+          </button>
+        </div>
+        <div class="card-footer">
           <b>Reviews:</b> &nbsp;
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-outline-dark">Show</button>
-            <button type="button" class="btn btn-outline-dark">Hide</button>
-          </div>
+          <button class="btn btn-dark">
+            Click to see
+          </button>
         </div>
         <div class="card-footer">
           <b>Schedule a class:</b> &nbsp;
@@ -30,6 +36,25 @@
             <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal"
               data-bs-target="#schedule-class-form">Form</button>
             <button type="button" class="btn btn-outline-dark">Calendar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" [id]="teacher.username + '-working-hours'" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" [id]="teacher.username + '-working-hours'">
+              {{teacher.name}} {{teacher.surname}}'s working hours
+            </h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <span class="text-break" *ngFor="let day of teacher.workingDays">
+              {{day}} ({{teacher.workingHours}})
+              <br>
+            </span>
           </div>
         </div>
       </div>
@@ -77,29 +102,52 @@
                   </li>
                 </ul>
               </div>
+              <div class="col-sm-12">
+                <span *ngIf="class.subject == ''" class="text-danger small">{{subjectError}}</span>
+                <span *ngIf="class.subject != ''" class="text-success small">{{successMessage}}</span>
+              </div>
               <div class="col-sm-12 mt-2">
                 <label for="input-date" class="form-label">Date</label>
-                <input type="date" id="input-date" class="form-control" [(ngModel)]="class.date">
+                <input type="date" id="input-date" class="form-control" [(ngModel)]="class.startDate"
+                  [class.is-invalid]="class.startDate == ''" [class.is-valid]="class.startDate != ''">
+                <div class="invalid-feedback">
+                  {{dateError}}
+                </div>
+                <div class="valid-feedback">
+                  {{successMessage}}
+                </div>
               </div>
               <div class="col-sm-12 mt-2">
                 <label for="input-time" class="form-label">Time</label>
-                <input type="time" id="input-time" class="form-control" [(ngModel)]="class.time" step="1800">
+                <input type="time" id="input-time" class="form-control" [(ngModel)]="class.startTime"
+                  [class.is-invalid]="class.startTime == ''" [class.is-valid]="class.startTime != ''" step="1800">
+                <div class="invalid-feedback">
+                  {{timeError}}
+                </div>
+                <div class="valid-feedback">
+                  {{successMessage}}
+                </div>
               </div>
               <div class="col-sm-12 mt-2">
                 <label for="input-description" class="form-label">Description</label>
-                <input type="text" id="input-description" class="form-control" [(ngModel)]="class.description"
-                  step="1800">
+                <input type="text" id="input-description" class="form-control is-valid" [(ngModel)]="class.description">
+                <div class="valid-feedback">
+                  {{successMessage}}
+                </div>
               </div>
               <div class="col-sm-12 mt-2">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="double-class" [(ngModel)]="class.isDoubleClass">
+                  <input class="form-check-input" type="checkbox" id="double-class" [(ngModel)]="isDoubleClass">
                   <label class="form-check-label text-dark" for="double-class">
                     I want a double class.
                   </label>
                 </div>
               </div>
               <div class="col-sm-12 mt-2 text-center">
-                <button class="btn btn-dark">Schedule</button>
+                <button class="btn btn-dark" (click)="scheduleClass()">Schedule</button>
+              </div>
+              <div class="col-sm-12" hidden>
+                <button #closeModalButton data-bs-dismiss="modal" (click)="hideModal()"></button>
               </div>
             </div>
           </div>

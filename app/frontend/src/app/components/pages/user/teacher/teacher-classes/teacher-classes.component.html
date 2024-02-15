@@ -1,11 +1,59 @@
 <div class="container-fluid vh-100 overflow-auto">
   <app-teacher-header></app-teacher-header>
-  <div class="row main">
+  <div class="row main bg-dark rounded">
     <div class="col-sm-3"></div>
-    <div class="col-sm-6 text-dark">
-      aaaaaa
+    <div class="col-sm-6 text-center">
+      <div class="btn-group mt-3 mb-3" role="group">
+        <button type="button" class="btn btn-outline-light" (click)="showWorktimeForm()">Show worktime form</button>
+        <button type="button" class="btn btn-outline-light" (click)="hideWorktimeForm()">Hide worktime form</button>
+      </div>
     </div>
     <div class="col-sm-3"></div>
+    <ng-container *ngIf="shouldShowWorktimeForm">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6 mt-3 mb-3">
+        <label for="input-day" class="form-label text-white">
+          Define your working days
+        </label>
+        <select class="form-control choices-multiple" multiple id="input-day" [(ngModel)]="workingDays">
+          <option *ngFor="let day of daysInAWeek">{{day}}</option>
+        </select>
+        <span *ngIf="workingDays.length == 0" class="text-danger small">{{workingDaysError}}</span>
+        <span *ngIf="workingDays.length != 0" class="text-success small">{{successMessage}}</span>
+      </div>
+      <div class="col-sm-3"></div>
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6 mb-3">
+        <label for="input-time-start" class="form-label text-white">Define the start of your workday</label>
+        <input type="time" id="input-time-start" class="form-control" step="1800" [(ngModel)]="worktimeStart"
+          [class.is-invalid]="worktimeStart == ''" [class.is-valid]="worktimeStart != ''">
+        <div class="invalid-feedback">
+          {{worktimeStartError}}
+        </div>
+        <div class="valid-feedback">
+          {{successMessage}}
+        </div>
+      </div>
+      <div class="col-sm-3"></div>
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6 mb-3">
+        <label for="input-time-end" class="form-label text-white">Define the end of your workday</label>
+        <input type="time" id="input-time-end" class="form-control" step="1800" [(ngModel)]="worktimeEnd"
+          [class.is-invalid]="worktimeEnd == ''" [class.is-valid]="worktimeEnd != ''">
+        <div class="invalid-feedback">
+          {{worktimeEndError}}
+        </div>
+        <div class="valid-feedback">
+          {{successMessage}}
+        </div>
+      </div>
+      <div class="col-sm-3"></div>
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6 mb-3 text-center">
+        <button class="btn btn-light" (click)="updateWorktime()">Update your worktime</button>
+      </div>
+      <div class="col-sm-3"></div>
+    </ng-container>
   </div>
   <app-footer></app-footer>
 </div>

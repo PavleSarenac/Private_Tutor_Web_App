@@ -2,8 +2,9 @@ export class Class {
   student: string = ""
   teacher: string = ""
   subject: string = ""
-  date: string = ""
-  time: string = ""
+  startDate: string = ""
+  endDate: string = ""
+  startTime: string = ""
+  endTime: string = ""
   description: string = ""
-  isDoubleClass: boolean = false
 }
