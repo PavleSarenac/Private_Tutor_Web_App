@@ -16,13 +16,22 @@
               Click to see
             </button>
           </li>
-          <li class="list-group-item"><b>Reviews:</b> &nbsp;
-            <div class="btn-group" role="group">
-              <button type="button" class="btn btn-outline-dark">Show</button>
-              <button type="button" class="btn btn-outline-dark">Hide</button>
-            </div>
-          </li>
         </ul>
+        <div class="card-footer">
+          <b>Reviews:</b> &nbsp;
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-dark">Show</button>
+            <button type="button" class="btn btn-outline-dark">Hide</button>
+          </div>
+        </div>
+        <div class="card-footer">
+          <b>Schedule a class:</b> &nbsp;
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal"
+              data-bs-target="#schedule-class-form">Form</button>
+            <button type="button" class="btn btn-outline-dark">Calendar</button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="modal fade" [id]="teacher.username + '-subjects'" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -37,6 +46,59 @@
           </div>
           <div class="modal-body">
             <span class="text-break" *ngFor="let subject of teacher.teacherSubjects">{{subject}} <br></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="schedule-class-form" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="schedule-class-form">
+              Schedule a class with {{teacher.name}} {{teacher.surname}}
+            </h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="dropdown col-sm-12">
+                <span class="text-dark">Subject:</span>&nbsp;
+                <button class="btn btn-outline-dark dropdown-toggle" [disabled]="teacher.teacherSubjects.length == 1"
+                  type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <span *ngIf="class.subject == ''">Pick one</span>
+                  <span *ngIf="class.subject != ''">{{class.subject}}</span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li *ngFor="let subject of teacher.teacherSubjects">
+                    <button class="btn btn-dark dropdown-item"
+                      (click)="updateChosenSubject(subject)">{{subject}}</button>
+                    <hr class="dropdown-divider">
+                  </li>
+                </ul>
+              </div>
+              <div class="col-sm-12 mt-2">
+                <label for="input-date" class="form-label">Date</label>
+                <input type="date" id="input-date" class="form-control" [(ngModel)]="class.date">
+              </div>
+              <div class="col-sm-12 mt-2">
+                <label for="input-time" class="form-label">Time</label>
+                <input type="time" id="input-time" class="form-control" [(ngModel)]="class.time" step="1800">
+              </div>
+              <div class="col-sm-12 mt-2">
+                <label for="input-description" class="form-label">Description</label>
+                <input type="text" id="input-description" class="form-control" [(ngModel)]="class.description"
+                  step="1800">
+              </div>
+              <div class="col-sm-12 mt-2">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="double-class" [(ngModel)]="class.isDoubleClass">
+                  <label class="form-check-label text-dark" for="double-class">
+                    I want a double class.
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
