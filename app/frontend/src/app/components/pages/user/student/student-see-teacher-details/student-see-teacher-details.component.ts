@@ -2,10 +2,11 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Class } from 'src/app/models/class.model';
 import { User } from 'src/app/models/user.model';
 import { DefaultService } from 'src/app/services/default/default.service';
+import { StudentService } from 'src/app/services/student/student.service';
 
-const NUMBER_OF_MILLISECONDS_IN_ONE_SECOND = 1000
-const NUMBER_OF_SECONDS_IN_ONE_MINUTE = 60
 const NUMBER_OF_MINUTES_IN_ONE_HOUR = 60
+const NUMBER_OF_SECONDS_IN_ONE_MINUTE = 60
+const NUMBER_OF_MILLISECONDS_IN_ONE_SECOND = 1000
 
 const NUMBER_OF_MILLISECONDS_IN_ONE_HOUR = NUMBER_OF_MINUTES_IN_ONE_HOUR * NUMBER_OF_SECONDS_IN_ONE_MINUTE * NUMBER_OF_MILLISECONDS_IN_ONE_SECOND
 
@@ -31,7 +32,8 @@ export class StudentSeeTeacherDetailsComponent implements OnInit {
   numberToStringDaysMappings: Map<number, string> = new Map<number, string>()
 
   constructor(
-    private defaultService: DefaultService
+    private defaultService: DefaultService,
+    private studentService: StudentService
   ) { }
 
   ngOnInit(): void {
@@ -74,11 +76,19 @@ export class StudentSeeTeacherDetailsComponent implements OnInit {
 
   scheduleClass() {
     if (!this.isSchedulingInputValid()) return
-    this.hideModal()
+    this.studentService.scheduleClass(this.class).subscribe(
+      () => {
+        this.hideModal()
+        setTimeout(() => {
+          this.initializeClass()
+        }, 1500)
+      }
+    )
   }
 
   isSchedulingInputValid(): boolean {
     if (this.isSomeClassDataMissing()) return false
+    if (this.isClassDateTimeStartInThePast()) return false
     this.setClassEndTime()
     this.setClassEndDate()
     if (!this.isClassAtHalfOrFullHour()) return false
@@ -89,6 +99,25 @@ export class StudentSeeTeacherDetailsComponent implements OnInit {
       return false
     }
     return true
+  }
+
+  isClassDateTimeStartInThePast(): boolean {
+    let currentDateTimeInMillis = Date.now() + NUMBER_OF_MILLISECONDS_IN_ONE_HOUR
+    let classStartDateTimeInMillis = this.getClassStartDateTimeInMillis()
+    if (classStartDateTimeInMillis < currentDateTimeInMillis) {
+      this.class.startDate = ""
+      this.class.startTime = ""
+      this.dateError = this.timeError = "You have to schedule a class in the future."
+      return true
+    }
+    return false
+  }
+
+  getClassStartDateTimeInMillis(): number {
+    let dayMillis = new Date(this.class.startDate).getTime()
+    let hourMillis = (Number(this.class.startTime.substring(0, this.class.startTime.indexOf(":")))) * NUMBER_OF_MILLISECONDS_IN_ONE_HOUR
+    let minuteMillis = Number(this.class.startTime.substring(this.class.startTime.indexOf(":") + 1)) * NUMBER_OF_SECONDS_IN_ONE_MINUTE
+    return dayMillis + hourMillis + minuteMillis
   }
 
   setClassEndTime() {
@@ -106,10 +135,7 @@ export class StudentSeeTeacherDetailsComponent implements OnInit {
     if (this.class.endTime > this.class.startTime) {
       this.class.endDate = this.class.startDate
     } else {
-      let dayMillis = new Date(this.class.startDate).getTime()
-      let hourMillis = (Number(this.class.startTime.substring(0, this.class.startTime.indexOf(":"))) + 1) * NUMBER_OF_MILLISECONDS_IN_ONE_HOUR
-      let minuteMillis = Number(this.class.startTime.substring(this.class.startTime.indexOf(":") + 1)) * NUMBER_OF_SECONDS_IN_ONE_MINUTE
-      let endDateInMillis = dayMillis + hourMillis + minuteMillis
+      let endDateInMillis = this.getClassStartDateTimeInMillis()
       endDateInMillis += NUMBER_OF_MILLISECONDS_IN_ONE_HOUR * (this.isDoubleClass ? 2 : 1)
       let endDateTime = new Date(endDateInMillis).toISOString()
       let endDate = endDateTime.substring(0, endDateTime.indexOf("T"))
@@ -169,8 +195,9 @@ export class StudentSeeTeacherDetailsComponent implements OnInit {
   }
 
   initializeClass() {
-    this.class.teacher = this.teacher.username
-    this.class.student = JSON.parse(localStorage.getItem("loggedInUser")!).username
+    this.class = new Class()
+    this.class.teacherUsername = this.teacher.username
+    this.class.studentUsername = JSON.parse(localStorage.getItem("loggedInUser")!).username
     if (this.teacher.teacherSubjects.length == 1) this.class.subject = this.teacher.teacherSubjects[0]
   }
 

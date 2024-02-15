@@ -11,4 +11,8 @@ studentRouter.route("/getAllStudents").get(
     (request, response) => new StudentController().getAllStudents(request, response)
 )
 
+studentRouter.route("/scheduleClass").post(
+    (request, response) => new StudentController().scheduleClass(request, response)
+)
+
 export default studentRouter
