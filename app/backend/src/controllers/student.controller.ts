@@ -67,7 +67,10 @@ export class StudentController {
 
         ClassModel.find(
             {
-                $or: [{ isClassAccepted: true }, { isClassAccepted: false }],
+                $or: [
+                    { studentUsername: classRequest.studentUsername },
+                    { teacherUsername: classRequest.teacherUsername }
+                ],
                 isClassRejected: false,
                 isClassCancelled: false,
                 isClassDone: false,
