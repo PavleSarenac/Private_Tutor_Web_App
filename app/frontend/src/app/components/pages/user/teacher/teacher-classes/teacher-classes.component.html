@@ -138,12 +138,12 @@
                   <div class="col-sm-12 text-success" *ngIf="upcomingClass.cancellationReason != ''">
                     {{successMessage}}
                   </div>
-                  <div class="col-sm-12 text-center mt-4 mb-3">
-                    <button class="btn btn-dark" (click)="cancel(upcomingClass)">Confirm</button>
+                  <div class="col-sm-12 text-center mt-4 mb-3" *ngIf="upcomingClass.cancellationReason != ''">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal"
+                      (click)="cancel(upcomingClass)">Confirm</button>
                   </div>
-                  <div class="col-sm-12" hidden>
-                    <button #closeCancellationExplanationModalButton data-bs-dismiss="modal"
-                      (click)="hideCancellationExplanationModal()"></button>
+                  <div class="col-sm-12 text-center mt-4 mb-3" *ngIf="upcomingClass.cancellationReason == ''">
+                    <button type="button" class="btn btn-dark">Confirm</button>
                   </div>
                 </div>
               </div>
@@ -274,7 +274,7 @@
                   Why are you rejecting {{classRequest.studentName}} {{classRequest.studentSurname}}'s class
                   request?
                 </h1>
-                <button type=" button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
                 <div class="row">
@@ -288,12 +288,12 @@
                   <div class="col-sm-12 text-success" *ngIf="classRequest.rejectionReason != ''">
                     {{successMessage}}
                   </div>
-                  <div class="col-sm-12 text-center mt-4 mb-3">
-                    <button class="btn btn-dark" (click)="reject(classRequest)">Confirm</button>
+                  <div class="col-sm-12 text-center mt-4 mb-3" *ngIf="classRequest.rejectionReason != ''"
+                    data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-dark" (click)="reject(classRequest)">Confirm</button>
                   </div>
-                  <div class="col-sm-12" hidden>
-                    <button #closeRejectionExplanationModalButton data-bs-dismiss="modal"
-                      (click)="hideRejectionExplanationModal()"></button>
+                  <div class="col-sm-12 text-center mt-4 mb-3" *ngIf="classRequest.rejectionReason == ''">
+                    <button type="button" class="btn btn-dark">Confirm</button>
                   </div>
                 </div>
               </div>

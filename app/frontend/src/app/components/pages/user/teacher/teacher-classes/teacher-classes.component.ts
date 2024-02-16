@@ -36,10 +36,7 @@ export class TeacherClassesComponent implements OnInit {
   shouldShowPendingClassRequests: boolean = false
 
   rejectionExplanationError: string = "Please explain why you are rejecting this class request."
-  @ViewChild("closeRejectionExplanationModalButton") closeRejectionExplanationModal: ElementRef | undefined
-
   cancellationExplanationError: string = "Please explain why you are cancelling this class."
-  @ViewChild("closeCancellationExplanationModalButton") closeCancellationExplanationModal: ElementRef | undefined
 
   allAcceptedConfirmedClassesForNextThreeDays: Class[] = []
 
@@ -117,14 +114,6 @@ export class TeacherClassesComponent implements OnInit {
     this.shouldShowAllUpcomingClasses = false
   }
 
-  hideRejectionExplanationModal() {
-    this.closeRejectionExplanationModal!.nativeElement.click()
-  }
-
-  hideCancellationExplanationModal() {
-    this.closeCancellationExplanationModal!.nativeElement.click()
-  }
-
   fetchPendingClassRequests() {
     this.teacherService.deleteExpiredClassRequests().subscribe(
       () => {
@@ -150,7 +139,6 @@ export class TeacherClassesComponent implements OnInit {
 
   reject(classRequest: Class) {
     if (classRequest.rejectionReason == "") return
-    this.hideRejectionExplanationModal()
     this.teacherService.rejectClassRequest(classRequest).subscribe(
       () => {
         this.firstFiveUpcomingClasses = []
@@ -163,7 +151,6 @@ export class TeacherClassesComponent implements OnInit {
 
   cancel(upcomingClass: Class) {
     if (upcomingClass.cancellationReason == "") return
-    this.hideCancellationExplanationModal()
     this.teacherService.cancelClass(upcomingClass).subscribe(
       () => {
         this.firstFiveUpcomingClasses = []
