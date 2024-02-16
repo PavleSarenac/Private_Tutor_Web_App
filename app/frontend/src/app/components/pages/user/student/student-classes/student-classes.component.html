@@ -150,7 +150,9 @@
             {{ratingError}}
           </div>
           <div class="col-sm-12 text-center mt-4">
-            <button class="btn btn-dark" (click)="rateTeacher(pastClass)" data-bs-dismiss="modal">Rate</button>
+            <button class="btn btn-dark" (click)="rateTeacher(pastClass)" data-bs-dismiss="modal"
+              *ngIf="studentToTeacherGrade != 0">Rate</button>
+            <button class="btn btn-dark" *ngIf="studentToTeacherGrade == 0">Rate</button>
           </div>
         </div>
       </div>
