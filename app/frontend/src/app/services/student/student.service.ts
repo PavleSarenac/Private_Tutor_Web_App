@@ -43,4 +43,8 @@ export class StudentService {
   readNotification(classId: number) {
     return this.httpClient.get<Message>(`${this.backendUrl}/readNotification?classId=${classId}`)
   }
+
+  rateTeacher(pastClass: Class) {
+    return this.httpClient.post<Message>(`${this.backendUrl}/rateTeacher`, pastClass)
+  }
 }

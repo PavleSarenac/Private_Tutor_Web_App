@@ -419,6 +419,21 @@ export class StudentController {
         ).catch((error) => console.log(error))
     }
 
+    rateTeacher = (request: express.Request, response: express.Response) => {
+        let classObject: any = request.body
+        ClassModel.updateOne(
+            {
+                id: classObject.id
+            },
+            {
+                studentToTeacherComment: classObject.studentToTeacherComment,
+                studentToTeacherGrade: classObject.studentToTeacherGrade
+            }
+        ).then(
+            () => response.json({ content: "ok" })
+        ).catch((error) => console.log(error))
+    }
+
     convertMillisToDateTimeStringWithoutSeconds(dateTimeInMillis: number): string {
         let currentDateTime = new Date(dateTimeInMillis).toISOString()
         let currentDate = currentDateTime.substring(0, currentDateTime.indexOf("T"))

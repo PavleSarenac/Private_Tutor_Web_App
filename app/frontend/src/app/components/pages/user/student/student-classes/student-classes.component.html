@@ -93,7 +93,13 @@
               </td>
               <td class="align-middle" *ngIf="pastClass.teacherToStudentComment == ''">-</td>
               <td class="align-middle">
-
+                <ng-container *ngIf="pastClass.studentToTeacherGrade == 0">
+                  <button class="btn btn-light" data-bs-toggle="modal"
+                    [attr.data-bs-target]="'#class' + pastClass.id">Rate</button>
+                </ng-container>
+                <ng-container *ngIf="pastClass.studentToTeacherGrade != 0">
+                  Already rated.
+                </ng-container>
               </td>
             </tr>
           </tbody>
@@ -107,4 +113,47 @@
     </ng-container>
   </div>
   <app-footer></app-footer>
+</div>
+<div class="modal fade" *ngFor="let pastClass of allPastClasses" [id]="'class' + pastClass.id" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" [id]="'class' + pastClass.id">
+          Rate {{pastClass.teacherName}} {{pastClass.teacherSurname}}
+        </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-start">
+        <div class="row">
+          <div class="col-sm-12 mb-2">
+            Leave a comment:
+          </div>
+          <div class="col-sm-12">
+            <textarea class="form-control" cols="15" rows="5" [(ngModel)]="pastClass.studentToTeacherComment">
+            </textarea>
+          </div>
+          <div class="col-sm-12 mt-3 mb-2">
+            Leave a rating: &nbsp;
+            <i class="bi" [class.bi-star-fill]="studentToTeacherGrade >= 1" [class.bi-star]="studentToTeacherGrade == 0"
+              (click)="setRating(1)"></i>&nbsp;
+            <i class="bi" [class.bi-star-fill]="studentToTeacherGrade >= 2" [class.bi-star]="studentToTeacherGrade < 2"
+              (click)="setRating(2)"></i>&nbsp;
+            <i class="bi" [class.bi-star-fill]="studentToTeacherGrade >= 3" [class.bi-star]="studentToTeacherGrade < 3"
+              (click)="setRating(3)"></i>&nbsp;
+            <i class="bi" [class.bi-star-fill]="studentToTeacherGrade >= 4" [class.bi-star]="studentToTeacherGrade < 4"
+              (click)="setRating(4)"></i>&nbsp;
+            <i class="bi" [class.bi-star-fill]="studentToTeacherGrade == 5" [class.bi-star]="studentToTeacherGrade < 5"
+              (click)="setRating(5)"></i>
+          </div>
+          <div class="col-sm-12 text-danger" *ngIf="studentToTeacherGrade == 0">
+            {{ratingError}}
+          </div>
+          <div class="col-sm-12 text-center mt-4">
+            <button class="btn btn-dark" (click)="rateTeacher(pastClass)" data-bs-dismiss="modal">Rate</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -25,6 +25,9 @@ export class StudentClassesComponent implements OnInit {
   allPastClasses: Class[] = []
   shouldShowPastClasses: boolean = false
 
+  ratingError: string = "Please give this teacher a grade."
+  studentToTeacherGrade: number = 0
+
   constructor(
     private studentService: StudentService,
     private defaultService: DefaultService
@@ -34,14 +37,28 @@ export class StudentClassesComponent implements OnInit {
     this.defaultService.getUser(JSON.parse(localStorage.getItem("loggedInUser")!).username).subscribe(
       (student: User) => {
         this.student = student
-        this.studentService.getAllUpcomingClasses(this.student.username).subscribe(
-          (upcomingClasses: Class[]) => {
-            this.allUpcomingClasses = upcomingClasses
-            this.studentService.getAllPastClasses(this.student.username).subscribe(
-              (pastClasses: Class[]) => {
-                this.allPastClasses = pastClasses
-              }
-            )
+        this.fetchClasses()
+      }
+    )
+  }
+
+  rateTeacher(pastClass: Class) {
+    if (this.studentToTeacherGrade == 0) return
+    pastClass.studentToTeacherGrade = this.studentToTeacherGrade
+    this.studentService.rateTeacher(pastClass).subscribe()
+  }
+
+  setRating(rating: number) {
+    this.studentToTeacherGrade = rating
+  }
+
+  fetchClasses() {
+    this.studentService.getAllUpcomingClasses(this.student.username).subscribe(
+      (upcomingClasses: Class[]) => {
+        this.allUpcomingClasses = upcomingClasses
+        this.studentService.getAllPastClasses(this.student.username).subscribe(
+          (pastClasses: Class[]) => {
+            this.allPastClasses = pastClasses
           }
         )
       }

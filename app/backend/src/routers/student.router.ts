@@ -35,4 +35,8 @@ studentRouter.route("/readNotification").get(
     (request, response) => new StudentController().readNotification(request, response)
 )
 
+studentRouter.route("/rateTeacher").post(
+    (request, response) => new StudentController().rateTeacher(request, response)
+)
+
 export default studentRouter

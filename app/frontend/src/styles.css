@@ -9,3 +9,7 @@ body {
   margin-right: 2rem;
   margin-bottom: 5rem;
 }
+
+.bi-star-fill {
+  color: gold;
+}
