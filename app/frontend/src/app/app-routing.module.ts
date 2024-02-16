@@ -24,6 +24,7 @@ import { StudentTeachersPreviewComponent } from './components/pages/user/student
 import { StudentSeeTeacherDetailsComponent } from './components/pages/user/student/student-see-teacher-details/student-see-teacher-details.component';
 import { TeacherClassesComponent } from './components/pages/user/teacher/teacher-classes/teacher-classes.component';
 import { StudentClassesComponent } from './components/pages/user/student/student-classes/student-classes.component';
+import { StudentNotificationsComponent } from './components/pages/user/student/student-notifications/student-notifications.component';
 
 const routes: Routes = [
   { path: "", component: IndexComponent, canActivate: [isGuestGuard] },
@@ -46,6 +47,7 @@ const routes: Routes = [
   { path: "student-see-teacher-details", component: StudentSeeTeacherDetailsComponent, canActivate: [isStudentGuard] },
   { path: "teacher-classes", component: TeacherClassesComponent, canActivate: [isTeacherGuard] },
   { path: "student-classes", component: StudentClassesComponent, canActivate: [isStudentGuard] },
+  { path: "student-notifications", component: StudentNotificationsComponent, canActivate: [isStudentGuard] },
   { path: "**", redirectTo: "" }
 ];
 

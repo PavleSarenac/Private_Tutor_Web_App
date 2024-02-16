@@ -178,9 +178,13 @@ export class TeacherController {
                                         isClassAccepted: classRequest.isClassAccepted,
                                         isClassRejected: classRequest.isClassRejected,
                                         isClassCancelled: classRequest.isClassCancelled,
+                                        decisionDate: classRequest.decisionDate,
+                                        decisionTime: classRequest.decisionTime,
+                                        isNotificationRead: classRequest.isNotificationRead,
                                         isClassDone: classRequest.isClassDone,
                                         didClassRequestExpire: classRequest.didClassRequestExpire,
                                         rejectionReason: classRequest.rejectionReason,
+                                        cancellationReason: classRequest.cancellationReason,
 
                                         studentName: student.name,
                                         studentSurname: student.surname
@@ -197,7 +201,7 @@ export class TeacherController {
 
     deleteExpiredClassRequests = (request: express.Request, response: express.Response) => {
         let currentDateTimeInMillis = Date.now()
-        let currentDateTime = this.convertMillisToDateTimeString(currentDateTimeInMillis + NUMBER_OF_MILLISECONDS_IN_ONE_HOUR)
+        let currentDateTime = this.convertMillisToDateTimeStringWithoutSeconds(currentDateTimeInMillis + NUMBER_OF_MILLISECONDS_IN_ONE_HOUR)
         let currentDate = currentDateTime.substring(0, currentDateTime.indexOf(" "))
         let currentTime = currentDateTime.substring(currentDateTime.indexOf(" ") + 1)
         ClassModel.find({}).then(
@@ -222,12 +226,18 @@ export class TeacherController {
 
     acceptClassRequest = (request: express.Request, response: express.Response) => {
         let classRequest = request.body
+        let currentDateTimeString = this.convertMillisToDateTimeStringWithMilliseconds(Date.now() + NUMBER_OF_MILLISECONDS_IN_ONE_HOUR)
+        let currentDate = currentDateTimeString.substring(0, currentDateTimeString.indexOf(" "))
+        let currentTime = currentDateTimeString.substring(currentDateTimeString.indexOf(" ") + 1)
         ClassModel.updateOne(
             {
                 id: classRequest.id
             },
             {
-                isClassAccepted: true
+                isClassAccepted: true,
+                decisionDate: currentDate,
+                decisionTime: currentTime,
+                isNotificationRead: false
             }
         ).then(
             () => response.json({ content: "ok" })
@@ -236,13 +246,41 @@ export class TeacherController {
 
     rejectClassRequest = (request: express.Request, response: express.Response) => {
         let classRequest = request.body
+        let currentDateTimeString = this.convertMillisToDateTimeStringWithMilliseconds(Date.now() + NUMBER_OF_MILLISECONDS_IN_ONE_HOUR)
+        let currentDate = currentDateTimeString.substring(0, currentDateTimeString.indexOf(" "))
+        let currentTime = currentDateTimeString.substring(currentDateTimeString.indexOf(" ") + 1)
         ClassModel.updateOne(
             {
                 id: classRequest.id
             },
             {
                 isClassRejected: true,
-                rejectionReason: classRequest.rejectionReason
+                rejectionReason: classRequest.rejectionReason,
+                decisionDate: currentDate,
+                decisionTime: currentTime,
+                isNotificationRead: false
+            }
+        ).then(
+            () => response.json({ content: "ok" })
+        ).catch((error) => console.log(error))
+    }
+
+    cancelClass = (request: express.Request, response: express.Response) => {
+        let upcomingClass = request.body
+        let currentDateTimeString = this.convertMillisToDateTimeStringWithMilliseconds(Date.now() + NUMBER_OF_MILLISECONDS_IN_ONE_HOUR)
+        let currentDate = currentDateTimeString.substring(0, currentDateTimeString.indexOf(" "))
+        let currentTime = currentDateTimeString.substring(currentDateTimeString.indexOf(" ") + 1)
+        ClassModel.updateOne(
+            {
+                id: upcomingClass.id
+            },
+            {
+                isClassAccepted: false,
+                isClassCancelled: true,
+                cancellationReason: upcomingClass.cancellationReason,
+                decisionDate: currentDate,
+                decisionTime: currentTime,
+                isNotificationRead: false
             }
         ).then(
             () => response.json({ content: "ok" })
@@ -255,12 +293,15 @@ export class TeacherController {
         let currentDateTimeInMillis = Date.now() + NUMBER_OF_MILLISECONDS_IN_ONE_HOUR
         let finalDateTimeInMillis = currentDateTimeInMillis + 3 * NUMBER_OF_MILLISECONDS_IN_ONE_DAY
 
-        let currentDateTimeString = this.convertMillisToDateTimeString(currentDateTimeInMillis)
-        let finalDateTimeString = this.convertMillisToDateTimeString(finalDateTimeInMillis)
+        let currentDateTimeString = this.convertMillisToDateTimeStringWithMilliseconds(currentDateTimeInMillis)
+        let finalDateTimeString = this.convertMillisToDateTimeStringWithoutSeconds(finalDateTimeInMillis)
 
         let currentDateString = currentDateTimeString.substring(0, currentDateTimeString.indexOf(" "))
-        let currentTimeString = currentDateTimeString.substring(currentDateTimeString.indexOf(" ") + 1)
         let finalDateString = finalDateTimeString.substring(0, finalDateTimeString.indexOf(" "))
+
+        let currentDateTimePrecise = this.convertMillisToDateTimeStringWithMilliseconds(currentDateTimeInMillis)
+        let currentDatePrecise = currentDateTimePrecise.substring(0, currentDateTimePrecise.indexOf(" "))
+        let currentTimePrecise = currentDateTimePrecise.substring(currentDateTimePrecise.indexOf(" ") + 1)
 
         ClassModel.updateMany(
             {
@@ -269,8 +310,8 @@ export class TeacherController {
                 isClassRejected: false,
                 isClassCancelled: false,
                 isClassDone: false,
-                endDate: { $lte: currentDateString },
-                endTime: { $lte: currentTimeString }
+                endDate: { $lte: currentDatePrecise },
+                endTime: { $lte: currentTimePrecise }
             },
             {
                 isClassAccepted: false,
@@ -325,6 +366,9 @@ export class TeacherController {
                                                 isClassAccepted: classRequest.isClassAccepted,
                                                 isClassRejected: classRequest.isClassRejected,
                                                 isClassCancelled: classRequest.isClassCancelled,
+                                                decisionDate: classRequest.decisionDate,
+                                                decisionTime: classRequest.decisionTime,
+                                                isNotificationRead: classRequest.isNotificationRead,
                                                 isClassDone: classRequest.isClassDone,
                                                 didClassRequestExpire: classRequest.didClassRequestExpire,
                                                 rejectionReason: classRequest.rejectionReason,
@@ -345,26 +389,18 @@ export class TeacherController {
         ).catch((error) => console.log(error))
     }
 
-    cancelClass = (request: express.Request, response: express.Response) => {
-        let upcomingClass = request.body
-        ClassModel.updateOne(
-            {
-                id: upcomingClass.id
-            },
-            {
-                isClassAccepted: false,
-                isClassCancelled: true,
-                cancellationReason: upcomingClass.cancellationReason
-            }
-        ).then(
-            () => response.json({ content: "ok" })
-        ).catch((error) => console.log(error))
-    }
-
-    convertMillisToDateTimeString(dateTimeInMillis: number): string {
+    convertMillisToDateTimeStringWithoutSeconds(dateTimeInMillis: number): string {
         let currentDateTime = new Date(dateTimeInMillis).toISOString()
         let currentDate = currentDateTime.substring(0, currentDateTime.indexOf("T"))
         let currentTime = currentDateTime.substring(currentDateTime.indexOf("T") + 1, currentDateTime.indexOf(".") - 3)
+        currentDateTime = currentDate + " " + currentTime
+        return currentDateTime
+    }
+
+    convertMillisToDateTimeStringWithMilliseconds(dateTimeInMillis: number): string {
+        let currentDateTime = new Date(dateTimeInMillis).toISOString()
+        let currentDate = currentDateTime.substring(0, currentDateTime.indexOf("T"))
+        let currentTime = currentDateTime.substring(currentDateTime.indexOf("T") + 1, currentDateTime.indexOf("Z"))
         currentDateTime = currentDate + " " + currentTime
         return currentDateTime
     }

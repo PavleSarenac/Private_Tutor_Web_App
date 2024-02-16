@@ -35,6 +35,7 @@ import { PieChartTeachersGenderComponent } from './components/parts/charts/pie-c
 import { PieChartStudentsGenderComponent } from './components/parts/charts/pie-chart-students-gender/pie-chart-students-gender.component';
 import { TeacherClassesComponent } from './components/pages/user/teacher/teacher-classes/teacher-classes.component';
 import { StudentClassesComponent } from './components/pages/user/student/student-classes/student-classes.component';
+import { StudentNotificationsComponent } from './components/pages/user/student/student-notifications/student-notifications.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { StudentClassesComponent } from './components/pages/user/student/student
     PieChartTeachersGenderComponent,
     PieChartStudentsGenderComponent,
     TeacherClassesComponent,
-    StudentClassesComponent
+    StudentClassesComponent,
+    StudentNotificationsComponent
   ],
   imports: [
     BrowserModule,

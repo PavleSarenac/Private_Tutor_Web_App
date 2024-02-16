@@ -123,7 +123,7 @@ export class StudentController {
         let studentUsername = request.query.studentUsername
 
         let currentDateTimeInMillis = Date.now() + NUMBER_OF_MILLISECONDS_IN_ONE_HOUR
-        let currentDateTimeString = this.convertMillisToDateTimeString(currentDateTimeInMillis)
+        let currentDateTimeString = this.convertMillisToDateTimeStringWithoutSeconds(currentDateTimeInMillis)
         let currentDateString = currentDateTimeString.substring(0, currentDateTimeString.indexOf(" "))
         let currentTimeString = currentDateTimeString.substring(currentDateTimeString.indexOf(" ") + 1)
 
@@ -182,6 +182,9 @@ export class StudentController {
                                                 isClassAccepted: classRequest.isClassAccepted,
                                                 isClassRejected: classRequest.isClassRejected,
                                                 isClassCancelled: classRequest.isClassCancelled,
+                                                decisionDate: classRequest.decisionDate,
+                                                decisionTime: classRequest.decisionTime,
+                                                isNotificationRead: classRequest.isNotificationRead,
                                                 isClassDone: classRequest.isClassDone,
                                                 didClassRequestExpire: classRequest.didClassRequestExpire,
                                                 rejectionReason: classRequest.rejectionReason,
@@ -202,7 +205,91 @@ export class StudentController {
         )
     }
 
-    convertMillisToDateTimeString(dateTimeInMillis: number): string {
+    getRelevantClassesForNotifications = (request: express.Request, response: express.Response) => {
+        let studentUsername = request.query.studentUsername
+        ClassModel.find(
+            {
+                studentUsername: studentUsername,
+                isClassDone: false,
+                $or: [
+                    {
+                        isClassAccepted: true
+                    },
+                    {
+                        isClassRejected: true
+                    },
+                    {
+                        isClassCancelled: true
+                    }
+                ]
+            }
+        ).sort(
+            {
+                decisionDate: "descending",
+                decisionTime: "descending"
+            }
+        ).then(
+            (classes: any[]) => {
+                UserModel.find(
+                    {
+                        userType: "teacher"
+                    }
+                ).then(
+                    (teachers: any[]) => {
+                        let responseClasses: any[] = []
+                        classes.forEach(
+                            (classRequest: any) => {
+                                let teacher = teachers.find((teacher) => teacher.username == classRequest.teacherUsername)
+                                responseClasses.push(
+                                    {
+                                        id: classRequest.id,
+                                        studentUsername: classRequest.studentUsername,
+                                        teacherUsername: classRequest.teacherUsername,
+                                        subject: classRequest.subject,
+                                        startDate: classRequest.startDate,
+                                        endDate: classRequest.endDate,
+                                        startTime: classRequest.startTime,
+                                        endTime: classRequest.endTime,
+                                        description: classRequest.description,
+                                        isClassAccepted: classRequest.isClassAccepted,
+                                        isClassRejected: classRequest.isClassRejected,
+                                        isClassCancelled: classRequest.isClassCancelled,
+                                        decisionDate: classRequest.decisionDate,
+                                        decisionTime: classRequest.decisionTime,
+                                        isNotificationRead: classRequest.isNotificationRead,
+                                        isClassDone: classRequest.isClassDone,
+                                        didClassRequestExpire: classRequest.didClassRequestExpire,
+                                        rejectionReason: classRequest.rejectionReason,
+                                        cancellationReason: classRequest.cancellationReason,
+
+                                        teacherName: teacher.name,
+                                        teacherSurname: teacher.surname
+                                    }
+                                )
+                            }
+                        )
+                        response.json(responseClasses)
+                    }
+                ).catch((error) => console.log(error))
+            }
+        ).catch((error) => console.log(error))
+    }
+
+    readNotification = (request: express.Request, response: express.Response) => {
+        let classId = request.query.classId
+        ClassModel.updateOne(
+            {
+                id: classId
+            },
+            {
+                isNotificationRead: true
+            }
+        ).then(
+            () => response.json({ content: "ok" })
+        ).catch((error) => console.log(error))
+    }
+
+    convertMillisToDateTimeStringWithoutSeconds(dateTimeInMillis: number): string {
         let currentDateTime = new Date(dateTimeInMillis).toISOString()
         let currentDate = currentDateTime.substring(0, currentDateTime.indexOf("T"))
         let currentTime = currentDateTime.substring(currentDateTime.indexOf("T") + 1, currentDateTime.indexOf(".") - 3)

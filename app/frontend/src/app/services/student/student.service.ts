@@ -31,4 +31,12 @@ export class StudentService {
   getAllUpcomingClasses(studentUsername: string) {
     return this.httpClient.get<Class[]>(`${this.backendUrl}/getAllUpcomingClasses?studentUsername=${studentUsername}`)
   }
+
+  getRelevantClassesForNotifications(studentUsername: string) {
+    return this.httpClient.get<Class[]>(`${this.backendUrl}/getRelevantClassesForNotifications?studentUsername=${studentUsername}`)
+  }
+
+  readNotification(classId: number) {
+    return this.httpClient.get<Message>(`${this.backendUrl}/readNotification?classId=${classId}`)
+  }
 }

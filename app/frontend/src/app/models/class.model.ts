@@ -11,6 +11,9 @@ export class Class {
   isClassAccepted: boolean = false
   isClassRejected: boolean = false
   isClassCancelled: boolean = false
+  decisionDate: string = ""
+  decisionTime: string = ""
+  isNotificationRead: boolean = false
   isClassDone: boolean = false
   didClassRequestExpire: boolean = false
   rejectionReason: string = ""
