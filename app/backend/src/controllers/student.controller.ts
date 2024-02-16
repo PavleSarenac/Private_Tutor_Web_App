@@ -2,6 +2,13 @@ import express from "express"
 import { UserModel } from "../models/user.model"
 import ClassModel from "../models/class.model"
 
+const NUMBER_OF_MINUTES_IN_ONE_HOUR = 60
+const NUMBER_OF_SECONDS_IN_ONE_MINUTE = 60
+const NUMBER_OF_MILLISECONDS_IN_ONE_SECOND = 1000
+
+const NUMBER_OF_MILLISECONDS_IN_ONE_HOUR =
+    NUMBER_OF_MINUTES_IN_ONE_HOUR * NUMBER_OF_SECONDS_IN_ONE_MINUTE * NUMBER_OF_MILLISECONDS_IN_ONE_SECOND
+
 export class StudentController {
     updateStudentInfo = (request: express.Request, response: express.Response) => {
         let student: any = request.body
@@ -114,60 +121,92 @@ export class StudentController {
 
     getAllUpcomingClasses = (request: express.Request, response: express.Response) => {
         let studentUsername = request.query.studentUsername
-        ClassModel.find(
+
+        let currentDateTimeInMillis = Date.now() + NUMBER_OF_MILLISECONDS_IN_ONE_HOUR
+        let currentDateTimeString = this.convertMillisToDateTimeString(currentDateTimeInMillis)
+        let currentDateString = currentDateTimeString.substring(0, currentDateTimeString.indexOf(" "))
+        let currentTimeString = currentDateTimeString.substring(currentDateTimeString.indexOf(" ") + 1)
+
+        ClassModel.updateMany(
             {
                 studentUsername: studentUsername,
                 isClassAccepted: true,
                 isClassRejected: false,
                 isClassCancelled: false,
-                isClassDone: false
-            }
-        ).sort(
+                isClassDone: false,
+                endDate: { $lte: currentDateString },
+                endTime: { $lte: currentTimeString }
+            },
             {
-                startDate: "ascending",
-                startTime: "ascending"
+                isClassAccepted: false,
+                isClassDone: true
             }
         ).then(
-            (classes: any[]) => {
-                UserModel.find(
+            () => {
+                ClassModel.find(
                     {
-                        userType: "teacher"
+                        studentUsername: studentUsername,
+                        isClassAccepted: true,
+                        isClassRejected: false,
+                        isClassCancelled: false,
+                        isClassDone: false
+                    }
+                ).sort(
+                    {
+                        startDate: "ascending",
+                        startTime: "ascending"
                     }
                 ).then(
-                    (teachers: any[]) => {
-                        let responseClasses: any[] = []
-                        classes.forEach(
-                            (classRequest: any) => {
-                                let teacher = teachers.find((teacher) => teacher.username == classRequest.teacherUsername)
-                                responseClasses.push(
-                                    {
-                                        id: classRequest.id,
-                                        studentUsername: classRequest.studentUsername,
-                                        teacherUsername: classRequest.teacherUsername,
-                                        subject: classRequest.subject,
-                                        startDate: classRequest.startDate,
-                                        endDate: classRequest.endDate,
-                                        startTime: classRequest.startTime,
-                                        endTime: classRequest.endTime,
-                                        description: classRequest.description,
-                                        isClassAccepted: classRequest.isClassAccepted,
-                                        isClassRejected: classRequest.isClassRejected,
-                                        isClassCancelled: classRequest.isClassCancelled,
-                                        isClassDone: classRequest.isClassDone,
-                                        didClassRequestExpire: classRequest.didClassRequestExpire,
-                                        rejectionReason: classRequest.rejectionReason,
-                                        cancellationReason: classRequest.cancellationReason,
+                    (classes: any[]) => {
+                        UserModel.find(
+                            {
+                                userType: "teacher"
+                            }
+                        ).then(
+                            (teachers: any[]) => {
+                                let responseClasses: any[] = []
+                                classes.forEach(
+                                    (classRequest: any) => {
+                                        let teacher = teachers.find((teacher) => teacher.username == classRequest.teacherUsername)
+                                        responseClasses.push(
+                                            {
+                                                id: classRequest.id,
+                                                studentUsername: classRequest.studentUsername,
+                                                teacherUsername: classRequest.teacherUsername,
+                                                subject: classRequest.subject,
+                                                startDate: classRequest.startDate,
+                                                endDate: classRequest.endDate,
+                                                startTime: classRequest.startTime,
+                                                endTime: classRequest.endTime,
+                                                description: classRequest.description,
+                                                isClassAccepted: classRequest.isClassAccepted,
+                                                isClassRejected: classRequest.isClassRejected,
+                                                isClassCancelled: classRequest.isClassCancelled,
+                                                isClassDone: classRequest.isClassDone,
+                                                didClassRequestExpire: classRequest.didClassRequestExpire,
+                                                rejectionReason: classRequest.rejectionReason,
+                                                cancellationReason: classRequest.cancellationReason,
 
-                                        teacherName: teacher.name,
-                                        teacherSurname: teacher.surname
+                                                teacherName: teacher.name,
+                                                teacherSurname: teacher.surname
+                                            }
+                                        )
                                     }
                                 )
+                                response.json(responseClasses)
                             }
-                        )
-                        response.json(responseClasses)
+                        ).catch((error) => console.log(error))
                     }
                 ).catch((error) => console.log(error))
             }
-        ).catch((error) => console.log(error))
+        )
+    }
+
+    convertMillisToDateTimeString(dateTimeInMillis: number): string {
+        let currentDateTime = new Date(dateTimeInMillis).toISOString()
+        let currentDate = currentDateTime.substring(0, currentDateTime.indexOf("T"))
+        let currentTime = currentDateTime.substring(currentDateTime.indexOf("T") + 1, currentDateTime.indexOf(".") - 3)
+        currentDateTime = currentDate + " " + currentTime
+        return currentDateTime
     }
 }
