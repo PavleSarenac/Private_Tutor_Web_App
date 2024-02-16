@@ -23,6 +23,10 @@ studentRouter.route("/getAllUpcomingClasses").get(
     (request, response) => new StudentController().getAllUpcomingClasses(request, response)
 )
 
+studentRouter.route("/getAllPastClasses").get(
+    (request, response) => new StudentController().getAllPastClasses(request, response)
+)
+
 studentRouter.route("/getRelevantClassesForNotifications").get(
     (request, response) => new StudentController().getRelevantClassesForNotifications(request, response)
 )

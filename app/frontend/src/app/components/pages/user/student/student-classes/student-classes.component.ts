@@ -22,6 +22,9 @@ export class StudentClassesComponent implements OnInit {
   allUpcomingClasses: Class[] = []
   shouldShowUpcomingClasses: boolean = false
 
+  allPastClasses: Class[] = []
+  shouldShowPastClasses: boolean = false
+
   constructor(
     private studentService: StudentService,
     private defaultService: DefaultService
@@ -34,6 +37,11 @@ export class StudentClassesComponent implements OnInit {
         this.studentService.getAllUpcomingClasses(this.student.username).subscribe(
           (upcomingClasses: Class[]) => {
             this.allUpcomingClasses = upcomingClasses
+            this.studentService.getAllPastClasses(this.student.username).subscribe(
+              (pastClasses: Class[]) => {
+                this.allPastClasses = pastClasses
+              }
+            )
           }
         )
       }
@@ -54,5 +62,13 @@ export class StudentClassesComponent implements OnInit {
 
   hideUpcomingClasses() {
     this.shouldShowUpcomingClasses = false
+  }
+
+  showPastClasses() {
+    this.shouldShowPastClasses = true
+  }
+
+  hidePastClasses() {
+    this.shouldShowPastClasses = false
   }
 }

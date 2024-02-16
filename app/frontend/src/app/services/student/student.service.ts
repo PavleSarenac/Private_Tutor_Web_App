@@ -32,6 +32,10 @@ export class StudentService {
     return this.httpClient.get<Class[]>(`${this.backendUrl}/getAllUpcomingClasses?studentUsername=${studentUsername}`)
   }
 
+  getAllPastClasses(studentUsername: string) {
+    return this.httpClient.get<Class[]>(`${this.backendUrl}/getAllPastClasses?studentUsername=${studentUsername}`)
+  }
+
   getRelevantClassesForNotifications(studentUsername: string) {
     return this.httpClient.get<Class[]>(`${this.backendUrl}/getRelevantClassesForNotifications?studentUsername=${studentUsername}`)
   }

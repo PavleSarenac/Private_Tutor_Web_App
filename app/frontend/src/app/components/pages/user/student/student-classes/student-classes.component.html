@@ -23,7 +23,7 @@
             <tr class="text-center">
               <th scope="col" class="w-16">Teacher</th>
               <th scope="col" class="w-16">Subject</th>
-              <th scope="col" class="w-16">Description</th>
+              <th scope="col" class="w-16">My Class Description</th>
               <th scope="col" class="w-16">Date</th>
               <th scope="col" class="w-16">Time</th>
               <th scope="col" class="w-16">Join class</th>
@@ -52,6 +52,57 @@
     <ng-container *ngIf="shouldShowUpcomingClasses && allUpcomingClasses.length == 0">
       <div class="col-sm-12 text-center text-white fw-bold mb-3">
         There are no upcoming classes.
+      </div>
+    </ng-container>
+    <div class="col-sm-12 text-white fw-bold text-center mt-3 mb-3 fs-3">
+      Class archive:
+    </div>
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6 text-center">
+      <div class="btn-group mb-5" role="group">
+        <button type="button" class="btn btn-outline-light" (click)="showPastClasses()">
+          Show past classes
+        </button>
+        <button type="button" class="btn btn-outline-light" (click)="hidePastClasses()">
+          Hide past classes
+        </button>
+      </div>
+    </div>
+    <div class="col-sm-3"></div>
+    <ng-container *ngIf="shouldShowPastClasses && allPastClasses.length > 0">
+      <div class="col-sm-12">
+        <table class="table table-dark table-bordered table-striped table-hover">
+          <thead>
+            <tr class="text-center">
+              <th scope="col" class="w-16">Teacher</th>
+              <th scope="col" class="w-16">Subject</th>
+              <th scope="col" class="w-16">Date</th>
+              <th scope="col" class="w-16">Time</th>
+              <th scope="col" class="w-16">Teacher's Comment</th>
+              <th scope="col" class="w-16">Rate Teacher</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pastClass of allPastClasses" class="text-center">
+              <td class="align-middle">{{pastClass.teacherName}} {{pastClass.teacherSurname}}</td>
+              <td class="align-middle">{{pastClass.subject}}</td>
+              <td class="align-middle">{{pastClass.startDate}}</td>
+              <td class="align-middle">{{pastClass.startTime}}-{{pastClass.endTime}}</td>
+              <td class="align-middle" *ngIf="pastClass.teacherToStudentComment != ''">
+                {{pastClass.teacherToStudentComment}}
+              </td>
+              <td class="align-middle" *ngIf="pastClass.teacherToStudentComment == ''">-</td>
+              <td class="align-middle">
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="shouldShowPastClasses && allPastClasses.length == 0">
+      <div class="col-sm-12 text-center text-white fw-bold mb-4">
+        There are no past classes.
       </div>
     </ng-container>
   </div>

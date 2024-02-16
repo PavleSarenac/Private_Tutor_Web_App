@@ -192,6 +192,100 @@ export class StudentController {
                                                 didClassRequestExpire: classRequest.didClassRequestExpire,
                                                 rejectionReason: classRequest.rejectionReason,
                                                 cancellationReason: classRequest.cancellationReason,
+                                                studentToTeacherComment: classRequest.studentToTeacherComment,
+                                                studentToTeacherGrade: classRequest.studentToTeacherGrade,
+                                                teacherToStudentComment: classRequest.teacherToStudentComment,
+                                                teacherToStudentGrade: classRequest.teacherToStudentGrade,
+
+                                                teacherName: teacher.name,
+                                                teacherSurname: teacher.surname
+                                            }
+                                        )
+                                    }
+                                )
+                                response.json(responseClasses)
+                            }
+                        ).catch((error) => console.log(error))
+                    }
+                ).catch((error) => console.log(error))
+            }
+        )
+    }
+
+    getAllPastClasses = (request: express.Request, response: express.Response) => {
+        let studentUsername = request.query.studentUsername
+
+        let currentDateTimeInMillis = Date.now() + NUMBER_OF_MILLISECONDS_IN_ONE_HOUR
+        let currentDateTimeString = this.convertMillisToDateTimeStringWithoutSeconds(currentDateTimeInMillis)
+        let currentDateString = currentDateTimeString.substring(0, currentDateTimeString.indexOf(" "))
+        let currentTimeString = currentDateTimeString.substring(currentDateTimeString.indexOf(" ") + 1)
+
+        ClassModel.updateMany(
+            {
+                studentUsername: studentUsername,
+                isClassAccepted: true,
+                isClassRejected: false,
+                isClassCancelled: false,
+                isClassDone: false,
+                endDate: { $lte: currentDateString },
+                endTime: { $lte: currentTimeString }
+            },
+            {
+                isClassAccepted: false,
+                isClassDone: true
+            }
+        ).then(
+            () => {
+                ClassModel.find(
+                    {
+                        studentUsername: studentUsername,
+                        isClassAccepted: false,
+                        isClassRejected: false,
+                        isClassCancelled: false,
+                        isClassDone: true
+                    }
+                ).sort(
+                    {
+                        startDate: "descending",
+                        startTime: "descending"
+                    }
+                ).then(
+                    (classes: any[]) => {
+                        UserModel.find(
+                            {
+                                userType: "teacher"
+                            }
+                        ).then(
+                            (teachers: any[]) => {
+                                let responseClasses: any[] = []
+                                classes.forEach(
+                                    (classRequest: any) => {
+                                        let teacher = teachers.find((teacher) => teacher.username == classRequest.teacherUsername)
+                                        responseClasses.push(
+                                            {
+                                                id: classRequest.id,
+                                                studentUsername: classRequest.studentUsername,
+                                                teacherUsername: classRequest.teacherUsername,
+                                                subject: classRequest.subject,
+                                                startDate: classRequest.startDate,
+                                                endDate: classRequest.endDate,
+                                                startTime: classRequest.startTime,
+                                                endTime: classRequest.endTime,
+                                                description: classRequest.description,
+                                                isClassAccepted: classRequest.isClassAccepted,
+                                                isClassRejected: classRequest.isClassRejected,
+                                                isClassCancelled: classRequest.isClassCancelled,
+                                                decisionDate: classRequest.decisionDate,
+                                                decisionTime: classRequest.decisionTime,
+                                                isNotificationRead: classRequest.isNotificationRead,
+                                                isClassDone: classRequest.isClassDone,
+                                                didClassRequestExpire: classRequest.didClassRequestExpire,
+                                                rejectionReason: classRequest.rejectionReason,
+                                                cancellationReason: classRequest.cancellationReason,
+                                                studentToTeacherComment: classRequest.studentToTeacherComment,
+                                                studentToTeacherGrade: classRequest.studentToTeacherGrade,
+                                                teacherToStudentComment: classRequest.teacherToStudentComment,
+                                                teacherToStudentGrade: classRequest.teacherToStudentGrade,
 
                                                 teacherName: teacher.name,
                                                 teacherSurname: teacher.surname
@@ -291,6 +385,10 @@ export class StudentController {
                                                 didClassRequestExpire: classRequest.didClassRequestExpire,
                                                 rejectionReason: classRequest.rejectionReason,
                                                 cancellationReason: classRequest.cancellationReason,
+                                                studentToTeacherComment: classRequest.studentToTeacherComment,
+                                                studentToTeacherGrade: classRequest.studentToTeacherGrade,
+                                                teacherToStudentComment: classRequest.teacherToStudentComment,
+                                                teacherToStudentGrade: classRequest.teacherToStudentGrade,
 
                                                 teacherName: teacher.name,
                                                 teacherSurname: teacher.surname

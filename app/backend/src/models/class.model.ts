@@ -20,7 +20,11 @@ const classSchema = new mongoose.Schema(
         isClassDone: Boolean,
         didClassRequestExpire: Boolean,
         rejectionReason: String,
-        cancellationReason: String
+        cancellationReason: String,
+        studentToTeacherComment: String,
+        studentToTeacherGrade: Number,
+        teacherToStudentComment: String,
+        teacherToStudentGrade: Number
     },
     {
         versionKey: false

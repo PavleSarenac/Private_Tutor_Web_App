@@ -18,6 +18,10 @@ export class Class {
   didClassRequestExpire: boolean = false
   rejectionReason: string = ""
   cancellationReason: string = ""
+  studentToTeacherComment: string = ""
+  studentToTeacherGrade: number = 0
+  teacherToStudentComment: string = ""
+  teacherToStudentGrade: number = 0
 
   studentName: string = ""
   studentSurname: string = ""

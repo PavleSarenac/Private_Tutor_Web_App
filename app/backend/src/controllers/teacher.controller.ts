@@ -185,6 +185,10 @@ export class TeacherController {
                                         didClassRequestExpire: classRequest.didClassRequestExpire,
                                         rejectionReason: classRequest.rejectionReason,
                                         cancellationReason: classRequest.cancellationReason,
+                                        studentToTeacherComment: classRequest.studentToTeacherComment,
+                                        studentToTeacherGrade: classRequest.studentToTeacherGrade,
+                                        teacherToStudentComment: classRequest.teacherToStudentComment,
+                                        teacherToStudentGrade: classRequest.teacherToStudentGrade,
 
                                         studentName: student.name,
                                         studentSurname: student.surname
@@ -297,11 +301,8 @@ export class TeacherController {
         let finalDateTimeString = this.convertMillisToDateTimeStringWithoutSeconds(finalDateTimeInMillis)
 
         let currentDateString = currentDateTimeString.substring(0, currentDateTimeString.indexOf(" "))
+        let currentTimeString = currentDateTimeString.substring(0, currentDateTimeString.indexOf(" ") + 1)
         let finalDateString = finalDateTimeString.substring(0, finalDateTimeString.indexOf(" "))
-
-        let currentDateTimePrecise = this.convertMillisToDateTimeStringWithMilliseconds(currentDateTimeInMillis)
-        let currentDatePrecise = currentDateTimePrecise.substring(0, currentDateTimePrecise.indexOf(" "))
-        let currentTimePrecise = currentDateTimePrecise.substring(currentDateTimePrecise.indexOf(" ") + 1)
 
         ClassModel.updateMany(
             {
@@ -310,8 +311,8 @@ export class TeacherController {
                 isClassRejected: false,
                 isClassCancelled: false,
                 isClassDone: false,
-                endDate: { $lte: currentDatePrecise },
-                endTime: { $lte: currentTimePrecise }
+                endDate: { $lte: currentDateString },
+                endTime: { $lte: currentTimeString }
             },
             {
                 isClassAccepted: false,
@@ -373,6 +374,10 @@ export class TeacherController {
                                                 didClassRequestExpire: classRequest.didClassRequestExpire,
                                                 rejectionReason: classRequest.rejectionReason,
                                                 cancellationReason: classRequest.cancellationReason,
+                                                studentToTeacherComment: classRequest.studentToTeacherComment,
+                                                studentToTeacherGrade: classRequest.studentToTeacherGrade,
+                                                teacherToStudentComment: classRequest.teacherToStudentComment,
+                                                teacherToStudentGrade: classRequest.teacherToStudentGrade,
 
                                                 studentName: student.name,
                                                 studentSurname: student.surname
