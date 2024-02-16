@@ -311,8 +311,21 @@ export class TeacherController {
                 isClassRejected: false,
                 isClassCancelled: false,
                 isClassDone: false,
-                endDate: { $lte: currentDateString },
-                endTime: { $lte: currentTimeString }
+                $or: [
+                    {
+                        endDate: { $lt: currentDateString }
+                    },
+                    {
+                        $and: [
+                            {
+                                endDate: { $eq: currentDateString },
+                            },
+                            {
+                                endTime: { $lt: currentTimeString }
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 isClassAccepted: false,

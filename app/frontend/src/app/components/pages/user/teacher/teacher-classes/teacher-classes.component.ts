@@ -82,7 +82,7 @@ export class TeacherClassesComponent implements OnInit {
     let classDateTimeStringIsoFormat = classStartDate + "T" + classStartTime + ":00.000Z"
     let classDateTimeMillis = new Date(classDateTimeStringIsoFormat).getTime()
     let currentDateTimeMillis = Date.now() + NUMBER_OF_MILLISECONDS_IN_ONE_HOUR
-    let timeDifferenceInMinutes = (Math.abs(classDateTimeMillis - currentDateTimeMillis)) / (NUMBER_OF_MILLISECONDS_IN_ONE_SECOND * NUMBER_OF_SECONDS_IN_ONE_MINUTE)
+    let timeDifferenceInMinutes = (classDateTimeMillis - currentDateTimeMillis) / (NUMBER_OF_MILLISECONDS_IN_ONE_SECOND * NUMBER_OF_SECONDS_IN_ONE_MINUTE)
     return timeDifferenceInMinutes
   }
 
