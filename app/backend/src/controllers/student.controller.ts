@@ -211,6 +211,7 @@ export class StudentController {
             {
                 studentUsername: studentUsername,
                 isClassDone: false,
+                isNotificationRead: false,
                 $or: [
                     {
                         isClassAccepted: true
@@ -226,53 +227,81 @@ export class StudentController {
         ).sort(
             {
                 decisionDate: "descending",
-                decisionTime: "descending"
+                decisionTime: "descending",
+
             }
         ).then(
-            (classes: any[]) => {
-                UserModel.find(
+            (unreadNotificationClasses: any[]) => {
+                ClassModel.find(
                     {
-                        userType: "teacher"
+                        studentUsername: studentUsername,
+                        isClassDone: false,
+                        isNotificationRead: true,
+                        $or: [
+                            {
+                                isClassAccepted: true
+                            },
+                            {
+                                isClassRejected: true
+                            },
+                            {
+                                isClassCancelled: true
+                            }
+                        ]
+                    }
+                ).sort(
+                    {
+                        decisionDate: "descending",
+                        decisionTime: "descending"
                     }
                 ).then(
-                    (teachers: any[]) => {
-                        let responseClasses: any[] = []
-                        classes.forEach(
-                            (classRequest: any) => {
-                                let teacher = teachers.find((teacher) => teacher.username == classRequest.teacherUsername)
-                                responseClasses.push(
-                                    {
-                                        id: classRequest.id,
-                                        studentUsername: classRequest.studentUsername,
-                                        teacherUsername: classRequest.teacherUsername,
-                                        subject: classRequest.subject,
-                                        startDate: classRequest.startDate,
-                                        endDate: classRequest.endDate,
-                                        startTime: classRequest.startTime,
-                                        endTime: classRequest.endTime,
-                                        description: classRequest.description,
-                                        isClassAccepted: classRequest.isClassAccepted,
-                                        isClassRejected: classRequest.isClassRejected,
-                                        isClassCancelled: classRequest.isClassCancelled,
-                                        decisionDate: classRequest.decisionDate,
-                                        decisionTime: classRequest.decisionTime,
-                                        isNotificationRead: classRequest.isNotificationRead,
-                                        isClassDone: classRequest.isClassDone,
-                                        didClassRequestExpire: classRequest.didClassRequestExpire,
-                                        rejectionReason: classRequest.rejectionReason,
-                                        cancellationReason: classRequest.cancellationReason,
+                    (readNotificationClasses: any[]) => {
+                        let allClasses: any[] = unreadNotificationClasses.concat(readNotificationClasses)
+                        UserModel.find(
+                            {
+                                userType: "teacher"
+                            }
+                        ).then(
+                            (teachers: any[]) => {
+                                let responseClasses: any[] = []
+                                allClasses.forEach(
+                                    (classRequest: any) => {
+                                        let teacher = teachers.find((teacher) => teacher.username == classRequest.teacherUsername)
+                                        responseClasses.push(
+                                            {
+                                                id: classRequest.id,
+                                                studentUsername: classRequest.studentUsername,
+                                                teacherUsername: classRequest.teacherUsername,
+                                                subject: classRequest.subject,
+                                                startDate: classRequest.startDate,
+                                                endDate: classRequest.endDate,
+                                                startTime: classRequest.startTime,
+                                                endTime: classRequest.endTime,
+                                                description: classRequest.description,
+                                                isClassAccepted: classRequest.isClassAccepted,
+                                                isClassRejected: classRequest.isClassRejected,
+                                                isClassCancelled: classRequest.isClassCancelled,
+                                                decisionDate: classRequest.decisionDate,
+                                                decisionTime: classRequest.decisionTime,
+                                                isNotificationRead: classRequest.isNotificationRead,
+                                                isClassDone: classRequest.isClassDone,
+                                                didClassRequestExpire: classRequest.didClassRequestExpire,
+                                                rejectionReason: classRequest.rejectionReason,
+                                                cancellationReason: classRequest.cancellationReason,
 
-                                        teacherName: teacher.name,
-                                        teacherSurname: teacher.surname
+                                                teacherName: teacher.name,
+                                                teacherSurname: teacher.surname
+                                            }
+                                        )
                                     }
                                 )
+                                response.json(responseClasses)
                             }
-                        )
-                        response.json(responseClasses)
+                        ).catch((error) => console.log(error))
                     }
                 ).catch((error) => console.log(error))
             }
-        ).catch((error) => console.log(error))
+        )
     }
 
     readNotification = (request: express.Request, response: express.Response) => {
