@@ -305,6 +305,7 @@ export class TeacherController {
                                         isClassDone: classRequest.isClassDone,
                                         didClassRequestExpire: classRequest.didClassRequestExpire,
                                         rejectionReason: classRequest.rejectionReason,
+                                        cancellationReason: classRequest.cancellationReason,
 
                                         studentName: student.name,
                                         studentSurname: student.surname
@@ -316,6 +317,22 @@ export class TeacherController {
                     }
                 ).catch((error) => console.log(error))
             }
+        ).catch((error) => console.log(error))
+    }
+
+    cancelClass = (request: express.Request, response: express.Response) => {
+        let upcomingClass = request.body
+        ClassModel.updateOne(
+            {
+                id: upcomingClass.id
+            },
+            {
+                isClassAccepted: false,
+                isClassCancelled: true,
+                cancellationReason: upcomingClass.cancellationReason
+            }
+        ).then(
+            () => response.json({ content: "ok" })
         ).catch((error) => console.log(error))
     }
 

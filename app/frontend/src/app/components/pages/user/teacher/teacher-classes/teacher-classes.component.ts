@@ -36,7 +36,10 @@ export class TeacherClassesComponent implements OnInit {
   shouldShowPendingClassRequests: boolean = false
 
   rejectionExplanationError: string = "Please explain why you are rejecting this class request."
-  @ViewChild("closeRejectionExplanationModalButton") closeModal: ElementRef | undefined
+  @ViewChild("closeRejectionExplanationModalButton") closeRejectionExplanationModal: ElementRef | undefined
+
+  cancellationExplanationError: string = "Please explain why you are cancelling this class."
+  @ViewChild("closeCancellationExplanationModalButton") closeCancellationExplanationModal: ElementRef | undefined
 
   allAcceptedConfirmedClassesForNextThreeDays: Class[] = []
 
@@ -115,7 +118,11 @@ export class TeacherClassesComponent implements OnInit {
   }
 
   hideRejectionExplanationModal() {
-    this.closeModal!.nativeElement.click()
+    this.closeRejectionExplanationModal!.nativeElement.click()
+  }
+
+  hideCancellationExplanationModal() {
+    this.closeCancellationExplanationModal!.nativeElement.click()
   }
 
   fetchPendingClassRequests() {
@@ -124,7 +131,6 @@ export class TeacherClassesComponent implements OnInit {
         this.teacherService.getAllPendingClassRequests(this.teacher.username).subscribe(
           (pendingClasses: Class[]) => {
             this.pendingClassRequests = pendingClasses
-            this.hideRejectionExplanationModal()
           }
         )
       }
@@ -144,7 +150,21 @@ export class TeacherClassesComponent implements OnInit {
 
   reject(classRequest: Class) {
     if (classRequest.rejectionReason == "") return
+    this.hideRejectionExplanationModal()
     this.teacherService.rejectClassRequest(classRequest).subscribe(
+      () => {
+        this.firstFiveUpcomingClasses = []
+        this.firstTenUpcomingClasses = []
+        this.allUpcomingClasses = []
+        this.fetchClassData()
+      }
+    )
+  }
+
+  cancel(upcomingClass: Class) {
+    if (upcomingClass.cancellationReason == "") return
+    this.hideCancellationExplanationModal()
+    this.teacherService.cancelClass(upcomingClass).subscribe(
       () => {
         this.firstFiveUpcomingClasses = []
         this.firstTenUpcomingClasses = []

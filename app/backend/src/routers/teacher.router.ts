@@ -43,6 +43,10 @@ teacherRouter.route("/rejectClassRequest").post(
     (request, response) => new TeacherController().rejectClassRequest(request, response)
 )
 
+teacherRouter.route("/cancelClass").post(
+    (request, response) => new TeacherController().cancelClass(request, response)
+)
+
 teacherRouter.route("/getAllAcceptedClassesForNextThreeDays").get(
     (request, response) => new TeacherController().getAllAcceptedClassesForNextThreeDays(request, response)
 )

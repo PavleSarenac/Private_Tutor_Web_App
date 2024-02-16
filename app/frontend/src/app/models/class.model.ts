@@ -14,6 +14,7 @@ export class Class {
   isClassDone: boolean = false
   didClassRequestExpire: boolean = false
   rejectionReason: string = ""
+  cancellationReason: string = ""
 
   studentName: string = ""
   studentSurname: string = ""

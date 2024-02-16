@@ -16,7 +16,8 @@ const classSchema = new mongoose.Schema(
         isClassCancelled: Boolean,
         isClassDone: Boolean,
         didClassRequestExpire: Boolean,
-        rejectionReason: String
+        rejectionReason: String,
+        cancellationReason: String
     },
     {
         versionKey: false
