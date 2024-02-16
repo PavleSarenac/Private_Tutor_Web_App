@@ -33,7 +33,8 @@
             <tr *ngFor="let upcomingClass of allUpcomingClasses" class="text-center">
               <td class="align-middle">{{upcomingClass.teacherName}} {{upcomingClass.teacherSurname}}</td>
               <td class="align-middle">{{upcomingClass.subject}}</td>
-              <td class="align-middle">{{upcomingClass.description}}</td>
+              <td class="align-middle" *ngIf="upcomingClass.description != ''">{{upcomingClass.description}}</td>
+              <td class="align-middle" *ngIf="upcomingClass.description == ''">-</td>
               <td class="align-middle">{{upcomingClass.startDate}}</td>
               <td class="align-middle">{{upcomingClass.startTime}}-{{upcomingClass.endTime}}</td>
               <td class="align-middle">
