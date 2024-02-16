@@ -4,8 +4,14 @@ import { User } from 'src/app/models/user.model';
 import { DefaultService } from 'src/app/services/default/default.service';
 import { TeacherService } from 'src/app/services/teacher/teacher.service';
 
-const NUMBER_OF_MINUTES_IN_ONE_HOUR = 60
 const MINIMUM_LENGTH_OF_A_WORKDAY_IN_MINUTES = 120
+
+const NUMBER_OF_MINUTES_IN_ONE_HOUR = 60
+const NUMBER_OF_SECONDS_IN_ONE_MINUTE = 60
+const NUMBER_OF_MILLISECONDS_IN_ONE_SECOND = 1000
+
+const NUMBER_OF_MILLISECONDS_IN_ONE_HOUR =
+  NUMBER_OF_MINUTES_IN_ONE_HOUR * NUMBER_OF_SECONDS_IN_ONE_MINUTE * NUMBER_OF_MILLISECONDS_IN_ONE_SECOND
 
 @Component({
   selector: 'app-teacher-classes',
@@ -52,20 +58,32 @@ export class TeacherClassesComponent implements OnInit {
     this.defaultService.getUser(JSON.parse(localStorage.getItem("loggedInUser")!).username).subscribe(
       (teacher: User) => {
         this.teacher = teacher
-        this.teacherService.getAllAcceptedClassesForNextThreeDays(teacher.username).subscribe(
-          (classes: Class[]) => {
-            this.allAcceptedConfirmedClassesForNextThreeDays = classes
-            for (let i = 0; i < this.allAcceptedConfirmedClassesForNextThreeDays.length; i++) {
-              let currentClass = this.allAcceptedConfirmedClassesForNextThreeDays[i]
-              this.allUpcomingClasses.push(currentClass)
-              if (i < 5) this.firstFiveUpcomingClasses.push(currentClass)
-              if (i < 10) this.firstTenUpcomingClasses.push(currentClass)
-            }
-            this.fetchPendingClassRequests()
-          }
-        )
+        this.fetchClassData()
       }
     )
+  }
+
+  fetchClassData() {
+    this.teacherService.getAllAcceptedClassesForNextThreeDays(this.teacher.username).subscribe(
+      (classes: Class[]) => {
+        this.allAcceptedConfirmedClassesForNextThreeDays = classes
+        for (let i = 0; i < this.allAcceptedConfirmedClassesForNextThreeDays.length; i++) {
+          let currentClass = this.allAcceptedConfirmedClassesForNextThreeDays[i]
+          this.allUpcomingClasses.push(currentClass)
+          if (i < 5) this.firstFiveUpcomingClasses.push(currentClass)
+          if (i < 10) this.firstTenUpcomingClasses.push(currentClass)
+        }
+        this.fetchPendingClassRequests()
+      }
+    )
+  }
+
+  getTimeDifferenceInMinutes(classStartDate: string, classStartTime: string): number {
+    let classDateTimeStringIsoFormat = classStartDate + "T" + classStartTime + ":00.000Z"
+    let classDateTimeMillis = new Date(classDateTimeStringIsoFormat).getTime()
+    let currentDateTimeMillis = Date.now() + NUMBER_OF_MILLISECONDS_IN_ONE_HOUR
+    let timeDifferenceInMinutes = (Math.abs(classDateTimeMillis - currentDateTimeMillis)) / (NUMBER_OF_MILLISECONDS_IN_ONE_SECOND * NUMBER_OF_SECONDS_IN_ONE_MINUTE)
+    return timeDifferenceInMinutes
   }
 
   showFirstFiveUpcomingClasses() {
@@ -116,7 +134,10 @@ export class TeacherClassesComponent implements OnInit {
   accept(classRequest: Class) {
     this.teacherService.acceptClassRequest(classRequest).subscribe(
       () => {
-        this.fetchPendingClassRequests()
+        this.firstFiveUpcomingClasses = []
+        this.firstTenUpcomingClasses = []
+        this.allUpcomingClasses = []
+        this.fetchClassData()
       }
     )
   }
@@ -125,7 +146,10 @@ export class TeacherClassesComponent implements OnInit {
     if (classRequest.rejectionReason == "") return
     this.teacherService.rejectClassRequest(classRequest).subscribe(
       () => {
-        this.fetchPendingClassRequests()
+        this.firstFiveUpcomingClasses = []
+        this.firstTenUpcomingClasses = []
+        this.allUpcomingClasses = []
+        this.fetchClassData()
       }
     )
   }

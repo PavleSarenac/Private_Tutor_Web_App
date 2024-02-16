@@ -38,15 +38,29 @@
               <tr *ngFor="let upcomingClass of firstFiveUpcomingClasses" class="text-center">
                 <td class="align-middle">{{upcomingClass.studentName}} {{upcomingClass.studentSurname}}</td>
                 <td class="align-middle">{{upcomingClass.subject}}</td>
-                <td class="align-middle">/*TODO*/</td>
-                <td class="align-middle">/*TODO*/</td>
+                <td class="align-middle">
+                  <button class="btn btn-light"
+                    *ngIf="getTimeDifferenceInMinutes(upcomingClass.startDate, upcomingClass.startTime) <= 15">Join</button>
+                  <span *ngIf="getTimeDifferenceInMinutes(upcomingClass.startDate, upcomingClass.startTime) > 15">
+                    Can't join yet.
+                  </span>
+                </td>
+                <td class="align-middle">
+
+                </td>
               </tr>
             </ng-container>
             <ng-container *ngIf="shouldShowFirstTenUpcomingClasses">
               <tr *ngFor="let upcomingClass of firstTenUpcomingClasses" class="text-center">
                 <td class="align-middle">{{upcomingClass.studentName}} {{upcomingClass.studentSurname}}</td>
                 <td class="align-middle">{{upcomingClass.subject}}</td>
-                <td class="align-middle">/*TODO*/</td>
+                <td class="align-middle">
+                  <button class="btn btn-light"
+                    *ngIf="getTimeDifferenceInMinutes(upcomingClass.startDate, upcomingClass.startTime) <= 15">Join</button>
+                  <span *ngIf="getTimeDifferenceInMinutes(upcomingClass.startDate, upcomingClass.startTime) > 15">
+                    Can't join yet.
+                  </span>
+                </td>
                 <td class="align-middle">/*TODO*/</td>
               </tr>
             </ng-container>
@@ -54,7 +68,13 @@
               <tr *ngFor="let upcomingClass of allUpcomingClasses" class="text-center">
                 <td class="align-middle">{{upcomingClass.studentName}} {{upcomingClass.studentSurname}}</td>
                 <td class="align-middle">{{upcomingClass.subject}}</td>
-                <td class="align-middle">/*TODO*/</td>
+                <td class="align-middle">
+                  <button class="btn btn-light"
+                    *ngIf="getTimeDifferenceInMinutes(upcomingClass.startDate, upcomingClass.startTime) <= 15">Join</button>
+                  <span *ngIf="getTimeDifferenceInMinutes(upcomingClass.startDate, upcomingClass.startTime) > 15">
+                    Can't join yet.
+                  </span>
+                </td>
                 <td class="align-middle">/*TODO*/</td>
               </tr>
             </ng-container>

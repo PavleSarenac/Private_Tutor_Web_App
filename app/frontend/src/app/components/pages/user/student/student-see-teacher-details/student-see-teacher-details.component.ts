@@ -136,7 +136,7 @@ export class StudentSeeTeacherDetailsComponent implements OnInit {
   getClassStartDateTimeInMillis(): number {
     let dayMillis = new Date(this.class.startDate).getTime()
     let hourMillis = (Number(this.class.startTime.substring(0, this.class.startTime.indexOf(":")))) * NUMBER_OF_MILLISECONDS_IN_ONE_HOUR
-    let minuteMillis = Number(this.class.startTime.substring(this.class.startTime.indexOf(":") + 1)) * NUMBER_OF_SECONDS_IN_ONE_MINUTE
+    let minuteMillis = Number(this.class.startTime.substring(this.class.startTime.indexOf(":") + 1)) * NUMBER_OF_SECONDS_IN_ONE_MINUTE * NUMBER_OF_MILLISECONDS_IN_ONE_SECOND
     return dayMillis + hourMillis + minuteMillis
   }
 
