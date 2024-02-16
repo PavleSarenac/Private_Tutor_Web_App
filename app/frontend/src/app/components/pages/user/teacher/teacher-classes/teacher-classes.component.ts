@@ -57,6 +57,7 @@ export class TeacherClassesComponent implements OnInit {
         this.teacherService.getAllPendingClassRequests(this.teacher.username).subscribe(
           (pendingClasses: Class[]) => {
             this.pendingClassRequests = pendingClasses
+            this.hideRejectionExplanationModal()
           }
         )
       }
@@ -76,7 +77,6 @@ export class TeacherClassesComponent implements OnInit {
     this.teacherService.rejectClassRequest(classRequest).subscribe(
       () => {
         this.fetchPendingClassRequests()
-        this.hideRejectionExplanationModal()
       }
     )
   }

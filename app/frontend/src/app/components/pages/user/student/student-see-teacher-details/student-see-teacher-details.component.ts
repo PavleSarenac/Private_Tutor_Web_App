@@ -62,6 +62,9 @@ export class StudentSeeTeacherDetailsComponent implements OnInit {
 
   hideModal() {
     this.closeModal!.nativeElement.click()
+    this.subjectError = "Please choose a subject."
+    this.dateError = "Please choose a date."
+    this.timeError = "Please choose class time."
   }
 
   initializeDaysMappings() {
@@ -74,8 +77,9 @@ export class StudentSeeTeacherDetailsComponent implements OnInit {
     this.numberToStringDaysMappings.set(0, "Sunday")
   }
 
-  scheduleClass() {
-    if (!this.isSchedulingInputValid()) return
+  async scheduleClass() {
+    let isSchedulingInputValid = await this.isSchedulingInputValid()
+    if (!isSchedulingInputValid) return
     this.studentService.scheduleClass(this.class).subscribe(
       () => {
         this.hideModal()
@@ -86,7 +90,7 @@ export class StudentSeeTeacherDetailsComponent implements OnInit {
     )
   }
 
-  isSchedulingInputValid(): boolean {
+  async isSchedulingInputValid(): Promise<boolean> {
     if (this.isSomeClassDataMissing()) return false
     if (this.isClassDateTimeStartInThePast()) return false
     this.setClassEndTime()
@@ -98,7 +102,23 @@ export class StudentSeeTeacherDetailsComponent implements OnInit {
       this.dateError = this.timeError = `${this.teacher.name} ${this.teacher.surname} isn't working at that time.`
       return false
     }
+    if (await this.isTimeSlotAlreadyTaken()) {
+      this.class.startDate = ""
+      this.class.startTime = ""
+      this.dateError = this.timeError = `There is already a class request for that time.`
+      return false
+    }
     return true
+  }
+
+  isTimeSlotAlreadyTaken(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      this.studentService.isTimeSlotTaken(this.class).subscribe(
+        (classRequests: Class[]) => {
+          resolve(classRequests.length > 0)
+        }
+      )
+    })
   }
 
   isClassDateTimeStartInThePast(): boolean {

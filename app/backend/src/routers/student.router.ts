@@ -15,4 +15,8 @@ studentRouter.route("/scheduleClass").post(
     (request, response) => new StudentController().scheduleClass(request, response)
 )
 
+studentRouter.route("/isTimeSlotTaken").post(
+    (request, response) => new StudentController().isTimeSlotTaken(request, response)
+)
+
 export default studentRouter

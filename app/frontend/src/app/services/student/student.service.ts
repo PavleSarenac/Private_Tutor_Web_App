@@ -23,4 +23,8 @@ export class StudentService {
   scheduleClass(classModel: Class) {
     return this.httpClient.post<Message>(`${this.backendUrl}/scheduleClass`, classModel)
   }
+
+  isTimeSlotTaken(classModel: Class) {
+    return this.httpClient.post<Class[]>(`${this.backendUrl}/isTimeSlotTaken`, classModel)
+  }
 }
