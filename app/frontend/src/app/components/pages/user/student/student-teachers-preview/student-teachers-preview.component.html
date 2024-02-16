@@ -1,16 +1,17 @@
 <div class="container-fluid vh-100 overflow-auto">
   <app-student-header></app-student-header>
-  <div class="row main">
-    <div class="col-sm-12 alert fw-bold mt-5 text-center black-background text-white" role=" alert">
+  <div class="row main bg-dark rounded">
+    <div class="col-sm-12 mt-3 fw-bold fs-3 text-center text-white">
       Subjects that we are teaching:
-      <br>
-      <div class="btn-group mt-3" role="group">
+    </div>
+    <div class="col-sm-12 mt-3 text-center">
+      <div class="btn-group" role="group">
         <button type="button" class="btn btn-outline-light" (click)="showSubjects()">Show subjects</button>
         <button type="button" class="btn btn-outline-light" (click)="hideSubjects()">Hide subjects</button>
       </div>
     </div>
     <ng-container *ngIf="shouldShowSubjects">
-      <div class="col-sm-12 alert fw-bold text-center mt-5 text-white black-background" role="alert">
+      <div class="col-sm-12 fw-bold text-center mt-5 mb-4 text-white">
         Sort by: &nbsp;
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3"
@@ -75,7 +76,7 @@
         </div>
       </div>
     </ng-container>
-    <div class="col-sm-12 alert fw-bold text-center black-background text-white mt-5" role=" alert">
+    <div class="col-sm-12 alert fw-bold fs-3 text-center black-background text-white mt-5" role=" alert">
       Find the teacher you want:
       <br>
       <div class="input-group mt-2">
@@ -91,7 +92,7 @@
       </div>
     </div>
     <ng-container *ngIf="shouldShowSearchResults && allTeachersSearched.length > 0">
-      <div class="col-sm-12 alert fw-bold text-center mt-5 text-white black-background" role="alert">
+      <div class="col-sm-12 fw-bold text-center mt-4 text-white mb-3">
         Sort by: &nbsp;
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"

@@ -51,4 +51,8 @@ export class TeacherService {
   rejectClassRequest(classRequest: Class) {
     return this.httpClient.post<Message>(`${this.backendUrl}/rejectClassRequest`, classRequest)
   }
+
+  getAllAcceptedClassesForNextThreeDays(teacherUsername: string) {
+    return this.httpClient.get<Class[]>(`${this.backendUrl}/getAllAcceptedClassesForNextThreeDays?teacherUsername=${teacherUsername}`)
+  }
 }

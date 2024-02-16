@@ -30,8 +30,18 @@ export class TeacherClassesComponent implements OnInit {
   shouldShowPendingClassRequests: boolean = false
 
   rejectionExplanationError: string = "Please explain why you are rejecting this class request."
-
   @ViewChild("closeRejectionExplanationModalButton") closeModal: ElementRef | undefined
+
+  allAcceptedConfirmedClassesForNextThreeDays: Class[] = []
+
+  firstFiveUpcomingClasses: Class[] = []
+  firstTenUpcomingClasses: Class[] = []
+  allUpcomingClasses: Class[] = []
+
+  shouldShowUpcomingClasses: boolean = false
+  shouldShowFirstFiveUpcomingClasses: boolean = true
+  shouldShowFirstTenUpcomingClasses: boolean = false
+  shouldShowAllUpcomingClasses: boolean = false
 
   constructor(
     private defaultService: DefaultService,
@@ -42,9 +52,48 @@ export class TeacherClassesComponent implements OnInit {
     this.defaultService.getUser(JSON.parse(localStorage.getItem("loggedInUser")!).username).subscribe(
       (teacher: User) => {
         this.teacher = teacher
-        this.fetchPendingClassRequests()
+        this.teacherService.getAllAcceptedClassesForNextThreeDays(teacher.username).subscribe(
+          (classes: Class[]) => {
+            this.allAcceptedConfirmedClassesForNextThreeDays = classes
+            for (let i = 0; i < this.allAcceptedConfirmedClassesForNextThreeDays.length; i++) {
+              let currentClass = this.allAcceptedConfirmedClassesForNextThreeDays[i]
+              this.allUpcomingClasses.push(currentClass)
+              if (i < 5) this.firstFiveUpcomingClasses.push(currentClass)
+              if (i < 10) this.firstTenUpcomingClasses.push(currentClass)
+            }
+            this.fetchPendingClassRequests()
+          }
+        )
       }
     )
+  }
+
+  showFirstFiveUpcomingClasses() {
+    this.shouldShowUpcomingClasses = true
+    this.shouldShowFirstFiveUpcomingClasses = true
+    this.shouldShowFirstTenUpcomingClasses = false
+    this.shouldShowAllUpcomingClasses = false
+  }
+
+  showFirstTenUpcomingClasses() {
+    this.shouldShowUpcomingClasses = true
+    this.shouldShowFirstFiveUpcomingClasses = false
+    this.shouldShowFirstTenUpcomingClasses = true
+    this.shouldShowAllUpcomingClasses = false
+  }
+
+  showAllUpcomingClasses() {
+    this.shouldShowUpcomingClasses = true
+    this.shouldShowFirstFiveUpcomingClasses = false
+    this.shouldShowFirstTenUpcomingClasses = false
+    this.shouldShowAllUpcomingClasses = true
+  }
+
+  hideUpcomingClasses() {
+    this.shouldShowUpcomingClasses = false
+    this.shouldShowFirstFiveUpcomingClasses = false
+    this.shouldShowFirstTenUpcomingClasses = false
+    this.shouldShowAllUpcomingClasses = false
   }
 
   hideRejectionExplanationModal() {
