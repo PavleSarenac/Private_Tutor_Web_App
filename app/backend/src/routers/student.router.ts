@@ -19,4 +19,8 @@ studentRouter.route("/isTimeSlotTaken").post(
     (request, response) => new StudentController().isTimeSlotTaken(request, response)
 )
 
+studentRouter.route("/getAllUpcomingClasses").get(
+    (request, response) => new StudentController().getAllUpcomingClasses(request, response)
+)
+
 export default studentRouter

@@ -23,6 +23,7 @@ import { TeacherUpdateTeacherInfoComponent } from './components/pages/user/teach
 import { StudentTeachersPreviewComponent } from './components/pages/user/student/student-teachers-preview/student-teachers-preview.component';
 import { StudentSeeTeacherDetailsComponent } from './components/pages/user/student/student-see-teacher-details/student-see-teacher-details.component';
 import { TeacherClassesComponent } from './components/pages/user/teacher/teacher-classes/teacher-classes.component';
+import { StudentClassesComponent } from './components/pages/user/student/student-classes/student-classes.component';
 
 const routes: Routes = [
   { path: "", component: IndexComponent, canActivate: [isGuestGuard] },
@@ -44,6 +45,7 @@ const routes: Routes = [
   { path: "student-teachers-preview", component: StudentTeachersPreviewComponent, canActivate: [isStudentGuard] },
   { path: "student-see-teacher-details", component: StudentSeeTeacherDetailsComponent, canActivate: [isStudentGuard] },
   { path: "teacher-classes", component: TeacherClassesComponent, canActivate: [isTeacherGuard] },
+  { path: "student-classes", component: StudentClassesComponent, canActivate: [isStudentGuard] },
   { path: "**", redirectTo: "" }
 ];
 

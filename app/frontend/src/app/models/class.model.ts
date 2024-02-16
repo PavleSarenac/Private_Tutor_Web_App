@@ -18,4 +18,6 @@ export class Class {
 
   studentName: string = ""
   studentSurname: string = ""
+  teacherName: string = ""
+  teacherSurname: string = ""
 }

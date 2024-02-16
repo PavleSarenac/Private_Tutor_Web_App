@@ -147,6 +147,11 @@ export class TeacherController {
                 isClassDone: false,
                 didClassRequestExpire: false
             }
+        ).sort(
+            {
+                startDate: "ascending",
+                startTime: "ascending"
+            }
         ).then(
             (classes: any[]) => {
                 UserModel.find(

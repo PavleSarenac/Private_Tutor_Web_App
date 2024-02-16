@@ -111,4 +111,63 @@ export class StudentController {
             }
         ).catch((error) => console.log(error))
     }
+
+    getAllUpcomingClasses = (request: express.Request, response: express.Response) => {
+        let studentUsername = request.query.studentUsername
+        ClassModel.find(
+            {
+                studentUsername: studentUsername,
+                isClassAccepted: true,
+                isClassRejected: false,
+                isClassCancelled: false,
+                isClassDone: false
+            }
+        ).sort(
+            {
+                startDate: "ascending",
+                startTime: "ascending"
+            }
+        ).then(
+            (classes: any[]) => {
+                UserModel.find(
+                    {
+                        userType: "teacher"
+                    }
+                ).then(
+                    (teachers: any[]) => {
+                        let responseClasses: any[] = []
+                        classes.forEach(
+                            (classRequest: any) => {
+                                let teacher = teachers.find((teacher) => teacher.username == classRequest.teacherUsername)
+                                responseClasses.push(
+                                    {
+                                        id: classRequest.id,
+                                        studentUsername: classRequest.studentUsername,
+                                        teacherUsername: classRequest.teacherUsername,
+                                        subject: classRequest.subject,
+                                        startDate: classRequest.startDate,
+                                        endDate: classRequest.endDate,
+                                        startTime: classRequest.startTime,
+                                        endTime: classRequest.endTime,
+                                        description: classRequest.description,
+                                        isClassAccepted: classRequest.isClassAccepted,
+                                        isClassRejected: classRequest.isClassRejected,
+                                        isClassCancelled: classRequest.isClassCancelled,
+                                        isClassDone: classRequest.isClassDone,
+                                        didClassRequestExpire: classRequest.didClassRequestExpire,
+                                        rejectionReason: classRequest.rejectionReason,
+                                        cancellationReason: classRequest.cancellationReason,
+
+                                        teacherName: teacher.name,
+                                        teacherSurname: teacher.surname
+                                    }
+                                )
+                            }
+                        )
+                        response.json(responseClasses)
+                    }
+                ).catch((error) => console.log(error))
+            }
+        ).catch((error) => console.log(error))
+    }
 }

@@ -27,4 +27,8 @@ export class StudentService {
   isTimeSlotTaken(classModel: Class) {
     return this.httpClient.post<Class[]>(`${this.backendUrl}/isTimeSlotTaken`, classModel)
   }
+
+  getAllUpcomingClasses(studentUsername: string) {
+    return this.httpClient.get<Class[]>(`${this.backendUrl}/getAllUpcomingClasses?studentUsername=${studentUsername}`)
+  }
 }
