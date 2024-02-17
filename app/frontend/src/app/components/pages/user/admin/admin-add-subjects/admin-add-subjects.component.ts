@@ -10,6 +10,7 @@ import { DefaultService } from 'src/app/services/default/default.service';
   styleUrls: ['./admin-add-subjects.component.css', '../../../../../../styles.css']
 })
 export class AdminAddSubjectsComponent implements OnInit {
+  currentSubjects: string[] = []
   newSubjects: string[] = []
   newSubject: string = ""
   error: string = "This subject already exists in the database."
@@ -28,7 +29,7 @@ export class AdminAddSubjectsComponent implements OnInit {
   fetchData() {
     this.defaultService.getData().subscribe(
       (data: Data[]) => {
-        this.newSubjects = data[0].subjects
+        this.currentSubjects = data[0].subjects
       }
     )
   }
@@ -36,7 +37,7 @@ export class AdminAddSubjectsComponent implements OnInit {
   addSubject() {
     this.showError = false
     if (this.newSubject == "") return
-    if (!this.newSubjects.includes(this.newSubject)) {
+    if (!this.currentSubjects.includes(this.newSubject)) {
       this.newSubjects.push(this.newSubject)
     } else {
       this.showError = true
@@ -45,7 +46,8 @@ export class AdminAddSubjectsComponent implements OnInit {
   }
 
   confirm() {
-    this.adminService.updateSubjects(this.newSubjects).subscribe(
+    if (this.newSubjects.length == 0) return
+    this.adminService.updateSubjects(this.currentSubjects.concat(this.newSubjects)).subscribe(
       () => {
         this.router.navigate(["admin-index"])
       }

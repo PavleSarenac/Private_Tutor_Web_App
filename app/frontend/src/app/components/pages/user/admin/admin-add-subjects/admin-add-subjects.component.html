@@ -7,6 +7,11 @@
       <input type="text" class="form-control" id="input-subject" [(ngModel)]="newSubject">
     </div>
     <div class="col-sm-4"></div>
+    <div class="col-sm-4" *ngIf="showError"></div>
+    <div class="col-sm-4 text-center text-danger mt-3 mb-3" *ngIf="showError">
+      {{error}}
+    </div>
+    <div class="col-sm-4" *ngIf="showError"></div>
     <div class="col-sm-4"></div>
     <div class="col-sm-4 text-center">
       <button class="btn btn-light mt-3" (click)="addSubject()">Add subject</button>
@@ -17,11 +22,6 @@
       <button class="btn btn-light mb-3 mt-3" (click)="confirm()">Confirm</button>
     </div>
     <div class="col-sm-4"></div>
-    <div class="col-sm-4" *ngIf="showError"></div>
-    <div class="col-sm-4 text-center text-danger mb-3" *ngIf="showError">
-      {{error}}
-    </div>
-    <div class="col-sm-4" *ngIf="showError"></div>
   </div>
   <app-footer></app-footer>
 </div>
