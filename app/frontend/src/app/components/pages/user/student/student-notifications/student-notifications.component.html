@@ -12,7 +12,7 @@
             [attr.data-bs-target]="'#class' + class.id">
             <div class="alert mt-3 fs-5" [class.alert-danger]="!class.isNotificationRead && class.isClassCancelled"
               [class.alert-warning]="!class.isNotificationRead && class.isClassRejected"
-              [class.alert-success]="!class.isNotificationRead && class.isClassAccepted"
+              [class.alert-success]="!class.isNotificationRead && (class.isClassAccepted || class.isClassDone)"
               [class.alert-dark]="class.isNotificationRead" role="alert">
               <p>New notification from {{class.teacherName}} {{class.teacherSurname}}.</p>
               <hr>
