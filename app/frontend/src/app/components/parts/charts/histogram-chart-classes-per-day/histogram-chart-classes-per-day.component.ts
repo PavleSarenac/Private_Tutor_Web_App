@@ -23,13 +23,23 @@ export class HistogramChartClassesPerDayComponent implements OnInit {
   }
 
   setYAxisValues(daysObject: any) {
-    this.yAxisValues[0] = daysObject.Monday / 52
-    this.yAxisValues[1] = daysObject.Tuesday / 52
-    this.yAxisValues[2] = daysObject.Wednesday / 52
-    this.yAxisValues[3] = daysObject.Thursday / 52
-    this.yAxisValues[4] = daysObject.Friday / 52
-    this.yAxisValues[5] = daysObject.Saturday / 52
-    this.yAxisValues[6] = daysObject.Sunday / 52
+    let totalNumberOfClasses = 0
+
+    totalNumberOfClasses += daysObject.Monday
+    totalNumberOfClasses += daysObject.Tuesday
+    totalNumberOfClasses += daysObject.Wednesday
+    totalNumberOfClasses += daysObject.Thursday
+    totalNumberOfClasses += daysObject.Friday
+    totalNumberOfClasses += daysObject.Saturday
+    totalNumberOfClasses += daysObject.Sunday
+
+    this.yAxisValues[0] = daysObject.Monday / totalNumberOfClasses
+    this.yAxisValues[1] = daysObject.Tuesday / totalNumberOfClasses
+    this.yAxisValues[2] = daysObject.Wednesday / totalNumberOfClasses
+    this.yAxisValues[3] = daysObject.Thursday / totalNumberOfClasses
+    this.yAxisValues[4] = daysObject.Friday / totalNumberOfClasses
+    this.yAxisValues[5] = daysObject.Saturday / totalNumberOfClasses
+    this.yAxisValues[6] = daysObject.Sunday / totalNumberOfClasses
   }
 
   createHistogramChart() {
@@ -41,7 +51,7 @@ export class HistogramChartClassesPerDayComponent implements OnInit {
           labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
           datasets: [
             {
-              label: "Average number of classes per day (2023)",
+              label: "Distribution of classes among days of the week (2023)",
               data: this.yAxisValues,
               backgroundColor: "blue"
             }

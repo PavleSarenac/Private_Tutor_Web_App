@@ -39,6 +39,7 @@ import { StudentNotificationsComponent } from './components/pages/user/student/s
 import { TeacherMyStudentsComponent } from './components/pages/user/teacher/teacher-my-students/teacher-my-students.component';
 import { StarRatingViewComponent } from './components/parts/star-rating-view/star-rating-view.component';
 import { HistogramChartClassesPerDayComponent } from './components/parts/charts/histogram-chart-classes-per-day/histogram-chart-classes-per-day.component';
+import { LineChartClassesPerMonthComponent } from './components/parts/charts/line-chart-classes-per-month/line-chart-classes-per-month.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { HistogramChartClassesPerDayComponent } from './components/parts/charts/
     StudentNotificationsComponent,
     TeacherMyStudentsComponent,
     StarRatingViewComponent,
-    HistogramChartClassesPerDayComponent
+    HistogramChartClassesPerDayComponent,
+    LineChartClassesPerMonthComponent
   ],
   imports: [
     BrowserModule,
