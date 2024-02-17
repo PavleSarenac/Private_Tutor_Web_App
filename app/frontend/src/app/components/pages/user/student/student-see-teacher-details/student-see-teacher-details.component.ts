@@ -3,6 +3,7 @@ import { Class } from 'src/app/models/class.model';
 import { User } from 'src/app/models/user.model';
 import { DefaultService } from 'src/app/services/default/default.service';
 import { StudentService } from 'src/app/services/student/student.service';
+import { TeacherService } from 'src/app/services/teacher/teacher.service';
 
 const NUMBER_OF_MINUTES_IN_ONE_HOUR = 60
 const NUMBER_OF_SECONDS_IN_ONE_MINUTE = 60
@@ -19,6 +20,8 @@ export class StudentSeeTeacherDetailsComponent implements OnInit {
   teacher: User = new User()
   profilePictureUrl: any = null
 
+  allReviewedClasses: Class[] = []
+
   successMessage: string = "Thanks!"
   subjectError: string = "Please choose a subject."
   dateError: string = "Please choose a date."
@@ -33,7 +36,8 @@ export class StudentSeeTeacherDetailsComponent implements OnInit {
 
   constructor(
     private defaultService: DefaultService,
-    private studentService: StudentService
+    private studentService: StudentService,
+    private teacherService: TeacherService
   ) { }
 
   ngOnInit(): void {
@@ -53,6 +57,24 @@ export class StudentSeeTeacherDetailsComponent implements OnInit {
                 [profilePictureFile],
                 { type: "image/" + this.teacher.profilePicturePath.split(".").pop()?.toLocaleLowerCase() }
               )
+            )
+            this.teacherService.getAllDoneClasses(this.teacher.username).subscribe(
+              (classes: Class[]) => {
+                classes.forEach(
+                  (doneClass: Class) => {
+                    if (doneClass.studentToTeacherGrade != 0) {
+                      this.allReviewedClasses.push(doneClass)
+                    }
+                  }
+                )
+                this.allReviewedClasses.sort((class1, class2) => {
+                  const dateComparison = class2.startDate.localeCompare(class1.startDate)
+                  if (dateComparison == 0) {
+                    return class2.startTime.localeCompare(class1.startTime)
+                  }
+                  return dateComparison
+                })
+              }
             )
           }
         )

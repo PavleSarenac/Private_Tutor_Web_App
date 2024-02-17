@@ -26,7 +26,7 @@
         </div>
         <div class="card-footer">
           <b>Reviews:</b> &nbsp;
-          <button class="btn btn-dark">
+          <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#reviewsModal">
             Click to see
           </button>
         </div>
@@ -156,4 +156,49 @@
     </div>
   </div>
   <app-footer></app-footer>
+</div>
+<div class="modal fade" id="reviewsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="reviewsModal">
+          {{teacher.name}} {{teacher.surname}}'s reviews
+        </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <div class="row">
+          <table class="table table-light table-bordered table-striped table-hover">
+            <thead>
+              <tr class="text-center">
+                <th scope="col">Student</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">Grade</th>
+                <th scope="col">Student's Comment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="text-center" *ngFor="let class of allReviewedClasses">
+                <td class="align-middle">{{class.studentName}} {{class.studentSurname}}</td>
+                <td class="align-middle">{{class.subject}}</td>
+                <td class="align-middle">{{class.startDate}}</td>
+                <td class="align-middle">{{class.startTime}}-{{class.endTime}}</td>
+                <td class="align-middle" *ngIf="class.studentToTeacherGrade != 0">
+                  {{class.studentToTeacherGrade | number:"1.0-0"}} &nbsp;
+                  <app-star-rating-view [rating]="class.studentToTeacherGrade"></app-star-rating-view>
+                </td>
+                <td class="align-middle" *ngIf="class.studentToTeacherGrade == 0">-</td>
+                <td class="align-middle" *ngIf="class.studentToTeacherComment != ''">
+                  {{class.studentToTeacherComment}}
+                </td>
+                <td class="align-middle" *ngIf="class.studentToTeacherComment == ''">-</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

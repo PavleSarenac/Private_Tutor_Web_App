@@ -10,7 +10,7 @@ Uputstvo za preuzimanje:
 		* "projects" -> "frontend" -> "architect" -> "build" -> "options" -> "styles" treba da izgleda ovako:
 			"styles": [
 				"node_modules/bootstrap/dist/css/bootstrap.min.css",
-				"node_modules/bootstrap-icons/font/bootstrap-icons.css"
+				"node_modules/bootstrap-icons/font/bootstrap-icons.css",
 				"src/styles.css"
             ]
 		* "projects" -> "frontend" -> "architect" -> "build" -> "options" -> "scripts" treba da izgleda ovako:
