@@ -297,11 +297,11 @@ export class TeacherController {
         let currentDateTimeInMillis = Date.now() + NUMBER_OF_MILLISECONDS_IN_ONE_HOUR
         let finalDateTimeInMillis = currentDateTimeInMillis + 3 * NUMBER_OF_MILLISECONDS_IN_ONE_DAY
 
-        let currentDateTimeString = this.convertMillisToDateTimeStringWithMilliseconds(currentDateTimeInMillis)
+        let currentDateTimeString = this.convertMillisToDateTimeStringWithoutSeconds(currentDateTimeInMillis)
         let finalDateTimeString = this.convertMillisToDateTimeStringWithoutSeconds(finalDateTimeInMillis)
 
         let currentDateString = currentDateTimeString.substring(0, currentDateTimeString.indexOf(" "))
-        let currentTimeString = currentDateTimeString.substring(0, currentDateTimeString.indexOf(" ") + 1)
+        let currentTimeString = currentDateTimeString.substring(currentDateTimeString.indexOf(" ") + 1)
         let finalDateString = finalDateTimeString.substring(0, finalDateTimeString.indexOf(" "))
 
         ClassModel.updateMany(
