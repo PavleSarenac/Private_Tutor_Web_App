@@ -132,7 +132,6 @@ export class StudentController {
 
         ClassModel.updateMany(
             {
-                studentUsername: studentUsername,
                 isClassAccepted: true,
                 isClassRejected: false,
                 isClassCancelled: false,
@@ -235,7 +234,6 @@ export class StudentController {
 
         ClassModel.updateMany(
             {
-                studentUsername: studentUsername,
                 isClassAccepted: true,
                 isClassRejected: false,
                 isClassCancelled: false,

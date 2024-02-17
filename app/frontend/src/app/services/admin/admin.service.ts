@@ -30,4 +30,8 @@ export class AdminService {
   getAverageClassesPerDay() {
     return this.httpClient.get<any>(`${this.backendUrl}/getAverageClassesPerDay`)
   }
+
+  getMostWantedTeachers() {
+    return this.httpClient.get<any>(`${this.backendUrl}/getMostWantedTeachers`)
+  }
 }

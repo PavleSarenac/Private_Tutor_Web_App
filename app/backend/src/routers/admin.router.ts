@@ -23,4 +23,8 @@ adminRouter.route("/getAverageClassesPerDay").get(
     (request, response) => new AdminController().getAverageClassesPerDay(request, response)
 )
 
+adminRouter.route("/getMostWantedTeachers").get(
+    (request, response) => new AdminController().getMostWantedTeachers(request, response)
+)
+
 export default adminRouter
