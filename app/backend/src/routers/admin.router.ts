@@ -19,4 +19,8 @@ adminRouter.route("/updateSubjects").post(
     (request, response) => new AdminController().updateSubjects(request, response)
 )
 
+adminRouter.route("/getAverageClassesPerDay").get(
+    (request, response) => new AdminController().getAverageClassesPerDay(request, response)
+)
+
 export default adminRouter

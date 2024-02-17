@@ -2,6 +2,7 @@ import express from "express"
 import * as fileSystem from "fs"
 import { UserModel } from "../models/user.model"
 import DataModel from "../models/data.model"
+import ClassModel from "../models/class.model"
 
 export class AdminController {
     downloadPdf = (request: express.Request, response: express.Response) => {
@@ -68,6 +69,36 @@ export class AdminController {
             }
         ).then(
             () => response.json({ content: "ok" })
+        ).catch((error) => console.log(error))
+    }
+
+    getAverageClassesPerDay = (request: express.Request, response: express.Response) => {
+        let daysCounters: number[] = [0, 0, 0, 0, 0, 0, 0]
+
+        ClassModel.find(
+            {
+                startDate: { $lte: "2023-12-31" }
+            }
+        ).then(
+            (classes: any[]) => {
+                classes.forEach(
+                    (currentClass: any) => {
+                        let day = new Date(currentClass.startDate).getDay()
+                        if (day == 0) day = 6  // sunday
+                        else day--  // monday-friday
+                        daysCounters[day]++
+                    }
+                )
+                response.json({
+                    Monday: daysCounters[0],
+                    Tuesday: daysCounters[1],
+                    Wednesday: daysCounters[2],
+                    Thursday: daysCounters[3],
+                    Friday: daysCounters[4],
+                    Saturday: daysCounters[5],
+                    Sunday: daysCounters[6],
+                })
+            }
         ).catch((error) => console.log(error))
     }
 }

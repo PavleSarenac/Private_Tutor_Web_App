@@ -26,4 +26,8 @@ export class AdminService {
   updateSubjects(subjects: string[]) {
     return this.httpClient.post<Message>(`${this.backendUrl}/updateSubjects`, subjects)
   }
+
+  getAverageClassesPerDay() {
+    return this.httpClient.get<any>(`${this.backendUrl}/getAverageClassesPerDay`)
+  }
 }
