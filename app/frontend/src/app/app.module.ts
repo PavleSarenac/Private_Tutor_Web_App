@@ -37,6 +37,7 @@ import { TeacherClassesComponent } from './components/pages/user/teacher/teacher
 import { StudentClassesComponent } from './components/pages/user/student/student-classes/student-classes.component';
 import { StudentNotificationsComponent } from './components/pages/user/student/student-notifications/student-notifications.component';
 import { TeacherMyStudentsComponent } from './components/pages/user/teacher/teacher-my-students/teacher-my-students.component';
+import { StarRatingViewComponent } from './components/parts/star-rating-view/star-rating-view.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { TeacherMyStudentsComponent } from './components/pages/user/teacher/teac
     TeacherClassesComponent,
     StudentClassesComponent,
     StudentNotificationsComponent,
-    TeacherMyStudentsComponent
+    TeacherMyStudentsComponent,
+    StarRatingViewComponent
   ],
   imports: [
     BrowserModule,

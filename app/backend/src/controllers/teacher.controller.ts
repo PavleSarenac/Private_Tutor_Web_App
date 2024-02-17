@@ -153,50 +153,78 @@ export class TeacherController {
                 startTime: "ascending"
             }
         ).then(
-            (classes: any[]) => {
+            (pendingClasses: any[]) => {
                 UserModel.find(
                     {
                         userType: "student"
                     }
                 ).then(
                     (students: any[]) => {
-                        let responseClasses: any[] = []
-                        classes.forEach(
-                            (classRequest: any) => {
-                                let student = students.find((student) => student.username == classRequest.studentUsername)
-                                responseClasses.push(
-                                    {
-                                        id: classRequest.id,
-                                        studentUsername: classRequest.studentUsername,
-                                        teacherUsername: classRequest.teacherUsername,
-                                        subject: classRequest.subject,
-                                        startDate: classRequest.startDate,
-                                        endDate: classRequest.endDate,
-                                        startTime: classRequest.startTime,
-                                        endTime: classRequest.endTime,
-                                        description: classRequest.description,
-                                        isClassAccepted: classRequest.isClassAccepted,
-                                        isClassRejected: classRequest.isClassRejected,
-                                        isClassCancelled: classRequest.isClassCancelled,
-                                        decisionDate: classRequest.decisionDate,
-                                        decisionTime: classRequest.decisionTime,
-                                        isNotificationRead: classRequest.isNotificationRead,
-                                        isClassDone: classRequest.isClassDone,
-                                        didClassRequestExpire: classRequest.didClassRequestExpire,
-                                        rejectionReason: classRequest.rejectionReason,
-                                        cancellationReason: classRequest.cancellationReason,
-                                        studentToTeacherComment: classRequest.studentToTeacherComment,
-                                        studentToTeacherGrade: classRequest.studentToTeacherGrade,
-                                        teacherToStudentComment: classRequest.teacherToStudentComment,
-                                        teacherToStudentGrade: classRequest.teacherToStudentGrade,
+                        ClassModel.find(
+                            {
+                                isClassDone: true,
+                                teacherToStudentGrade: { $ne: 0 }
+                            }
+                        ).then(
+                            (doneClasses: any[]) => {
+                                let responseClasses: any[] = []
+                                pendingClasses.forEach(
+                                    (classRequest: any) => {
+                                        let student = students.find((student) => student.username == classRequest.studentUsername)
 
-                                        studentName: student.name,
-                                        studentSurname: student.surname
+                                        let numberOfRatings = 0
+                                        let sumOfRatings = 0
+                                        let averageRating = 0
+
+                                        doneClasses.forEach(
+                                            (currentClass: any) => {
+                                                if (currentClass.studentUsername == student.username) {
+                                                    numberOfRatings++
+                                                    sumOfRatings += currentClass.teacherToStudentGrade
+                                                }
+                                            }
+                                        )
+
+                                        if (numberOfRatings >= 3) {
+                                            averageRating = sumOfRatings / numberOfRatings
+                                        }
+
+                                        responseClasses.push(
+                                            {
+                                                id: classRequest.id,
+                                                studentUsername: classRequest.studentUsername,
+                                                teacherUsername: classRequest.teacherUsername,
+                                                subject: classRequest.subject,
+                                                startDate: classRequest.startDate,
+                                                endDate: classRequest.endDate,
+                                                startTime: classRequest.startTime,
+                                                endTime: classRequest.endTime,
+                                                description: classRequest.description,
+                                                isClassAccepted: classRequest.isClassAccepted,
+                                                isClassRejected: classRequest.isClassRejected,
+                                                isClassCancelled: classRequest.isClassCancelled,
+                                                decisionDate: classRequest.decisionDate,
+                                                decisionTime: classRequest.decisionTime,
+                                                isNotificationRead: classRequest.isNotificationRead,
+                                                isClassDone: classRequest.isClassDone,
+                                                didClassRequestExpire: classRequest.didClassRequestExpire,
+                                                rejectionReason: classRequest.rejectionReason,
+                                                cancellationReason: classRequest.cancellationReason,
+                                                studentToTeacherComment: classRequest.studentToTeacherComment,
+                                                studentToTeacherGrade: classRequest.studentToTeacherGrade,
+                                                teacherToStudentComment: classRequest.teacherToStudentComment,
+                                                teacherToStudentGrade: classRequest.teacherToStudentGrade,
+
+                                                studentName: student.name,
+                                                studentSurname: student.surname,
+                                                studentAverageGrade: averageRating
+                                            }
+                                        )
                                     }
                                 )
+                                response.json(responseClasses)
                             }
-                        )
-                        response.json(responseClasses)
+                        ).catch((error) => console.log(error))
                     }
                 ).catch((error) => console.log(error))
             }

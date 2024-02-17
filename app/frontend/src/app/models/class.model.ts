@@ -27,4 +27,5 @@ export class Class {
   studentSurname: string = ""
   teacherName: string = ""
   teacherSurname: string = ""
+  studentAverageGrade: number = 0
 }
