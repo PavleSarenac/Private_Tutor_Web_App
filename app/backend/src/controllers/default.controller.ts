@@ -5,10 +5,15 @@ import sizeOf from "image-size"
 import * as fileSystem from "fs"
 import * as bcrypt from "bcrypt"
 import DataModel from "../models/data.model"
+import ClassModel from "../models/class.model"
 
 const NUMBER_OF_MILLISECONDS_IN_ONE_SECOND = 1000
 const NUMBER_OF_SECONDS_IN_ONE_MINUTE = 60
 const NUMBER_OF_MINUTES_IN_ONE_HOUR = 60
+
+const NUMBER_OF_MILLISECONDS_IN_ONE_HOUR =
+    NUMBER_OF_MINUTES_IN_ONE_HOUR * NUMBER_OF_SECONDS_IN_ONE_MINUTE * NUMBER_OF_MILLISECONDS_IN_ONE_SECOND
+const NUMBER_OF_MILLISECONDS_IN_ONE_DAY = NUMBER_OF_MILLISECONDS_IN_ONE_HOUR * 24
 
 export class DefaultController {
     saltRounds: number = 10
@@ -191,11 +196,73 @@ export class DefaultController {
         DataModel.find({}).then((data: any[]) => response.json(data)).catch((error) => console.log(error))
     }
 
+    getNumberOfDoneClassesLastWeek = (request: express.Request, response: express.Response) => {
+        let currentDateTimeInMillis = Date.now() + NUMBER_OF_MILLISECONDS_IN_ONE_HOUR
+        let startDateTimeInMillis = currentDateTimeInMillis - 7 * NUMBER_OF_MILLISECONDS_IN_ONE_DAY
+
+        let currentDateTimeString = this.convertMillisToDateTimeStringWithoutSeconds(currentDateTimeInMillis)
+        let startDateTimeString = this.convertMillisToDateTimeStringWithoutSeconds(startDateTimeInMillis)
+
+        let currentDateString = currentDateTimeString.substring(0, currentDateTimeString.indexOf(" "))
+        let startDateString = startDateTimeString.substring(0, startDateTimeString.indexOf(" "))
+
+        ClassModel.find(
+            {
+                isClassDone: true,
+                $and: [
+                    {
+                        startDate: { $gte: startDateString }
+                    },
+                    {
+                        startDate: { $lte: currentDateString }
+                    }
+                ]
+            }
+        ).then(
+            (classes: any[]) => response.json({ content: String(classes.length) })
+        ).catch((error) => console.log(error))
+    }
+
+    getNumberOfDoneClassesLastMonth = (request: express.Request, response: express.Response) => {
+        let currentDateTimeInMillis = Date.now() + NUMBER_OF_MILLISECONDS_IN_ONE_HOUR
+        let startDateTimeInMillis = currentDateTimeInMillis - 30 * NUMBER_OF_MILLISECONDS_IN_ONE_DAY
+
+        let currentDateTimeString = this.convertMillisToDateTimeStringWithoutSeconds(currentDateTimeInMillis)
+        let startDateTimeString = this.convertMillisToDateTimeStringWithoutSeconds(startDateTimeInMillis)
+
+        let currentDateString = currentDateTimeString.substring(0, currentDateTimeString.indexOf(" "))
+        let startDateString = startDateTimeString.substring(0, startDateTimeString.indexOf(" "))
+
+        ClassModel.find(
+            {
+                isClassDone: true,
+                $and: [
+                    {
+                        startDate: { $gte: startDateString }
+                    },
+                    {
+                        startDate: { $lte: currentDateString }
+                    }
+                ]
+            }
+        ).then(
+            (classes: any[]) => response.json({ content: String(classes.length) })
+        ).catch((error) => console.log(error))
+    }
+
     getDateTimeString(): string {
         let currentDateTimeInMillis = Date.now()
         currentDateTimeInMillis +=
             NUMBER_OF_MILLISECONDS_IN_ONE_SECOND * NUMBER_OF_SECONDS_IN_ONE_MINUTE * NUMBER_OF_MINUTES_IN_ONE_HOUR
         let currentDateTime = new Date(currentDateTimeInMillis)
         return currentDateTime.toISOString().replace(/:/g, "_").replace(/-/g, "_").replace(/\./g, "_")
+    }
+
+    convertMillisToDateTimeStringWithoutSeconds(dateTimeInMillis: number): string {
+        let currentDateTime = new Date(dateTimeInMillis).toISOString()
+        let currentDate = currentDateTime.substring(0, currentDateTime.indexOf("T"))
+        let currentTime = currentDateTime.substring(currentDateTime.indexOf("T") + 1, currentDateTime.indexOf(".") - 3)
+        currentDateTime = currentDate + " " + currentTime
+        return currentDateTime
     }
 }

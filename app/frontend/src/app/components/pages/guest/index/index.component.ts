@@ -41,6 +41,9 @@ export class IndexComponent implements OnInit {
   shouldSortTeachersByTeacherSurname: boolean = false
   shouldSortTeachersBySubject: boolean = false
 
+  numberOfDoneClassesLastWeek: number = 0
+  numberOfDoneClassesLastMonth: number = 0
+
   constructor(
     private defaultService: DefaultService,
     private teacherService: TeacherService
@@ -65,6 +68,16 @@ export class IndexComponent implements OnInit {
             this.allTeachers = teachers
           }
         )
+      }
+    )
+    this.defaultService.getNumberOfDoneClassesLastWeek().subscribe(
+      (message: Message) => {
+        this.numberOfDoneClassesLastWeek = Number(message.content)
+      }
+    )
+    this.defaultService.getNumberOfDoneClassesLastMonth().subscribe(
+      (message: Message) => {
+        this.numberOfDoneClassesLastMonth = Number(message.content)
       }
     )
   }

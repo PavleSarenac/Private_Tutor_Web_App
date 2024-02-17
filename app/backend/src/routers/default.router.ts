@@ -23,6 +23,14 @@ defaultRouter.route("/getNumberOfStudents").get(
     (request, response) => new DefaultController().getNumberOfStudents(request, response)
 )
 
+defaultRouter.route("/getNumberOfDoneClassesLastWeek").get(
+    (request, response) => new DefaultController().getNumberOfDoneClassesLastWeek(request, response)
+)
+
+defaultRouter.route("/getNumberOfDoneClassesLastMonth").get(
+    (request, response) => new DefaultController().getNumberOfDoneClassesLastMonth(request, response)
+)
+
 defaultRouter.route("/checkOldPassword").post(
     (request, response) => new DefaultController().checkOldPassword(request, response)
 )

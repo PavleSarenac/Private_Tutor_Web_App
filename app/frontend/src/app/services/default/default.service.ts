@@ -43,6 +43,14 @@ export class DefaultService {
     return this.httpClient.get<Message>(`${this.backendUrl}/getNumberOfTeachers`)
   }
 
+  getNumberOfDoneClassesLastWeek() {
+    return this.httpClient.get<Message>(`${this.backendUrl}/getNumberOfDoneClassesLastWeek`)
+  }
+
+  getNumberOfDoneClassesLastMonth() {
+    return this.httpClient.get<Message>(`${this.backendUrl}/getNumberOfDoneClassesLastMonth`)
+  }
+
   checkOldPassword(username: string, oldPassword: string) {
     const body = {
       username: username,
