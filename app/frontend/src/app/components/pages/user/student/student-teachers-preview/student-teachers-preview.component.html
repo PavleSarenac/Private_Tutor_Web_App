@@ -62,17 +62,18 @@
                 <button type=" button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <div class="row">
-                  <div class="col-sm-12 text-break"
-                    *ngFor="let teacher of shouldShowSortedSubjects ? allTeachersSorted : allTeachers">
-                    <ng-container *ngIf="teacher.teacherSubjects.includes(subject)">
+                <div class="row" *ngFor="let teacher of shouldShowSortedSubjects ? allTeachersSorted : allTeachers">
+                  <ng-container *ngIf="teacher.teacherSubjects.includes(subject)">
+                    <div class="col-sm-6 text-end">
                       <button class="btn btn-dark mb-2" data-bs-dismiss="modal" aria-label="Close"
                         (click)="seeTeacherDetails(teacher.username)">{{teacher.name}}
                         {{teacher.surname}}</button>
+                    </div>
+                    <div class="col-sm-6 text-start">
                       <app-star-rating-view class="ms-3" *ngIf="teacher.teacherAverageGrade != 0"
                         [rating]="teacher.teacherAverageGrade"></app-star-rating-view>
-                    </ng-container>
-                  </div>
+                    </div>
+                  </ng-container>
                 </div>
               </div>
             </div>

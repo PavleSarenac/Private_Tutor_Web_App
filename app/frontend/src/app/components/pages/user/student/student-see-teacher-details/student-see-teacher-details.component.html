@@ -7,7 +7,7 @@
         <div class="card-body">
           <h5 class="card-title text-center"><b>{{teacher.name}} {{teacher.surname}}</b></h5>
         </div>
-        <ul class=" list-group list-group-flush">
+        <ul class=" list-group list-group-flush text-start">
           <li class="list-group-item"><b>Email:</b> &nbsp;{{teacher.email}}</li>
           <li class="list-group-item"><b>Phone:</b> &nbsp;{{teacher.phone}}</li>
           <li class="list-group-item"><b>Subjects:</b> &nbsp;
@@ -17,20 +17,20 @@
             </button>
           </li>
         </ul>
-        <div class="card-footer">
+        <div class="card-footer text-start">
           <b>Working hours:</b> &nbsp;
           <button class="btn btn-dark" data-bs-toggle="modal"
             [attr.data-bs-target]="'#' + teacher.username + '-working-hours'">
             Click to see
           </button>
         </div>
-        <div class="card-footer">
+        <div class="card-footer text-start">
           <b>Reviews:</b> &nbsp;
           <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#reviewsModal">
             Click to see
           </button>
         </div>
-        <div class="card-footer">
+        <div class="card-footer text-start">
           <b>Schedule a class:</b> &nbsp;
           <div class="btn-group" role="group">
             <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal"
