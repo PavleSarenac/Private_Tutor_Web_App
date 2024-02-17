@@ -59,4 +59,12 @@ export class TeacherService {
   getAllAcceptedClassesForNextThreeDays(teacherUsername: string) {
     return this.httpClient.get<Class[]>(`${this.backendUrl}/getAllAcceptedClassesForNextThreeDays?teacherUsername=${teacherUsername}`)
   }
+
+  getAllDoneClasses(teacherUsername: string) {
+    return this.httpClient.get<Class[]>(`${this.backendUrl}/getAllDoneClasses?teacherUsername=${teacherUsername}`)
+  }
+
+  rateStudent(doneClass: Class) {
+    return this.httpClient.post<Message>(`${this.backendUrl}/rateStudent`, doneClass)
+  }
 }

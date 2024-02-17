@@ -51,4 +51,12 @@ teacherRouter.route("/getAllAcceptedClassesForNextThreeDays").get(
     (request, response) => new TeacherController().getAllAcceptedClassesForNextThreeDays(request, response)
 )
 
+teacherRouter.route("/getAllDoneClasses").get(
+    (request, response) => new TeacherController().getAllDoneClasses(request, response)
+)
+
+teacherRouter.route("/rateStudent").post(
+    (request, response) => new TeacherController().rateStudent(request, response)
+)
+
 export default teacherRouter

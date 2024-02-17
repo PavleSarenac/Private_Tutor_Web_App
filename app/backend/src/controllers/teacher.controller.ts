@@ -407,6 +407,85 @@ export class TeacherController {
         ).catch((error) => console.log(error))
     }
 
+    getAllDoneClasses = (request: express.Request, response: express.Response) => {
+        let teacherUsername = request.query.teacherUsername
+        ClassModel.find(
+            {
+                teacherUsername: teacherUsername,
+                isClassDone: true
+            }
+        ).sort(
+            {
+                subject: "ascending",
+                endDate: "descending",
+                endTime: "descending"
+            }
+        ).then(
+            (classes: any[]) => {
+                UserModel.find(
+                    {
+                        userType: "student"
+                    }
+                ).then(
+                    (students: any[]) => {
+                        let responseClasses: any[] = []
+                        classes.forEach(
+                            (classRequest: any) => {
+                                let student = students.find((student) => student.username == classRequest.studentUsername)
+                                responseClasses.push(
+                                    {
+                                        id: classRequest.id,
+                                        studentUsername: classRequest.studentUsername,
+                                        teacherUsername: classRequest.teacherUsername,
+                                        subject: classRequest.subject,
+                                        startDate: classRequest.startDate,
+                                        endDate: classRequest.endDate,
+                                        startTime: classRequest.startTime,
+                                        endTime: classRequest.endTime,
+                                        description: classRequest.description,
+                                        isClassAccepted: classRequest.isClassAccepted,
+                                        isClassRejected: classRequest.isClassRejected,
+                                        isClassCancelled: classRequest.isClassCancelled,
+                                        decisionDate: classRequest.decisionDate,
+                                        decisionTime: classRequest.decisionTime,
+                                        isNotificationRead: classRequest.isNotificationRead,
+                                        isClassDone: classRequest.isClassDone,
+                                        didClassRequestExpire: classRequest.didClassRequestExpire,
+                                        rejectionReason: classRequest.rejectionReason,
+                                        cancellationReason: classRequest.cancellationReason,
+                                        studentToTeacherComment: classRequest.studentToTeacherComment,
+                                        studentToTeacherGrade: classRequest.studentToTeacherGrade,
+                                        teacherToStudentComment: classRequest.teacherToStudentComment,
+                                        teacherToStudentGrade: classRequest.teacherToStudentGrade,
+
+                                        studentName: student.name,
+                                        studentSurname: student.surname
+                                    }
+                                )
+                            }
+                        )
+                        response.json(responseClasses)
+                    }
+                ).catch((error) => console.log(error))
+            }
+        ).catch((error) => console.log(error))
+    }
+
+    rateStudent = (request: express.Request, response: express.Response) => {
+        let classObject: any = request.body
+        ClassModel.updateOne(
+            {
+                id: classObject.id
+            },
+            {
+                teacherToStudentComment: classObject.teacherToStudentComment,
+                teacherToStudentGrade: classObject.teacherToStudentGrade
+            }
+        ).then(
+            () => response.json({ content: "ok" })
+        ).catch((error) => console.log(error))
+    }
+
     convertMillisToDateTimeStringWithoutSeconds(dateTimeInMillis: number): string {
         let currentDateTime = new Date(dateTimeInMillis).toISOString()
         let currentDate = currentDateTime.substring(0, currentDateTime.indexOf("T"))

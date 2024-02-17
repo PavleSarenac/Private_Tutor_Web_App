@@ -36,6 +36,7 @@ import { PieChartStudentsGenderComponent } from './components/parts/charts/pie-c
 import { TeacherClassesComponent } from './components/pages/user/teacher/teacher-classes/teacher-classes.component';
 import { StudentClassesComponent } from './components/pages/user/student/student-classes/student-classes.component';
 import { StudentNotificationsComponent } from './components/pages/user/student/student-notifications/student-notifications.component';
+import { TeacherMyStudentsComponent } from './components/pages/user/teacher/teacher-my-students/teacher-my-students.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { StudentNotificationsComponent } from './components/pages/user/student/s
     PieChartStudentsGenderComponent,
     TeacherClassesComponent,
     StudentClassesComponent,
-    StudentNotificationsComponent
+    StudentNotificationsComponent,
+    TeacherMyStudentsComponent
   ],
   imports: [
     BrowserModule,
