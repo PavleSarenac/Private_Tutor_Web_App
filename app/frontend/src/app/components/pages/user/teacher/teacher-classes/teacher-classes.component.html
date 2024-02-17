@@ -249,7 +249,9 @@
               <td class="align-middle" *ngIf="classRequest.description != ''">{{classRequest.description}}</td>
               <td class="align-middle" *ngIf="classRequest.description == ''">-</td>
               <td class="align-middle" *ngIf="classRequest.studentAverageGrade != 0">
-                {{classRequest.studentAverageGrade | number:"1.2-2"}}</td>
+                {{classRequest.studentAverageGrade | number:"1.2-2"}} &nbsp;
+                <app-star-rating-view [rating]="classRequest.studentAverageGrade"></app-star-rating-view>
+              </td>
               <td class="align-middle" *ngIf="classRequest.studentAverageGrade == 0">-</td>
               <td class="align-middle">{{classRequest.startDate}}</td>
               <td class="align-middle">{{classRequest.startTime}}-{{classRequest.endTime}}</td>
