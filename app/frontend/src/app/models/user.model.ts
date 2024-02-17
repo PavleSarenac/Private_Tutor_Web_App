@@ -22,4 +22,6 @@ export class User {
   isAccountBanned: boolean = false
   workingDays: string[] = []
   workingHours: string = ""
+
+  teacherAverageGrade: number = 0
 }

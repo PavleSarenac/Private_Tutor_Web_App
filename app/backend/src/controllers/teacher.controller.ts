@@ -117,7 +117,69 @@ export class TeacherController {
                 teacherPreferredStudentsAge: { $elemMatch: { $eq: request.query.studentAge } }
             }
         ).then(
-            (teachers) => response.json(teachers)
+            (teachers: any[]) => {
+                ClassModel.find(
+                    {
+                        isClassDone: true,
+                        studentToTeacherGrade: { $ne: 0 }
+                    }
+                ).then(
+                    (classes: any[]) => {
+                        let responseTeachers: any[] = []
+                        teachers.forEach(
+                            (teacher: any) => {
+                                let numberOfRatings = 0
+                                let sumOfRatings = 0
+                                let averageRating = 0
+
+                                classes.forEach(
+                                    (currentClass: any) => {
+                                        if (currentClass.teacherUsername == teacher.username) {
+                                            numberOfRatings++
+                                            sumOfRatings += currentClass.studentToTeacherGrade
+                                        }
+                                    }
+                                )
+
+                                if (numberOfRatings >= 3) {
+                                    averageRating = sumOfRatings / numberOfRatings
+                                }
+
+                                responseTeachers.push(
+                                    {
+                                        username: teacher.username,
+                                        password: teacher.password,
+                                        userType: teacher.userType,
+                                        securityQuestion: teacher.securityQuestion,
+                                        securityAnswer: teacher.securityAnswer,
+                                        name: teacher.name,
+                                        surname: teacher.surname,
+                                        gender: teacher.gender,
+                                        address: teacher.address,
+                                        phone: teacher.phone,
+                                        email: teacher.email,
+                                        profilePicturePath: teacher.profilePicturePath,
+                                        schoolType: teacher.schoolType,
+                                        currentGrade: teacher.currentGrade,
+                                        teacherSubjects: teacher.teacherSubjects,
+                                        teacherPreferredStudentsAge: teacher.teacherPreferredStudentsAge,
+                                        teacherWhereDidYouHearAboutUs: teacher.teacherWhereDidYouHearAboutUs,
+                                        cvPath: teacher.cvPath,
+                                        isAccountActive: teacher.isAccountActive,
+                                        isAccountPending: teacher.isAccountPending,
+                                        isAccountBanned: teacher.isAccountBanned,
+                                        workingDays: teacher.workingDays,
+                                        workingHours: teacher.workingHours,
+
+                                        teacherAverageGrade: averageRating
+                                    }
+                                )
+                            }
+                        )
+                        response.json(responseTeachers)
+                    }
+                ).catch((error) => console.log(error))
+            }
         ).catch((error) => console.log(error))
     }
 

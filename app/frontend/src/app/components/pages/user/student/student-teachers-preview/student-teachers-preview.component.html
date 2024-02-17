@@ -116,8 +116,9 @@
         <table class="table table-dark table-bordered table-striped table-hover">
           <thead>
             <tr class="text-center">
-              <th scope="col" class="w-50">Teacher</th>
-              <th scope="col" class="w-50">Subjects</th>
+              <th scope="col" class="w-33">Teacher</th>
+              <th scope="col" class="w-33">Teacher's Average Grade</th>
+              <th scope="col" class="w-33">Subjects</th>
             </tr>
           </thead>
           <tbody>
@@ -127,6 +128,11 @@
                 <button class="btn btn-light" (click)="seeTeacherDetails(teacher.username)">{{teacher.name}}
                   {{teacher.surname}}</button>
               </td>
+              <td class="align-middle" *ngIf="teacher.teacherAverageGrade != 0">
+                {{teacher.teacherAverageGrade | number:"1.2-2"}} &nbsp;
+                <app-star-rating-view [rating]="teacher.teacherAverageGrade"></app-star-rating-view>
+              </td>
+              <td class="align-middle" *ngIf="teacher.teacherAverageGrade == 0">-</td>
               <td>
                 <button class="btn btn-light mt-2 mb-2" data-bs-toggle="modal"
                   [attr.data-bs-target]="'#' + teacher.username">
