@@ -19,6 +19,8 @@ export class TeacherMyStudentsComponent implements OnInit {
   teacherToStudentGrade: number = 0
   ratingError: string = "Please give this student a grade."
 
+  initializationDone: boolean = false
+
   constructor(
     private defaultService: DefaultService,
     private teacherService: TeacherService
@@ -38,6 +40,7 @@ export class TeacherMyStudentsComponent implements OnInit {
       (classes: Class[]) => {
         this.allDoneClasses = classes
         this.mapStudentsToClasses()
+        this.initializationDone = true
       }
     )
   }
