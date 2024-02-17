@@ -53,7 +53,7 @@
         </table>
         <div class="modal fade" *ngFor="let subject of shouldShowSortedSubjects ? subjectsSorted : data.subjects"
           [id]="subject.replaceAll(' ', '')" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
+          <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                 <h1 class="modal-title fs-5" [id]="subject">
@@ -62,14 +62,18 @@
                 <button type=" button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <span class="text-break"
-                  *ngFor="let teacher of shouldShowSortedSubjects ? allTeachersSorted : allTeachers">
-                  <ng-container *ngIf="teacher.teacherSubjects.includes(subject)">
-                    <button class="btn btn-dark mb-2" data-bs-dismiss="modal" aria-label="Close"
-                      (click)="seeTeacherDetails(teacher.username)">{{teacher.name}}
-                      {{teacher.surname}}</button> <br>
-                  </ng-container>
-                </span>
+                <div class="row">
+                  <div class="col-sm-12 text-break"
+                    *ngFor="let teacher of shouldShowSortedSubjects ? allTeachersSorted : allTeachers">
+                    <ng-container *ngIf="teacher.teacherSubjects.includes(subject)">
+                      <button class="btn btn-dark mb-2" data-bs-dismiss="modal" aria-label="Close"
+                        (click)="seeTeacherDetails(teacher.username)">{{teacher.name}}
+                        {{teacher.surname}}</button>
+                      <app-star-rating-view class="ms-3" *ngIf="teacher.teacherAverageGrade != 0"
+                        [rating]="teacher.teacherAverageGrade"></app-star-rating-view>
+                    </ng-container>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

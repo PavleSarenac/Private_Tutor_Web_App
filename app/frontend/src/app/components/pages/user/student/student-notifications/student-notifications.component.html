@@ -38,7 +38,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" [id]="'class' + class.id">
-          <ng-container *ngIf="class.isClassAccepted">
+          <ng-container *ngIf="class.isClassAccepted || class.isClassDone">
             Your class request is accepted.
           </ng-container>
           <ng-container *ngIf="class.isClassRejected">

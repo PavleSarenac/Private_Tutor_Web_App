@@ -333,7 +333,6 @@ export class StudentController {
         ClassModel.find(
             {
                 studentUsername: studentUsername,
-                isClassDone: false,
                 isNotificationRead: false,
                 $or: [
                     {
@@ -344,6 +343,9 @@ export class StudentController {
                     },
                     {
                         isClassCancelled: true
+                    },
+                    {
+                        isClassDone: true
                     }
                 ]
             }
@@ -358,7 +360,6 @@ export class StudentController {
                 ClassModel.find(
                     {
                         studentUsername: studentUsername,
-                        isClassDone: false,
                         isNotificationRead: true,
                         $or: [
                             {
@@ -369,6 +370,9 @@ export class StudentController {
                             },
                             {
                                 isClassCancelled: true
+                            },
+                            {
+                                isClassDone: true
                             }
                         ]
                     }
