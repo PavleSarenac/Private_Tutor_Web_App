@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { Class } from 'src/app/models/class.model';
 import { User } from 'src/app/models/user.model';
 import { DefaultService } from 'src/app/services/default/default.service';
@@ -51,7 +52,8 @@ export class TeacherClassesComponent implements OnInit {
 
   constructor(
     private defaultService: DefaultService,
-    private teacherService: TeacherService
+    private teacherService: TeacherService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -76,6 +78,10 @@ export class TeacherClassesComponent implements OnInit {
         this.fetchPendingClassRequests()
       }
     )
+  }
+
+  joinClass() {
+    this.router.navigate(["jitsi"])
   }
 
   getTimeDifferenceInMinutes(classStartDate: string, classStartTime: string): number {

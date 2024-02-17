@@ -47,7 +47,8 @@
                 <td class="align-middle">{{upcomingClass.startTime}}-{{upcomingClass.endTime}}</td>
                 <td class="align-middle">
                   <button class="btn btn-light"
-                    *ngIf="getTimeDifferenceInMinutes(upcomingClass.startDate, upcomingClass.startTime) <= 15">Join</button>
+                    *ngIf="getTimeDifferenceInMinutes(upcomingClass.startDate, upcomingClass.startTime) <= 15"
+                    (click)="joinClass()">Join</button>
                   <span *ngIf="getTimeDifferenceInMinutes(upcomingClass.startDate, upcomingClass.startTime) > 15">
                     Can't join yet.
                   </span>
