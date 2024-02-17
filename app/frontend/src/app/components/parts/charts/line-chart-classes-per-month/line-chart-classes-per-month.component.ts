@@ -49,7 +49,16 @@ export class LineChartClassesPerMonthComponent implements OnInit {
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          aspectRatio: 1
+          aspectRatio: 1,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: "Number of classes (2023)"
+              }
+            }
+          }
         }
       }
     )
