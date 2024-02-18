@@ -79,6 +79,28 @@ export class AdminController {
         ).catch((error) => console.log(error))
     }
 
+    getAllClassesWithRatedStudent = (request: express.Request, response: express.Response) => {
+        ClassModel.find(
+            {
+                isClassDone: true,
+                teacherToStudentGrade: { $ne: 0 }
+            }
+        ).then(
+            (classes) => response.json(classes)
+        ).catch((error) => console.log(error))
+    }
+
+    getAllClassesWithRatedTeacher = (request: express.Request, response: express.Response) => {
+        ClassModel.find(
+            {
+                isClassDone: true,
+                studentToTeacherGrade: { $ne: 0 }
+            }
+        ).then(
+            (classes) => response.json(classes)
+        ).catch((error) => console.log(error))
+    }
+
     getAllClasses = (request: express.Request, response: express.Response) => {
         let currentDateTimeInMillis = Date.now() + NUMBER_OF_MILLISECONDS_IN_ONE_HOUR
         let currentDateTimeString = this.convertMillisToDateTimeStringWithoutSeconds(currentDateTimeInMillis)

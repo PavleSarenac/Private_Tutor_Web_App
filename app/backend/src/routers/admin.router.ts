@@ -31,4 +31,12 @@ adminRouter.route("/getAllClasses").get(
     (request, response) => new AdminController().getAllClasses(request, response)
 )
 
+adminRouter.route("/getAllClassesWithRatedStudent").get(
+    (request, response) => new AdminController().getAllClassesWithRatedStudent(request, response)
+)
+
+adminRouter.route("/getAllClassesWithRatedTeacher").get(
+    (request, response) => new AdminController().getAllClassesWithRatedTeacher(request, response)
+)
+
 export default adminRouter

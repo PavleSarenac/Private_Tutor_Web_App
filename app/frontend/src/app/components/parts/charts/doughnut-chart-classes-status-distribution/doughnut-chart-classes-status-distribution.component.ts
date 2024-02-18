@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Chart } from "chart.js/auto"
 import { Class } from 'src/app/models/class.model';
 import { AdminService } from 'src/app/services/admin/admin.service';
@@ -8,7 +8,7 @@ import { AdminService } from 'src/app/services/admin/admin.service';
   templateUrl: './doughnut-chart-classes-status-distribution.component.html',
   styleUrls: ['./doughnut-chart-classes-status-distribution.component.css']
 })
-export class DoughnutChartClassesStatusDistributionComponent {
+export class DoughnutChartClassesStatusDistributionComponent implements OnInit {
   chart: any
   upcomingClassesNumber: number = 0
   doneClassesNumber: number = 0

@@ -44,6 +44,8 @@ import { JitsiComponent } from './components/parts/jitsi/jitsi.component';
 import { StudentScheduleClassCalendarComponent } from './components/pages/user/student/student-schedule-class-calendar/student-schedule-class-calendar.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { DoughnutChartClassesStatusDistributionComponent } from './components/parts/charts/doughnut-chart-classes-status-distribution/doughnut-chart-classes-status-distribution.component';
+import { PolarAreaChartTeacherRatingsComponent } from './components/parts/charts/polar-area-chart-teacher-ratings/polar-area-chart-teacher-ratings.component';
+import { PolarAreaChartStudentRatingsComponent } from './components/parts/charts/polar-area-chart-student-ratings/polar-area-chart-student-ratings.component';
 
 @NgModule({
   declarations: [
@@ -85,7 +87,9 @@ import { DoughnutChartClassesStatusDistributionComponent } from './components/pa
     LineChartClassesPerMonthComponent,
     JitsiComponent,
     StudentScheduleClassCalendarComponent,
-    DoughnutChartClassesStatusDistributionComponent
+    DoughnutChartClassesStatusDistributionComponent,
+    PolarAreaChartTeacherRatingsComponent,
+    PolarAreaChartStudentRatingsComponent
   ],
   imports: [
     BrowserModule,

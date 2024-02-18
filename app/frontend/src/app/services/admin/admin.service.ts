@@ -39,4 +39,12 @@ export class AdminService {
   getAllClasses() {
     return this.httpClient.get<Class[]>(`${this.backendUrl}/getAllClasses`)
   }
+
+  getAllClassesWithRatedStudent() {
+    return this.httpClient.get<Class[]>(`${this.backendUrl}/getAllClassesWithRatedStudent`)
+  }
+
+  getAllClassesWithRatedTeacher() {
+    return this.httpClient.get<Class[]>(`${this.backendUrl}/getAllClassesWithRatedTeacher`)
+  }
 }
