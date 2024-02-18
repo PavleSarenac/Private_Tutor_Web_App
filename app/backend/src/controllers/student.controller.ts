@@ -53,6 +53,23 @@ export class StudentController {
         ).catch((error) => console.log(error))
     }
 
+    getClassesForCalendar = (request: express.Request, response: express.Response) => {
+        let teacherUsername = request.query.teacherUsername
+        ClassModel.find(
+            {
+                teacherUsername: teacherUsername,
+                isClassRejected: false,
+                isClassCancelled: false,
+                isClassDone: false,
+                didClassRequestExpire: false
+            }
+        ).then(
+            (classes: any[]) => {
+                response.json(classes)
+            }
+        ).catch((error) => console.log(error))
+    }
+
     isTimeSlotTaken = (request: express.Request, response: express.Response) => {
         let classRequest = request.body
         let newStartDate = classRequest.startDate

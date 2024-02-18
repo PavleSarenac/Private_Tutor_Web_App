@@ -27,6 +27,7 @@ import { StudentClassesComponent } from './components/pages/user/student/student
 import { StudentNotificationsComponent } from './components/pages/user/student/student-notifications/student-notifications.component';
 import { TeacherMyStudentsComponent } from './components/pages/user/teacher/teacher-my-students/teacher-my-students.component';
 import { JitsiComponent } from './components/parts/jitsi/jitsi.component';
+import { StudentScheduleClassCalendarComponent } from './components/pages/user/student/student-schedule-class-calendar/student-schedule-class-calendar.component';
 
 const routes: Routes = [
   { path: "", component: IndexComponent, canActivate: [isGuestGuard] },
@@ -52,6 +53,7 @@ const routes: Routes = [
   { path: "student-notifications", component: StudentNotificationsComponent, canActivate: [isStudentGuard] },
   { path: "teacher-my-students", component: TeacherMyStudentsComponent, canActivate: [isTeacherGuard] },
   { path: "jitsi", component: JitsiComponent },
+  { path: "student-schedule-class-calendar", component: StudentScheduleClassCalendarComponent, canActivate: [isStudentGuard] },
   { path: "**", redirectTo: "" }
 ];
 

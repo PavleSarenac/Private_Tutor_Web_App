@@ -47,4 +47,8 @@ export class StudentService {
   rateTeacher(pastClass: Class) {
     return this.httpClient.post<Message>(`${this.backendUrl}/rateTeacher`, pastClass)
   }
+
+  getClassesForCalendar(teacherUsername: string) {
+    return this.httpClient.get<Class[]>(`${this.backendUrl}/getClassesForCalendar?teacherUsername=${teacherUsername}`)
+  }
 }

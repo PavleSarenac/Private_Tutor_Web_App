@@ -41,6 +41,8 @@ import { StarRatingViewComponent } from './components/parts/star-rating-view/sta
 import { HistogramChartClassesPerDayComponent } from './components/parts/charts/histogram-chart-classes-per-day/histogram-chart-classes-per-day.component';
 import { LineChartClassesPerMonthComponent } from './components/parts/charts/line-chart-classes-per-month/line-chart-classes-per-month.component';
 import { JitsiComponent } from './components/parts/jitsi/jitsi.component';
+import { StudentScheduleClassCalendarComponent } from './components/pages/user/student/student-schedule-class-calendar/student-schedule-class-calendar.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
   declarations: [
@@ -80,13 +82,15 @@ import { JitsiComponent } from './components/parts/jitsi/jitsi.component';
     StarRatingViewComponent,
     HistogramChartClassesPerDayComponent,
     LineChartClassesPerMonthComponent,
-    JitsiComponent
+    JitsiComponent,
+    StudentScheduleClassCalendarComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    FullCalendarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

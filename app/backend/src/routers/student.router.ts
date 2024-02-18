@@ -39,4 +39,8 @@ studentRouter.route("/rateTeacher").post(
     (request, response) => new StudentController().rateTeacher(request, response)
 )
 
+studentRouter.route("/getClassesForCalendar").get(
+    (request, response) => new StudentController().getClassesForCalendar(request, response)
+)
+
 export default studentRouter
