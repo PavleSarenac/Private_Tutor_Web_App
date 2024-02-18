@@ -55,17 +55,53 @@ export class StudentController {
 
     getClassesForCalendar = (request: express.Request, response: express.Response) => {
         let teacherUsername = request.query.teacherUsername
-        ClassModel.find(
+
+        let currentDateTimeInMillis = Date.now() + NUMBER_OF_MILLISECONDS_IN_ONE_HOUR
+        let currentDateTimeString = this.convertMillisToDateTimeStringWithoutSeconds(currentDateTimeInMillis)
+        let currentDateString = currentDateTimeString.substring(0, currentDateTimeString.indexOf(" "))
+        let currentTimeString = currentDateTimeString.substring(currentDateTimeString.indexOf(" ") + 1)
+
+        ClassModel.updateMany(
             {
-                teacherUsername: teacherUsername,
+                isClassAccepted: true,
                 isClassRejected: false,
                 isClassCancelled: false,
                 isClassDone: false,
-                didClassRequestExpire: false
+                $or: [
+                    {
+                        endDate: { $lt: currentDateString }
+                    },
+                    {
+                        $and: [
+                            {
+                                endDate: { $eq: currentDateString },
+                            },
+                            {
+                                endTime: { $lt: currentTimeString }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                isClassAccepted: false,
+                isClassDone: true
             }
         ).then(
-            (classes: any[]) => {
-                response.json(classes)
+            () => {
+                ClassModel.find(
+                    {
+                        teacherUsername: teacherUsername,
+                        isClassRejected: false,
+                        isClassCancelled: false,
+                        isClassDone: false,
+                        didClassRequestExpire: false
+                    }
+                ).then(
+                    (classes: any[]) => {
+                        response.json(classes)
+                    }
+                ).catch((error) => console.log(error))
             }
         ).catch((error) => console.log(error))
     }

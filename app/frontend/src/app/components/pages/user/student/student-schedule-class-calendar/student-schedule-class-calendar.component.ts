@@ -79,6 +79,55 @@ export class StudentScheduleClassCalendarComponent implements OnInit {
     this.defaultService.getUser(localStorage.getItem("studentSeeTeacherDetailsUsername")!).subscribe(
       (teacher) => {
         this.teacher = teacher
+        let notWorkingDays: string[] = []
+        let workingDays: string[] = []
+        this.numberToStringDaysMappings.forEach((dayName: string, dayId: number) => {
+          if (!teacher.workingDays.includes(dayName)) notWorkingDays.push(String(dayId))
+          else workingDays.push(String(dayId))
+        })
+        if (notWorkingDays.length > 0) {
+          this.initialEventsList.push(
+            {
+              title: "Not working",
+              daysOfWeek: notWorkingDays,
+              allDay: true,
+              backgroundColor: "red",
+              color: "black",
+              textColor: "black",
+            }
+          )
+        }
+        let teacherWorkTimeStart = teacher.workingHours.substring(0, teacher.workingHours.indexOf("-"))
+        let teacherWorkTimeEnd = teacher.workingHours.substring(teacher.workingHours.indexOf("-") + 1)
+        if (teacherWorkTimeEnd == "00:00") teacherWorkTimeEnd = "24:00"
+        if (teacherWorkTimeStart > "00:00") {
+          this.initialEventsList.push(
+            {
+              title: "Not working",
+              startTime: "00:00:00",
+              endTime: teacherWorkTimeStart + ":00",
+              daysOfWeek: workingDays,
+              allDay: false,
+              backgroundColor: "red",
+              color: "black",
+              textColor: "black",
+            }
+          )
+        }
+        if (teacherWorkTimeEnd < "24:00") {
+          this.initialEventsList.push(
+            {
+              title: "Not working",
+              startTime: teacherWorkTimeEnd + "00:00",
+              endTime: "24:00:00",
+              daysOfWeek: workingDays,
+              allDay: false,
+              backgroundColor: "red",
+              color: "black",
+              textColor: "black",
+            }
+          )
+        }
         this.initializeClass()
         this.studentService.getClassesForCalendar(this.teacher.username).subscribe(
           (classes: Class[]) => {
@@ -115,7 +164,7 @@ export class StudentScheduleClassCalendarComponent implements OnInit {
     this.currentSelectInfo = selectInfo
     this.class.startDate = ""
     this.class.startTime = ""
-    this.class.subject = ""
+    if (this.teacher.teacherSubjects.length > 1) this.class.subject = ""
     if (selectInfo.startStr.includes("T")) {
       // User selected both date and time.
       this.class.startDate = selectInfo.startStr.substring(0, selectInfo.startStr.indexOf("T"))
