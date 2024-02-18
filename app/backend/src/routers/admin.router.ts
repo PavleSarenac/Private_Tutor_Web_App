@@ -27,4 +27,8 @@ adminRouter.route("/getMostWantedTeachers").get(
     (request, response) => new AdminController().getMostWantedTeachers(request, response)
 )
 
+adminRouter.route("/getAllClasses").get(
+    (request, response) => new AdminController().getAllClasses(request, response)
+)
+
 export default adminRouter

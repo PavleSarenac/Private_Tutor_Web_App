@@ -43,6 +43,7 @@ import { LineChartClassesPerMonthComponent } from './components/parts/charts/lin
 import { JitsiComponent } from './components/parts/jitsi/jitsi.component';
 import { StudentScheduleClassCalendarComponent } from './components/pages/user/student/student-schedule-class-calendar/student-schedule-class-calendar.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { DoughnutChartClassesStatusDistributionComponent } from './components/parts/charts/doughnut-chart-classes-status-distribution/doughnut-chart-classes-status-distribution.component';
 
 @NgModule({
   declarations: [
@@ -83,7 +84,8 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     HistogramChartClassesPerDayComponent,
     LineChartClassesPerMonthComponent,
     JitsiComponent,
-    StudentScheduleClassCalendarComponent
+    StudentScheduleClassCalendarComponent,
+    DoughnutChartClassesStatusDistributionComponent
   ],
   imports: [
     BrowserModule,

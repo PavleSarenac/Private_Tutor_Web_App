@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Class } from 'src/app/models/class.model';
 import { Message } from 'src/app/models/message.model';
 import { User } from 'src/app/models/user.model';
 
@@ -33,5 +34,9 @@ export class AdminService {
 
   getMostWantedTeachers() {
     return this.httpClient.get<any>(`${this.backendUrl}/getMostWantedTeachers`)
+  }
+
+  getAllClasses() {
+    return this.httpClient.get<Class[]>(`${this.backendUrl}/getAllClasses`)
   }
 }
