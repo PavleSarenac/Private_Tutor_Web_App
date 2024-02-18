@@ -41,7 +41,6 @@ export class StudentScheduleClassCalendarComponent implements OnInit {
 
   initialEventsList: EventInput[] = []
   currentSelectInfo: DateSelectArg | any
-  isCalendarFilledWithEvents: boolean = false
 
   calendarOptions = signal<CalendarOptions>({
     plugins: [
@@ -63,6 +62,7 @@ export class StudentScheduleClassCalendarComponent implements OnInit {
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
+    height: 480,
     select: this.handleDateSelect.bind(this),
     eventsSet: this.handleEvents.bind(this),
   });

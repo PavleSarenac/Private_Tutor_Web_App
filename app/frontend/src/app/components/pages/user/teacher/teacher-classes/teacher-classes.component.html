@@ -1,6 +1,33 @@
 <div class="container-fluid vh-100 overflow-auto">
   <app-teacher-header></app-teacher-header>
   <div class="row main bg-dark rounded">
+    <div class="col-sm-12 text-white fw-bold text-center mb-3 mt-3 fs-3">
+      Your calendar:
+    </div>
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6 text-center">
+      <div class="btn-group mt-3 mb-4" role="group">
+        <button type="button" class="btn btn-outline-light" (click)="showCalendar()">
+          Show calendar
+        </button>
+        <button type="button" class="btn btn-outline-light" (click)="hideCalendar()">
+          Hide calendar
+        </button>
+      </div>
+    </div>
+    <div class="col-sm-3"></div>
+  </div>
+  <div class="row main bg-light" *ngIf="calendarVisible()">
+    <div class="col-sm-12 bg-light">
+      <full-calendar [options]='calendarOptions()'>
+        <ng-template #eventContent let-arg>
+          <b>{{ arg.timeText }}</b>&nbsp;
+          <i>{{ arg.event.title }}</i>
+        </ng-template>
+      </full-calendar>
+    </div>
+  </div>
+  <div class="row main bg-dark rounded">
     <div class="col-sm-12 text-white fw-bold text-center mt-3 fs-3">
       Upcoming classes for the next 3 days:
     </div>

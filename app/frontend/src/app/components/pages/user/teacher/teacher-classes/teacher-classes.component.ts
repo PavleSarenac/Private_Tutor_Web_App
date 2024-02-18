@@ -1,9 +1,16 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Class } from 'src/app/models/class.model';
 import { User } from 'src/app/models/user.model';
 import { DefaultService } from 'src/app/services/default/default.service';
 import { TeacherService } from 'src/app/services/teacher/teacher.service';
+import { signal, ChangeDetectorRef } from '@angular/core';
+import { CalendarOptions, DateSelectArg, EventApi, EventInput } from '@fullcalendar/core';
+import interactionPlugin from '@fullcalendar/interaction';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
+import { StudentService } from 'src/app/services/student/student.service';
 
 const MINIMUM_LENGTH_OF_A_WORKDAY_IN_MINUTES = 120
 
@@ -13,6 +20,8 @@ const NUMBER_OF_MILLISECONDS_IN_ONE_SECOND = 1000
 
 const NUMBER_OF_MILLISECONDS_IN_ONE_HOUR =
   NUMBER_OF_MINUTES_IN_ONE_HOUR * NUMBER_OF_SECONDS_IN_ONE_MINUTE * NUMBER_OF_MILLISECONDS_IN_ONE_SECOND
+
+let EVENT_ID = 0
 
 @Component({
   selector: 'app-teacher-classes',
@@ -50,19 +59,140 @@ export class TeacherClassesComponent implements OnInit {
   shouldShowFirstTenUpcomingClasses: boolean = false
   shouldShowAllUpcomingClasses: boolean = false
 
+  numberToStringDaysMappings: Map<number, string> = new Map<number, string>()
+  initialEventsList: EventInput[] = []
+
+  calendarVisible = signal(false);
+  calendarOptions = signal<CalendarOptions>({
+    plugins: [
+      interactionPlugin,
+      dayGridPlugin,
+      timeGridPlugin,
+      listPlugin,
+    ],
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+    },
+    initialView: 'timeGridWeek',
+    timeZone: "UTC",
+    events: [],
+    weekends: true,
+    editable: false,
+    selectable: false,
+    selectMirror: true,
+    dayMaxEvents: true,
+    height: 480,
+    eventsSet: this.handleEvents.bind(this),
+  });
+  currentEvents = signal<EventApi[]>([]);
+
   constructor(
     private defaultService: DefaultService,
     private teacherService: TeacherService,
-    private router: Router
+    private router: Router,
+    private changeDetector: ChangeDetectorRef,
+    private studentService: StudentService
   ) { }
 
   ngOnInit(): void {
     this.defaultService.getUser(JSON.parse(localStorage.getItem("loggedInUser")!).username).subscribe(
       (teacher: User) => {
         this.teacher = teacher
-        this.fetchClassData()
+        this.initializeDaysMappings()
+        let notWorkingDays: string[] = []
+        let workingDays: string[] = []
+        this.numberToStringDaysMappings.forEach((dayName: string, dayId: number) => {
+          if (!teacher.workingDays.includes(dayName)) notWorkingDays.push(String(dayId))
+          else workingDays.push(String(dayId))
+        })
+        if (notWorkingDays.length > 0) {
+          this.initialEventsList.push(
+            {
+              title: "Not working",
+              daysOfWeek: notWorkingDays,
+              allDay: true,
+              backgroundColor: "red",
+              color: "black",
+              textColor: "black",
+            }
+          )
+        }
+        let teacherWorkTimeStart = teacher.workingHours.substring(0, teacher.workingHours.indexOf("-"))
+        let teacherWorkTimeEnd = teacher.workingHours.substring(teacher.workingHours.indexOf("-") + 1)
+        if (teacherWorkTimeEnd == "00:00") teacherWorkTimeEnd = "24:00"
+        if (teacherWorkTimeStart > "00:00") {
+          this.initialEventsList.push(
+            {
+              title: "Not working",
+              startTime: "00:00:00",
+              endTime: teacherWorkTimeStart + ":00",
+              daysOfWeek: workingDays,
+              allDay: false,
+              backgroundColor: "red",
+              color: "black",
+              textColor: "black",
+            }
+          )
+        }
+        if (teacherWorkTimeEnd < "24:00") {
+          this.initialEventsList.push(
+            {
+              title: "Not working",
+              startTime: teacherWorkTimeEnd + "00:00",
+              endTime: "24:00:00",
+              daysOfWeek: workingDays,
+              allDay: false,
+              backgroundColor: "red",
+              color: "black",
+              textColor: "black",
+            }
+          )
+        }
+        this.studentService.getClassesForCalendar(this.teacher.username).subscribe(
+          (classes: Class[]) => {
+            classes.forEach(
+              (currentClass: Class) => {
+                this.initialEventsList.push(
+                  {
+                    id: String(EVENT_ID++),
+                    title: currentClass.subject,
+                    start: new Date(this.getDateTimeIsoString(currentClass.startDate, currentClass.startTime)),
+                    end: new Date(this.getDateTimeIsoString(currentClass.endDate, currentClass.endTime)),
+                    allDay: false,
+                    backgroundColor: currentClass.isClassAccepted ? "limegreen" : "yellow",
+                    color: "black",
+                    textColor: "black",
+                  }
+                )
+              }
+            )
+            this.calendarOptions.mutate((options) => {
+              options.events = this.initialEventsList
+            });
+            this.fetchClassData()
+          }
+        )
       }
     )
+  }
+
+  getDateTimeIsoString(dateString: string, timeString: string): string {
+    return dateString + "T" + timeString + ":" + "00.000Z"
+  }
+
+  showCalendar() {
+    this.calendarVisible.update(() => true);
+  }
+
+  hideCalendar() {
+    this.calendarVisible.update(() => false);
+  }
+
+  handleEvents(events: EventApi[]) {
+    this.currentEvents.set(events);
+    this.changeDetector.detectChanges();
   }
 
   fetchClassData() {
@@ -78,6 +208,16 @@ export class TeacherClassesComponent implements OnInit {
         this.fetchPendingClassRequests()
       }
     )
+  }
+
+  initializeDaysMappings() {
+    this.numberToStringDaysMappings.set(1, "Monday")
+    this.numberToStringDaysMappings.set(2, "Tuesday")
+    this.numberToStringDaysMappings.set(3, "Wednesday")
+    this.numberToStringDaysMappings.set(4, "Thursday")
+    this.numberToStringDaysMappings.set(5, "Friday")
+    this.numberToStringDaysMappings.set(6, "Saturday")
+    this.numberToStringDaysMappings.set(0, "Sunday")
   }
 
   joinClass() {
